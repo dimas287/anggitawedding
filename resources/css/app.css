@@ -1,0 +1,19 @@
+	@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-gold: #D4AF37;
+    --color-gold-light: #F0D060;
+    --color-gold-dark: #B8960C;
+    --color-rose-wedding: #E91E8C;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
