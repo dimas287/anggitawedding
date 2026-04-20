@@ -1,0 +1,112 @@
+{
+  "_all.min-!~{004}~.js": {
+    "file": "assets/all-DbRkgOy0.css",
+    "src": "_all.min-!~{004}~.js"
+  },
+  "_proxy-DrS7vFpi.js": {
+    "file": "assets/proxy-DrS7vFpi.js",
+    "name": "proxy",
+    "imports": [
+      "resources/js/invitation-app/main.jsx"
+    ]
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-BP5tdqmh.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-nyy7hhHF.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-DRAAbZTg.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-DD84SGiu.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DkLd_Hqs.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Bj-GA2Lv.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-BsM4JrO0.css",
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
+    ]
+  },
+  "resources/js/invitation-app/main.jsx": {
+    "file": "assets/main-BQPWeKl7.js",
+    "name": "main",
+    "src": "resources/js/invitation-app/main.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
+      "resources/js/invitation-app/src/templates/tema2/tema2.jsx",
+      "resources/js/invitation-app/src/templates/tema3/tema3.jsx"
+    ]
+  },
+  "resources/js/invitation-app/src/templates/tema1/tema1.jsx": {
+    "file": "assets/tema1-uv0y1bZF.js",
+    "name": "tema1",
+    "src": "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/invitation-app/main.jsx",
+      "_proxy-DrS7vFpi.js"
+    ],
+    "css": [
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
+    ]
+  },
+  "resources/js/invitation-app/src/templates/tema2/tema2.jsx": {
+    "file": "assets/tema2-BiwMtFjN.js",
+    "name": "tema2",
+    "src": "resources/js/invitation-app/src/templates/tema2/tema2.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/invitation-app/main.jsx",
+      "_proxy-DrS7vFpi.js"
+    ],
+    "css": [
+      "assets/tema2-BIT1mPn_.css"
+    ]
+  },
+  "resources/js/invitation-app/src/templates/tema3/tema3.jsx": {
+    "file": "assets/tema3-Ds-8AtVl.js",
+    "name": "tema3",
+    "src": "resources/js/invitation-app/src/templates/tema3/tema3.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/invitation-app/main.jsx"
+    ],
+    "css": [
+      "assets/tema3-DCBnqc6s.css",
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
+    ]
+  }
+}
