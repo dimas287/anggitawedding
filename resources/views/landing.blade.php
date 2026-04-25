@@ -183,7 +183,7 @@
 
 @section('content')
 {{-- HERO --}}
-<section class="hero-minimalist min-h-screen flex items-center justify-center relative overflow-hidden" x-data='heroSlider({ slides: @json($heroSlidesPayload) })'>
+<section class="hero-minimalist min-h-screen min-h-[100dvh] flex items-center justify-center relative overflow-hidden" x-data='heroSlider({ slides: @json($heroSlidesPayload) })'>
     <template x-for="(slide, index) in slides" :key="slide.id">
         <div class="absolute inset-0 transition-opacity duration-[1200ms]" :class="current === index ? 'opacity-100' : 'opacity-0'">
             <template x-if="slide.type === 'video'">
