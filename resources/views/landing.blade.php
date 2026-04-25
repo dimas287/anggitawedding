@@ -283,7 +283,7 @@
     </div>
 
     {{-- Scroll Indicator --}}
-    <div class="absolute bottom-10 left-0 right-0 flex justify-center z-30 transition-all duration-700 pointer-events-none" 
+    <div class="absolute bottom-20 sm:bottom-10 left-0 right-0 flex justify-center z-30 transition-all duration-700 pointer-events-none" 
          x-show="showScrollIndicator" 
          x-transition:leave="transition ease-in duration-500" 
          x-transition:leave-start="opacity-100 translate-y-0" 
