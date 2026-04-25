@@ -4,22 +4,13 @@
 @section('page-title', 'Edit Artikel')
 
 @push('head')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 <style>
-    .ck-editor__editable_inline {
-        min-height: 400px;
+    .tox-tinymce {
+        border-radius: 12px !important;
+        border: 1px solid #e5e7eb !important;
     }
-    .ck.ck-editor__main>.ck-editor__editable {
-        background-color: white;
-        border-bottom-left-radius: 12px !important;
-        border-bottom-right-radius: 12px !important;
-    }
-    .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
-        border-top-left-radius: 12px !important;
-        border-top-right-radius: 12px !important;
-        border-bottom: 1px solid #f3f4f6 !important;
-    }
-    .ck.ck-focused {
+    .tox-tinymce-focused {
         border-color: #D4AF37 !important;
         box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25) !important;
     }
@@ -129,89 +120,15 @@
 
 @push('scripts')
 <script>
-    class MyUploadAdapter {
-        constructor(loader) {
-            this.loader = loader;
-        }
-
-        upload() {
-            return this.loader.file
-                .then(file => new Promise((resolve, reject) => {
-                    this._initRequest();
-                    this._initListeners(resolve, reject, file);
-                    this._sendRequest(file);
-                }));
-        }
-
-        abort() {
-            if (this.xhr) {
-                this.xhr.abort();
-            }
-        }
-
-        _initRequest() {
-            const xhr = this.xhr = new XMLHttpRequest();
-            xhr.open('POST', "{{ route('admin.posts.upload') }}", true);
-            xhr.setRequestHeader('x-csrf-token', '{{ csrf_token() }}');
-            xhr.responseType = 'json';
-        }
-
-        _initListeners(resolve, reject, file) {
-            const xhr = this.xhr;
-            const loader = this.loader;
-            const genericErrorText = `Couldn't upload file: ${file.name}.`;
-
-            xhr.addEventListener('error', () => reject(genericErrorText));
-            xhr.addEventListener('abort', () => reject());
-            xhr.addEventListener('load', () => {
-                const response = xhr.response;
-                if (!response || response.error) {
-                    return reject(response && response.error ? response.error : genericErrorText);
-                }
-                resolve({
-                    default: response.url
-                });
-            });
-
-            if (xhr.upload) {
-                xhr.upload.addEventListener('progress', evt => {
-                    if (evt.lengthComputable) {
-                        loader.uploadTotal = evt.total;
-                        loader.uploaded = evt.loaded;
-                    }
-                });
-            }
-        }
-
-        _sendRequest(file) {
-            const data = new FormData();
-            data.append('file', file);
-            this.xhr.send(data);
-        }
-    }
-
-    function MyCustomUploadAdapterPlugin(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-            return new MyUploadAdapter(loader);
-        };
-    }
-
-    ClassicEditor
-        .create(document.querySelector('#content'), {
-            extraPlugins: [MyCustomUploadAdapterPlugin],
-            toolbar: [
-                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
-                'imageUpload', 'insertTable', 'mediaEmbed', 'undo', 'redo'
-            ],
-            image: {
-                toolbar: [
-                    'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|',
-                    'toggleImageCaption', 'imageTextAlternative'
-                ]
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    tinymce.init({
+        selector: '#content',
+        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | removeformat | code',
+        height: 500,
+        images_upload_url: "{{ route('admin.posts.upload') }}",
+        images_upload_credentials: true,
+        automatic_uploads: true,
+        content_style: "body { font-family: 'Poppins', sans-serif; font-size: 16px; }"
+    });
 </script>
 @endpush
