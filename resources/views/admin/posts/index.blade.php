@@ -29,6 +29,7 @@
                     <tr class="bg-gray-50 border-b border-gray-100">
                         <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Artikel</th>
                         <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Kategori</th>
+                        <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Views</th>
                         <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Status</th>
                         <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Tgl Publish</th>
                         <th class="px-6 py-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">Aksi</th>
@@ -56,6 +57,9 @@
                             <span class="px-3 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-600 uppercase tracking-wider">
                                 {{ $post->category ?? 'Lainnya' }}
                             </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+                            <i class="fas fa-eye text-gray-400 mr-1.5"></i>{{ number_format($post->views ?? 0, 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
                             @if($post->is_published)

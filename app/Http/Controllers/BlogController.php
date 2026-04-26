@@ -16,6 +16,7 @@ class BlogController extends Controller
     public function show($slug)
     {
         $post = Post::published()->where('slug', $slug)->firstOrFail();
+        $post->increment('views');
         
         // Ambil artikel terkait (kategori sama, kecuali diri sendiri)
         $relatedPosts = Post::published()
