@@ -83,7 +83,7 @@
 
         {{-- Content --}}
         <div class="prose prose-lg dark:prose-invert max-w-none mt-10" data-reveal data-reveal-direction="up" style="--reveal-delay:.3s;">
-            {!! clean($post->content) !!}
+            {!! $post->content !!}
         </div>
 
         {{-- Related Posts --}}
