@@ -2,6 +2,10 @@
 @section('title', 'Portofolio – Anggita WO')
 @section('meta_description', 'Lihat galeri portofolio pernikahan yang telah ditangani oleh Anggita Wedding Organizer. Temukan inspirasi konsep, dekorasi, dan momen indah pasangan kami.')
 
+@push('head')
+    @viteReactRefresh
+    @vite('resources/js/portfolio-gallery.jsx')
+@endpush
 @section('content')
 <div class="min-h-screen bg-white dark:bg-[#0A0A0A] pt-32 pb-24 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,107 +33,39 @@
         </div>
 
         @if(isset($portfolioImages) && $portfolioImages->count() > 0)
-        <div class="mb-32">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($portfolioImages as $img)
-                    @php
-                        $coverPath = $img->image_path;
-                        $coverUrl = $coverPath
-                            ? (\Illuminate\Support\Str::startsWith($coverPath, ['http://', 'https://', '/storage/'])
-                                ? $coverPath
-                                : Storage::url($coverPath))
-                            : null;
-                        $mediaPayload = collect([
-                            [
-                                'id' => 'cover-'.$img->id,
-                                'type' => 'image',
-                                'url' => $coverUrl,
-                                'embed' => null,
-                            ],
-                        ])->merge(
-                            $img->mediaItems->map(function ($media) {
-                                return [
-                                    'id' => $media->id,
-                                    'type' => $media->media_type,
-                                    'url' => $media->url,
-                                    'embed' => $media->embed_url,
-                                ];
-                            })
-                        );
-                    
-                        $aspectRatio = match($img->aspect) {
-                            'portrait' => '3 / 4',
-                            'landscape' => '4 / 3',
-                            'wide' => '16 / 9',
-                            'tall' => '3 / 4',
-                            default => '1 / 1',
-                        };
-
-                        $spanClass = match($img->aspect) {
-                            'wide' => 'md:col-span-2',
-                            'tall' => 'md:row-span-2',
-                            default => '',
-                        };
-                    @endphp
-                    <div class="portfolio-card group relative overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 transition-all {{ $spanClass }}"
-                         style="aspect-ratio: {{ $aspectRatio }}; --reveal-delay: {{ $loop->index * 0.05 }}s;"
-                         x-data="portfolioSlider(@js($mediaPayload))"
-                         x-init="init()"
-                         @mouseenter="revealUi()"
-                         @mouseleave="hideUi()"
-                         @touchstart.passive="revealUi()"
-                         @focusin="revealUi()"
-                         @focusout="hideUi()"
-                         data-reveal
-                         tabindex="0">
-                        <div class="absolute inset-0">
-                            <template x-for="(item, index) in media" :key="item.id">
-                                <div x-show="current == index" class="absolute inset-0 transition-opacity duration-500" :class="current == index ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-                                    <template x-if="item.type === 'image'">
-                                        <img :src="item.url" :alt="item.title ?? 'Galeri'" class="w-full h-full object-cover">
-                                    </template>
-                                    <template x-if="item.type === 'video' && item.embed">
-                                        <iframe :src="item.embed" class="w-full h-full" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
-                                    </template>
-                                    <template x-if="item.type === 'video' && !item.embed">
-                                        <video :src="item.url" class="w-full h-full object-cover" autoplay muted loop playsinline controls></video>
-                                    </template>
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0"></div>
-                                </div>
-                            </template>
-                        </div>
-
-                        <div x-show="media.length > 1 && showUi" x-transition.opacity x-cloak class="absolute inset-0 pointer-events-none">
-                            <button type="button" @click="prev()" class="absolute left-3 top-1/2 -translate-y-1/2 text-white hover:text-yellow-200 transition focus-visible:outline-none pointer-events-auto flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M15 5l-7 7 7 7" />
-                                </svg>
-                            </button>
-                            <button type="button" @click="next()" class="absolute right-3 top-1/2 -translate-y-1/2 text-white hover:text-yellow-200 transition focus-visible:outline-none pointer-events-auto flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1">
-                                <template x-for="(item, index) in media" :key="'dot-'+item.id">
-                                    <button type="button" @click="goTo(index)" class="w-2.5 h-2.5 rounded-full border border-white/70"
-                                            :class="current == index ? 'bg-white' : 'bg-transparent'"></button>
-                                </template>
-                            </div>
-                        </div>
-
-                        @if($img->title || $img->caption)
-                        <div class="absolute left-0 right-0 bottom-0 p-4 text-white" x-show="showUi" x-transition.opacity x-cloak>
-                            @if($img->title)
-                                <div class="font-semibold">{{ $img->title }}</div>
-                            @endif
-                            @if($img->caption)
-                                <div class="text-xs text-white/80 mt-1">{{ $img->caption }}</div>
-                            @endif
-                        </div>
-                        @endif
-                    </div>
-                @endforeach
+        @php
+            $domeImages = collect();
+            foreach($portfolioImages as $img) {
+                $coverUrl = $img->image_path ? (\Illuminate\Support\Str::startsWith($img->image_path, ['http://', 'https://', '/storage/']) ? $img->image_path : Storage::url($img->image_path)) : null;
+                if ($coverUrl) {
+                    $domeImages->push([
+                        'src' => asset($coverUrl),
+                        'alt' => $img->title ?? 'Galeri',
+                        'type' => 'image',
+                        'embed' => ''
+                    ]);
+                }
+                foreach($img->mediaItems as $media) {
+                    $mediaUrl = $media->url ? (\Illuminate\Support\Str::startsWith($media->url, ['http://', 'https://', '/storage/']) ? $media->url : Storage::url($media->url)) : '';
+                    $domeImages->push([
+                        'src' => asset($mediaUrl),
+                        'alt' => $img->title ?? 'Galeri',
+                        'type' => $media->media_type ?? 'image',
+                        'embed' => $media->embed_url ?? ''
+                    ]);
+                }
+            }
+            $domeImages = $domeImages->unique('src')->values();
+        @endphp
+        
+        <div class="mb-32 w-full h-[700px] bg-[#0A0A0A] rounded-[40px] overflow-hidden relative shadow-2xl" data-reveal>
+            <div id="react-dome-gallery" class="w-full h-full" data-images="{{ json_encode($domeImages) }}"></div>
+            
+            <div class="absolute bottom-6 right-6 pointer-events-none hidden md:block">
+                <div class="bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 text-white/70 text-xs tracking-widest uppercase shadow-xl">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                    Drag & Geser
+                </div>
             </div>
         </div>
         @endif
@@ -195,67 +131,6 @@
 
 @push('scripts')
 <script>
-function portfolioSlider(mediaItems) {
-    return {
-        media: mediaItems,
-        current: 0,
-        timer: null,
-        showUi: false,
-        uiTimer: null,
-        init() {
-            this.resume();
-        },
-        next() {
-            this.current = (this.current + 1) % this.media.length;
-            this.restart();
-            this.revealUi();
-        },
-        prev() {
-            this.current = (this.current - 1 + this.media.length) % this.media.length;
-            this.restart();
-            this.revealUi();
-        },
-        goTo(index) {
-            this.current = index;
-            this.restart();
-            this.revealUi();
-        },
-        restart() {
-            this.pause();
-            this.resume();
-        },
-        pause() {
-            if (this.timer) {
-                clearInterval(this.timer);
-                this.timer = null;
-            }
-        },
-        resume() {
-            if (this.media.length <= 1 || this.timer) return;
-            this.timer = setInterval(() => {
-                this.current = (this.current + 1) % this.media.length;
-            }, 6000);
-        },
-        revealUi() {
-            this.showUi = true;
-            this.pause();
-            this.resume();
-            if (this.uiTimer) {
-                clearTimeout(this.uiTimer);
-            }
-            this.uiTimer = setTimeout(() => {
-                this.showUi = false;
-                this.uiTimer = null;
-            }, 4000);
-        },
-        hideUi() {
-            if (this.uiTimer) {
-                clearTimeout(this.uiTimer);
-                this.uiTimer = null;
-            }
-        }
-    };
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -365,29 +240,16 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 1;
         transform: translateY(0);
     }
-    .portfolio-card {
-        perspective: 1000px;
-        transform-style: preserve-3d;
-        will-change: transform, opacity;
+    [data-reveal] {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition-delay: var(--reveal-delay, 0s);
     }
-    .portfolio-card img,
-    .portfolio-card video,
-    .portfolio-card iframe {
-        backface-visibility: hidden;
-        transform: translateZ(0);
-    }
-    @media (max-width: 768px) {
-        .portfolio-card {
-            perspective: none;
-            transform-style: flat;
-            will-change: auto;
-        }
-        .portfolio-card img,
-        .portfolio-card video,
-        .portfolio-card iframe {
-            transform: none !important;
-            filter: none !important;
-        }
+    [data-reveal].revealed {
+        opacity: 1;
+        transform: translateY(0);
     }
 </style>
 @endpush
