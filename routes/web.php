@@ -37,6 +37,15 @@ use Illuminate\Http\Request;
 // PUBLIC ROUTES
 // ============================================================
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/fix-db', function () {
+    if (!\Illuminate\Support\Facades\Schema::hasColumn('posts', 'views')) {
+        \Illuminate\Support\Facades\Schema::table('posts', function (\Illuminate\Database\Schema\Blueprint $table) {
+            $table->unsignedBigInteger('views')->default(0)->after('is_published');
+        });
+        return 'Kolom views berhasil ditambahkan ke database!';
+    }
+    return 'Kolom views sudah ada di database.';
+});
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
