@@ -74,15 +74,24 @@
             .custom-cursor, .custom-cursor-outline { display: none; }
         }
     </style>
+    @php
+        $brandName = $brandInfo['brand_name'] ?? 'Anggita WO';
+        $brandTagline = $brandInfo['tagline'] ?? 'Make Up & Wedding Service';
+        $brandLogo = $brandInfo['logo_main_url'] ?? null;
+        $brandLogoLight = $brandInfo['logo_light_url'] ?? $brandLogo;
+        $brandIcon = $brandInfo['logo_icon_url'] ?? $brandLogo ?? $brandLogoLight ?? asset('favicon.ico');
+        $isSvgIcon = Str::endsWith($brandIcon, '.svg');
+    @endphp
+
+    @if($isSvgIcon)
+        <link rel="icon" type="image/svg+xml" href="{{ $brandIcon }}">
+    @else
+        <link rel="icon" type="image/png" href="{{ $brandIcon }}">
+    @endif
+    <link rel="apple-touch-icon" href="{{ $brandIcon }}">
+
     @stack('head')
 </head>
-@php
-    $brandName = $brandInfo['brand_name'] ?? 'Anggita WO';
-    $brandTagline = $brandInfo['tagline'] ?? 'Make Up & Wedding Service';
-    $brandLogo = $brandInfo['logo_main_url'] ?? null;
-    $brandLogoLight = $brandInfo['logo_light_url'] ?? $brandLogo;
-    $brandIcon = $brandInfo['logo_icon_url'] ?? $brandLogo ?? $brandLogoLight;
-@endphp
 
 <body class="bg-transparent" x-data="{ sidebarOpen: false }">
 <div class="custom-cursor"></div>

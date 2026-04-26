@@ -31,10 +31,15 @@
     @php
         $defaultOgImage = $brandInfo['logo_main_url'] ?? asset('images/og-default.jpg');
         $appIcon = $brandInfo['logo_icon_url'] ?? asset('favicon.ico');
+        $isSvgIcon = Str::endsWith($appIcon, '.svg');
     @endphp
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ $appIcon }}">
+    @if($isSvgIcon)
+        <link rel="icon" type="image/svg+xml" href="{{ $appIcon }}">
+    @else
+        <link rel="icon" type="image/png" href="{{ $appIcon }}">
+    @endif
     <link rel="apple-touch-icon" href="{{ $appIcon }}">
 
     {{-- Open Graph / Facebook --}}
