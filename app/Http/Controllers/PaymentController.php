@@ -43,6 +43,12 @@ class PaymentController extends Controller
 
     public function checkout(Booking $booking)
     {
+        if (!Auth::check()) {
+            session(['url.intended' => route('payment.checkout', $booking->id)]);
+            return redirect()->route('login')
+                ->with('info', 'Silakan login terlebih dahulu untuk melanjutkan pembayaran.');
+        }
+
         if ($booking->user_id !== Auth::id()) abort(403);
         if ($booking->payment_status !== 'unpaid') {
             return redirect()->route('user.booking.show', $booking->id);
