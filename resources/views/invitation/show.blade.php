@@ -5,11 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Undangan {{ $invitation->groom_name }} & {{ $invitation->bride_name }}</title>
+    
+    {{-- Open Graph / Meta Tags untuk WhatsApp & Social Media --}}
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Undangan Pernikahan {{ $invitation->groom_name }} & {{ $invitation->bride_name }}">
     <meta property="og:description" content="{{ $invitation->reception_datetime?->isoFormat('D MMMM Y') }} | {{ $invitation->reception_venue }}">
     @if($invitation->photo_prewedding)
-    <meta property="og:image" content="{{ Storage::url($invitation->photo_prewedding) }}">
+    <meta property="og:image" content="{{ url(Storage::url($invitation->photo_prewedding)) }}">
+    @else
+    <meta property="og:image" content="{{ asset('favicon.ico') }}">
     @endif
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Undangan Pernikahan {{ $invitation->groom_name }} & {{ $invitation->bride_name }}">
+    <meta name="twitter:description" content="{{ $invitation->reception_datetime?->isoFormat('D MMMM Y') }} | {{ $invitation->reception_venue }}">
+    @if($invitation->photo_prewedding)
+    <meta name="twitter:image" content="{{ url(Storage::url($invitation->photo_prewedding)) }}">
+    @else
+    <meta name="twitter:image" content="{{ asset('favicon.ico') }}">
+    @endif
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Great+Vibes&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     @php
