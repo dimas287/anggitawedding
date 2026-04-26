@@ -14,17 +14,17 @@
 
     $fHeroName = 26; $fHeroPrice = 34; 
     
-    // Ukuran dipaksa lebih kecil agar pasti muat dalam 640pt
+    // Ukuran dipaksa lebih kecil agar pasti muat dalam 640pt (tapi sudah dibesarkan +1.5pt untuk mobile)
     if ($weight <= 15) {
-        $fItem = 11; $pCell = 12; $sItem = 5; $fSecTitle = 13;
+        $fItem = 12.5; $pCell = 14; $sItem = 6; $fSecTitle = 14.5;
     } elseif ($weight <= 30) {
-        $fItem = 9.5; $pCell = 10; $sItem = 4; $fSecTitle = 11.5;
+        $fItem = 11; $pCell = 12; $sItem = 5; $fSecTitle = 13;
     } elseif ($weight <= 45) {
-        $fItem = 8.5; $pCell = 8; $sItem = 3; $fSecTitle = 10;
+        $fItem = 10; $pCell = 10; $sItem = 4; $fSecTitle = 11.5;
     } elseif ($weight <= 60) {
-        $fItem = 7.5; $pCell = 6;  $sItem = 2; $fSecTitle = 9;
+        $fItem = 9; $pCell = 8;  $sItem = 3; $fSecTitle = 10.5;
     } else {
-        $fItem = 6.5; $pCell = 5;  $sItem = 1.5; $fSecTitle = 8;
+        $fItem = 8; $pCell = 6;  $sItem = 2.5; $fSecTitle = 9.5;
     }
 
     $col1 = [];
@@ -93,14 +93,22 @@ body {
     text-align: center; padding-top: 15pt; border-bottom: 2pt solid #C5A059;
 }
 
+.hero-logo {
+    position: absolute;
+    top: 15pt;
+    left: 15pt;
+    width: 45pt;
+    height: auto;
+}
+
 .brand-title { font-size: 13pt; color: #C5A059; letter-spacing: 3pt; font-weight: bold; }
-.brand-sub { font-size: 6.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; }
-.ornament { font-size: 9pt; color: rgba(197,160,89,0.7); margin: 6pt 0; }
+.brand-sub { font-size: 7.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; }
+.ornament { font-size: 10pt; color: rgba(197,160,89,0.7); margin: 6pt 0; }
 .pkg-name { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroName }}pt; font-weight: bold; color: #FFFFFF; letter-spacing: 1.5pt; margin-bottom: 5pt; }
 
 .tier-badge {
     display: inline-block; padding: 3pt 16pt; border-radius: 15pt;
-    font-size: 8pt; font-weight: bold; letter-spacing: 2pt;
+    font-size: 9pt; font-weight: bold; letter-spacing: 2pt;
     background: rgba(197,160,89,0.15); color: #E8C84A; border: 1pt solid rgba(197,160,89,0.4);
     margin-bottom: 8pt;
 }
@@ -109,12 +117,12 @@ body {
     display: inline-block; padding: 6pt 30pt;
     border-top: 1pt solid rgba(197,160,89,0.3); border-bottom: 1pt solid rgba(197,160,89,0.3);
 }
-.p-label { font-size: 7pt; color: #C5A059; letter-spacing: 2pt; margin-bottom: 2pt; }
-.p-strike { font-size: 10pt; color: #888888; text-decoration: line-through; }
+.p-label { font-size: 8pt; color: #C5A059; letter-spacing: 2pt; margin-bottom: 2pt; }
+.p-strike { font-size: 11pt; color: #888888; text-decoration: line-through; }
 .p-main { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroPrice }}pt; font-weight: bold; color: #E8C84A; line-height: 1; margin-top: 2pt; }
 
 .promo-tag {
-    font-size: 8pt; color: #E8C84A; letter-spacing: 2pt;
+    font-size: 9pt; color: #E8C84A; letter-spacing: 2pt;
     text-transform: uppercase; margin-bottom: 2pt;
 }
 
@@ -163,7 +171,7 @@ body {
 }
 
 .ft-cta { font-size: 11pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 2pt; }
-.ft-contact { font-size: 6pt; color: #888888; letter-spacing: 1.5pt; line-height: 1.4; }
+.ft-contact { font-size: 7pt; color: #888888; letter-spacing: 1pt; line-height: 1.5; }
 .ft-contact strong { color: #D4AF37; }
 
 </style>
@@ -182,6 +190,7 @@ body {
     <div class="frame-inner"></div>
 
     <div class="hero">
+        <img src="{{ asset('images/brand/anggita-logo-main.svg') }}" class="hero-logo" alt="Logo">
         <div class="brand-title">Anggita Wedding Organizer</div>
         <div class="brand-sub">Professional Wedding Services</div>
 
@@ -246,7 +255,7 @@ body {
     <div class="footer">
         <div class="ft-cta">Hubungi Kami Sekarang</div>
         <div class="ft-contact">
-            <strong>WA:</strong> +62 812-3112-2057 &nbsp; | &nbsp; <strong>IG:</strong> @anggita_wedding <br>
+            <strong>WA:</strong> +62 812-3112-2057 &nbsp; | &nbsp; <strong>IG:</strong> @anggita_wedding &nbsp; | &nbsp; <strong>WEB:</strong> anggitaweddingsby.com <br>
             <strong>ALAMAT:</strong> Jl. Bulak Setro Indah 2 Blok C No. 5, Surabaya
         </div>
     </div>
