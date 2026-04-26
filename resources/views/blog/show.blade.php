@@ -55,7 +55,13 @@
                 </div>
                 <div>
                     <div class="text-sm font-bold text-gray-900 dark:text-white">Admin Anggita</div>
-                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ $post->published_at ? $post->published_at->format('d M Y') : $post->created_at->format('d M Y') }}</div>
+                    <div class="flex items-center gap-3 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                        <span>{{ $post->published_at ? $post->published_at->format('d M Y') : $post->created_at->format('d M Y') }}</span>
+                        <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-white/10"></span>
+                        <span class="flex items-center gap-1.5" title="Dilihat {{ number_format($post->views ?? 0, 0, ',', '.') }} kali">
+                            <i class="far fa-eye text-[11px]"></i> {{ number_format($post->views ?? 0, 0, ',', '.') }} Views
+                        </span>
+                    </div>
                 </div>
             </div>
             

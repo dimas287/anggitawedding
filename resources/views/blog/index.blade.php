@@ -45,7 +45,7 @@
                     <div class="flex items-center gap-4 text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mb-4">
                         <span class="flex items-center gap-1.5"><i class="far fa-calendar"></i> {{ $post->published_at ? $post->published_at->format('d M Y') : $post->created_at->format('d M Y') }}</span>
                         <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-white/10"></span>
-                        <span class="flex items-center gap-1.5"><i class="far fa-clock"></i> 5 Min Read</span>
+                        <span class="flex items-center gap-1.5"><i class="far fa-eye"></i> {{ number_format($post->views ?? 0, 0, ',', '.') }} Views</span>
                     </div>
                     
                     <h2 class="text-xl font-playfair font-bold text-gray-900 dark:text-white mb-4 group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors line-clamp-2">
