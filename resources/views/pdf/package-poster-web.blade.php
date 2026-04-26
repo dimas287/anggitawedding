@@ -156,15 +156,14 @@ body {
     font-size: {{ max(5, $fItem - 2) }}pt;
 }
 
-/* ── FOOTER ── */
 .footer {
     position: absolute; bottom: 16pt; left: 16pt; right: 16pt;
     height: 60pt; background: #111111; border-top: 2pt solid #C5A059;
-    text-align: center; padding-top: 12pt;
+    text-align: center; padding-top: 10pt;
 }
 
-.ft-cta { font-size: 11pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 4pt; }
-.ft-contact { font-size: 6.5pt; color: #888888; letter-spacing: 1pt; }
+.ft-cta { font-size: 11pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 2pt; }
+.ft-contact { font-size: 6pt; color: #888888; letter-spacing: 1.5pt; line-height: 1.4; }
 .ft-contact strong { color: #D4AF37; }
 
 </style>
@@ -196,7 +195,7 @@ body {
 
         <div class="price-container">
             @if($package->hasActivePromo())
-                <div class="promo-tag">&mdash; Special Promo &mdash;</div>
+                <div class="promo-tag">&mdash; Special Promo {{ round($package->promo_discount_percent) }}% OFF &mdash;</div>
                 <div style="margin-bottom: 2pt;">
                     <span style="font-size: 9pt; color: #666666; font-style: italic;">Normal: </span>
                     <span class="p-strike">{{ $package->formatted_price }}</span>
@@ -247,7 +246,8 @@ body {
     <div class="footer">
         <div class="ft-cta">Hubungi Kami Sekarang</div>
         <div class="ft-contact">
-            <strong>WA:</strong> +62 812-3456-7890 &nbsp; | &nbsp; <strong>IG:</strong> @anggitawedding &nbsp; | &nbsp; <strong>WEB:</strong> anggitaweddingsby.com
+            <strong>WA:</strong> +62 812-3112-2057 &nbsp; | &nbsp; <strong>IG:</strong> @anggita_wedding <br>
+            <strong>ALAMAT:</strong> Jl. Bulak Setro Indah 2 Blok C No. 5, Surabaya
         </div>
     </div>
 </div>
@@ -258,11 +258,23 @@ window.onload = function() {
     setTimeout(() => {
         const captureArea = document.querySelector("#poster-capture");
         
+        // Reset transform to fix the white space at the bottom issue in html2canvas
+        captureArea.style.transform = "none";
+        document.body.style.display = "block"; // Reset flex just to be safe
+        document.body.style.minHeight = "auto";
+        window.scrollTo(0,0);
+
         html2canvas(captureArea, {
             scale: 2, // High resolution (retina)
             useCORS: true,
             allowTaint: true,
-            backgroundColor: "#FDFCF8"
+            backgroundColor: "#FDFCF8",
+            width: captureArea.offsetWidth,
+            height: captureArea.offsetHeight,
+            windowWidth: captureArea.offsetWidth,
+            windowHeight: captureArea.offsetHeight,
+            y: 0,
+            x: 0
         }).then(canvas => {
             let link = document.createElement('a');
             link.download = 'Poster-{{ $package->slug }}.{{ $format }}';
