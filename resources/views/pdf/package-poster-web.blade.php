@@ -16,15 +16,15 @@
     
     // Ukuran dipaksa lebih kecil agar pasti muat dalam 640pt (tapi sudah dibesarkan +1.5pt untuk mobile)
     if ($weight <= 15) {
-        $fItem = 12.5; $pCell = 14; $sItem = 6; $fSecTitle = 14.5;
+        $fItem = 12.5; $pCell = 12; $sItem = 5; $fSecTitle = 14.5;
     } elseif ($weight <= 30) {
-        $fItem = 11; $pCell = 12; $sItem = 5; $fSecTitle = 13;
+        $fItem = 11; $pCell = 10; $sItem = 4; $fSecTitle = 13;
     } elseif ($weight <= 45) {
-        $fItem = 10; $pCell = 10; $sItem = 4; $fSecTitle = 11.5;
+        $fItem = 10; $pCell = 8; $sItem = 3; $fSecTitle = 11.5;
     } elseif ($weight <= 60) {
-        $fItem = 9; $pCell = 8;  $sItem = 3; $fSecTitle = 10.5;
+        $fItem = 9; $pCell = 6;  $sItem = 2; $fSecTitle = 10.5;
     } else {
-        $fItem = 8; $pCell = 6;  $sItem = 2.5; $fSecTitle = 9.5;
+        $fItem = 8; $pCell = 4;  $sItem = 1.5; $fSecTitle = 9.5;
     }
 
     $col1 = [];
@@ -38,9 +38,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 200 : 170;
-    $contentTop = $hasPromo ? 215 : 185;
-    $contentHeight = $hasPromo ? 665 : 695;
+    $heroHeight = $hasPromo ? 220 : 185;
+    $contentTop = $hasPromo ? 235 : 200;
+    $contentHeight = $hasPromo ? 645 : 680;
 @endphp
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,19 +136,19 @@ body {
 .card {
     background: #FFFFFF; border: 1pt solid rgba(197,160,89,0.25);
     border-top: 2.5pt solid #C5A059; border-radius: 4pt;
-    padding: {{ $pCell }}pt; margin-bottom: 10pt; box-shadow: 0 2pt 5pt rgba(0,0,0,0.02);
+    padding: {{ $pCell }}pt; margin-bottom: 6pt; box-shadow: 0 2pt 5pt rgba(0,0,0,0.02);
 }
 
 .card-title {
     font-size: {{ $fSecTitle }}pt; font-weight: bold; color: #1A1A1A;
-    letter-spacing: 1pt; text-transform: uppercase; margin-bottom: 6pt;
-    border-bottom: 1pt dashed rgba(197,160,89,0.3); padding-bottom: 4pt;
+    letter-spacing: 1pt; text-transform: uppercase; margin-bottom: 4pt;
+    border-bottom: 1pt dashed rgba(197,160,89,0.3); padding-bottom: 3pt;
 }
 
 .feat-item {
     font-size: {{ $fItem }}pt; color: #222222;
     padding: {{ $sItem }}pt 0 {{ $sItem }}pt 10pt;
-    position: relative; line-height: 1.3;
+    position: relative; line-height: 1.15;
 }
 .feat-item::before {
     content: '◆'; color: #C5A059; position: absolute; left: 0; top: {{ $sItem }}pt;
