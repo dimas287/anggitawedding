@@ -14,17 +14,17 @@
 
     $fHeroName = 26; $fHeroPrice = 34; 
     
-    // Ukuran dipaksa lebih kecil agar pasti muat dalam 640pt (tapi sudah dibesarkan +1.5pt untuk mobile)
+    // Ukuran diperbesar signifikan agar sangat jelas dibaca di layar HP
     if ($weight <= 15) {
-        $fItem = 12.5; $pCell = 12; $sItem = 5; $fSecTitle = 14.5;
+        $fItem = 14; $pCell = 12; $sItem = 6; $fSecTitle = 16;
     } elseif ($weight <= 30) {
-        $fItem = 11; $pCell = 10; $sItem = 4; $fSecTitle = 13;
+        $fItem = 12; $pCell = 10; $sItem = 5; $fSecTitle = 14;
     } elseif ($weight <= 45) {
-        $fItem = 10; $pCell = 8; $sItem = 3; $fSecTitle = 11.5;
+        $fItem = 11; $pCell = 8; $sItem = 4; $fSecTitle = 12.5;
     } elseif ($weight <= 60) {
-        $fItem = 9; $pCell = 6;  $sItem = 2; $fSecTitle = 10.5;
+        $fItem = 10; $pCell = 6;  $sItem = 3; $fSecTitle = 11.5;
     } else {
-        $fItem = 8; $pCell = 4;  $sItem = 1.5; $fSecTitle = 9.5;
+        $fItem = 9; $pCell = 4;  $sItem = 2; $fSecTitle = 10.5;
     }
 
     $col1 = [];
@@ -38,9 +38,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 220 : 185;
-    $contentTop = $hasPromo ? 235 : 200;
-    $contentHeight = $hasPromo ? 645 : 680;
+    $heroHeight = $hasPromo ? 215 : 180;
+    $contentTop = $hasPromo ? 245 : 210;
+    $contentHeight = $hasPromo ? 635 : 670;
 @endphp
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -124,8 +124,8 @@ body {
 }
 
 .desc-txt {
-    text-align: center; font-size: {{ max(8, $fItem + 1) }}pt;
-    color: #444444; font-style: italic; line-height: 1.4; margin-bottom: 15pt;
+    text-align: center; font-size: 11pt;
+    color: #444444; font-style: italic; font-weight: bold; line-height: 1.4; margin-bottom: 15pt;
 }
 
 .col-wrapper { width: 100%; }
@@ -161,8 +161,8 @@ body {
     text-align: center; padding-top: 10pt;
 }
 
-.ft-cta { font-size: 11pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 2pt; }
-.ft-contact { font-size: 7pt; color: #888888; letter-spacing: 1pt; line-height: 1.5; }
+.ft-cta { font-size: 12pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 4pt; }
+.ft-contact { font-size: 8pt; color: #888888; letter-spacing: 1.5pt; line-height: 1.5; font-weight: bold; }
 .ft-contact strong { color: #D4AF37; }
 
 </style>
@@ -262,7 +262,7 @@ window.onload = function() {
         window.scrollTo(0,0);
 
         html2canvas(captureArea, {
-            scale: 2, // High resolution (retina)
+            scale: 4, // Very high resolution (retina/print quality)
             useCORS: true,
             allowTaint: true,
             backgroundColor: "#FDFCF8",
