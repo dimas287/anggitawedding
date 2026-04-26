@@ -3,29 +3,28 @@
 <head>
 <meta charset="UTF-8">
 @php
-    /* ══════ PRECISION ADAPTIVE ENGINE v3 ══════ */
+    /* ══════ PRECISION ADAPTIVE ENGINE v4 ══════ */
     $sections     = $package->feature_sections;
     $totalItems   = collect($sections)->sum(fn($s) => count($s['items'] ?? []));
     $numSections  = count($sections);
     $weight       = $totalItems + ($numSections * 3);
 
+    // Hero Sizes - Make them much smaller to save space
+    $fHeroName = 28; $fHeroPrice = 36; 
+    
+    // Content Sizes
     if ($weight <= 15) {
-        $fItem = 14; $pCell = 20; $sItem = 8; $fSecTitle = 16;
+        $fItem = 13; $pCell = 15; $sItem = 6; $fSecTitle = 15;
     } elseif ($weight <= 30) {
-        $fItem = 12; $pCell = 15; $sItem = 6; $fSecTitle = 14;
+        $fItem = 11; $pCell = 12; $sItem = 4; $fSecTitle = 13;
     } elseif ($weight <= 45) {
-        $fItem = 10; $pCell = 12; $sItem = 4; $fSecTitle = 12;
+        $fItem = 10; $pCell = 10; $sItem = 3; $fSecTitle = 11;
     } elseif ($weight <= 60) {
-        $fItem = 9;  $pCell = 10; $sItem = 3; $fSecTitle = 11;
+        $fItem = 8.5; $pCell = 8;  $sItem = 2; $fSecTitle = 10;
     } else {
-        $fItem = 7.5;$pCell = 8;  $sItem = 2; $fSecTitle = 9;
+        $fItem = 7.5; $pCell = 6;  $sItem = 1.5; $fSecTitle = 9;
     }
 
-    /* 
-     * THE SECRET TO 1 PAGE: 
-     * Separate into 2 vertical columns instead of rows. 
-     * This prevents DomPDF from breaking long rows to a new page!
-     */
     $col1 = [];
     $col2 = [];
     foreach ($sections as $index => $sec) {
@@ -42,112 +41,112 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Helvetica', Arial, sans-serif;
+    font-family: 'DejaVu Sans', Arial, sans-serif; /* MUST use DejaVu for symbols to avoid ? */
     width: 540pt; height: 960pt;
     margin: 0; padding: 0;
-    background: #FDFCF8; /* Warm elegant paper color */
+    background: #FDFCF8;
     color: #1A1A1A;
     overflow: hidden;
 }
 
 /* ── ARTISTIC FRAMES ── */
 .frame-outer {
-    position: absolute; top: 12pt; left: 12pt; right: 12pt; bottom: 12pt;
+    position: absolute; top: 10pt; left: 10pt; right: 10pt; bottom: 10pt;
     border: 1.5pt solid #C5A059;
     z-index: 100; pointer-events: none;
 }
 .frame-inner {
-    position: absolute; top: 16pt; left: 16pt; right: 16pt; bottom: 16pt;
+    position: absolute; top: 14pt; left: 14pt; right: 14pt; bottom: 14pt;
     border: 0.5pt solid rgba(197,160,89,0.5);
     z-index: 100; pointer-events: none;
 }
-.corner { position: absolute; width: 15pt; height: 15pt; border: 2pt solid #C5A059; z-index: 101; }
-.c-tl { top: 8pt; left: 8pt; border-bottom: none; border-right: none; }
-.c-tr { top: 8pt; right: 8pt; border-bottom: none; border-left: none; }
-.c-bl { bottom: 8pt; left: 8pt; border-top: none; border-right: none; }
-.c-br { bottom: 8pt; right: 8pt; border-top: none; border-left: none; }
+.corner { position: absolute; width: 12pt; height: 12pt; border: 1.5pt solid #C5A059; z-index: 101; }
+.c-tl { top: 6pt; left: 6pt; border-bottom: none; border-right: none; }
+.c-tr { top: 6pt; right: 6pt; border-bottom: none; border-left: none; }
+.c-bl { bottom: 6pt; left: 6pt; border-top: none; border-right: none; }
+.c-br { bottom: 6pt; right: 6pt; border-top: none; border-left: none; }
 
-/* ── HERO & HEADER (LUXURY DARK) ── */
+/* ── HERO & HEADER ── */
 .hero {
     background: #111111;
     color: #FFFFFF;
     text-align: center;
-    padding: 40pt 30pt 35pt;
-    border-bottom: 3pt solid #C5A059;
+    padding: 25pt 20pt 20pt; /* Reduced padding drastically */
+    border-bottom: 2pt solid #C5A059;
     position: relative;
+    height: 220pt; /* Force a max height for hero to prevent taking too much space */
 }
 
 .brand-title {
-    font-family: 'Times-Roman', serif;
-    font-size: 18pt;
+    font-size: 14pt;
     color: #C5A059;
-    letter-spacing: 5pt;
+    letter-spacing: 4pt;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
 .brand-sub {
-    font-size: 7.5pt;
+    font-size: 7pt;
     color: #888888;
-    letter-spacing: 3pt;
+    letter-spacing: 2pt;
     text-transform: uppercase;
-    margin-top: 4pt;
-    margin-bottom: 20pt;
+    margin-top: 2pt;
+    margin-bottom: 12pt;
 }
 
 .ornament {
-    font-family: 'Times-Roman', serif;
-    font-size: 14pt;
-    color: rgba(197,160,89,0.5);
-    margin: 15pt 0;
+    font-size: 10pt;
+    color: rgba(197,160,89,0.7);
+    margin: 8pt 0;
 }
 
 .pkg-name {
-    font-family: 'Times-Roman', serif;
-    font-size: 38pt;
+    font-size: {{ $fHeroName }}pt;
+    font-weight: bold;
     color: #FFFFFF;
     text-transform: uppercase;
-    letter-spacing: 2pt;
-    margin-bottom: 10pt;
+    letter-spacing: 1.5pt;
+    margin-bottom: 6pt;
 }
 
 .tier-badge {
     display: inline-block;
-    padding: 4pt 24pt;
-    border-radius: 20pt;
-    font-size: 10pt;
+    padding: 3pt 16pt;
+    border-radius: 15pt;
+    font-size: 8.5pt;
     font-weight: bold;
-    letter-spacing: 3pt;
+    letter-spacing: 2pt;
     text-transform: uppercase;
-    background: rgba(197,160,89,0.1);
-    color: #C5A059;
+    background: rgba(197,160,89,0.15);
+    color: #E8C84A;
     border: 1pt solid rgba(197,160,89,0.4);
-    margin-bottom: 25pt;
+    margin-bottom: 12pt;
 }
 
 .price-container {
     display: inline-block;
-    padding: 10pt 40pt;
+    padding: 8pt 30pt;
     border-top: 1pt solid rgba(197,160,89,0.3);
     border-bottom: 1pt solid rgba(197,160,89,0.3);
 }
 
 .p-label {
-    font-size: 9pt;
+    font-size: 8pt;
     color: #C5A059;
-    letter-spacing: 3pt;
+    letter-spacing: 2pt;
     text-transform: uppercase;
-    margin-bottom: 5pt;
+    margin-bottom: 3pt;
 }
 
 .p-strike {
-    font-size: 12pt;
+    font-size: 10pt;
     color: #666666;
     text-decoration: line-through;
 }
 
 .p-main {
-    font-family: 'Times-Roman', serif;
-    font-size: 46pt;
+    font-size: {{ $fHeroPrice }}pt;
+    font-weight: bold;
     color: #E8C84A;
     line-height: 1;
 }
@@ -156,101 +155,102 @@ body {
     display: inline-block;
     background: #E83A65;
     color: #FFFFFF;
-    font-size: 8pt;
+    font-size: 7pt;
     font-weight: bold;
-    letter-spacing: 2pt;
+    letter-spacing: 1pt;
     text-transform: uppercase;
-    padding: 3pt 12pt;
-    border-radius: 10pt;
-    margin-bottom: 8pt;
+    padding: 2pt 8pt;
+    border-radius: 8pt;
+    margin-bottom: 4pt;
 }
 
 /* ── CONTENT AREA ── */
 .content-area {
-    padding: 25pt 35pt;
+    padding: 15pt 25pt;
+    height: 640pt; /* Restrict height strictly */
+    overflow: hidden;
 }
 
 .desc-txt {
     text-align: center;
-    font-family: 'Times-Roman', serif;
-    font-size: {{ max(10, $fItem + 2) }}pt;
-    color: #555555;
+    font-size: {{ max(9, $fItem + 1) }}pt;
+    color: #444444;
     font-style: italic;
-    line-height: 1.6;
-    margin-bottom: 20pt;
+    line-height: 1.4;
+    margin-bottom: 15pt;
 }
 
 /* ── INDEPENDENT COLUMNS ── */
-.main-table { width: 100%; border-collapse: separate; border-spacing: 15pt 0; margin-left: -7.5pt; }
+.main-table { width: 100%; border-collapse: separate; border-spacing: 10pt 0; margin-left: -5pt; }
 .col-td { width: 50%; vertical-align: top; }
 
 .card {
     background: #FFFFFF;
-    border: 1pt solid rgba(197,160,89,0.3);
-    border-top: 3pt solid #C5A059;
+    border: 1pt solid rgba(197,160,89,0.25);
+    border-top: 2.5pt solid #C5A059;
     border-radius: 4pt;
     padding: {{ $pCell }}pt;
-    margin-bottom: 15pt;
-    box-shadow: 0 5pt 15pt rgba(0,0,0,0.03);
+    margin-bottom: 10pt;
+    box-shadow: 0 3pt 8pt rgba(0,0,0,0.02);
 }
 
 .card-title {
-    font-family: 'Times-Roman', serif;
     font-size: {{ $fSecTitle }}pt;
     font-weight: bold;
     color: #1A1A1A;
-    letter-spacing: 1.5pt;
+    letter-spacing: 1pt;
     text-transform: uppercase;
-    margin-bottom: 10pt;
-    border-bottom: 1pt solid rgba(197,160,89,0.2);
-    padding-bottom: 6pt;
+    margin-bottom: 6pt;
+    border-bottom: 1pt dashed rgba(197,160,89,0.3);
+    padding-bottom: 4pt;
 }
 
 .feat-item {
     font-size: {{ $fItem }}pt;
-    color: #333333;
-    padding: {{ $sItem }}pt 0 {{ $sItem }}pt 14pt;
+    color: #222222;
+    padding: {{ $sItem }}pt 0 {{ $sItem }}pt 10pt;
     position: relative;
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
 .feat-item::before {
-    content: '❖'; /* Elegant diamond bullet */
+    content: '◆'; /* Safe character for DejaVu */
     color: #C5A059;
     position: absolute;
     left: 0;
     top: {{ $sItem }}pt;
-    font-size: {{ $fItem - 1 }}pt;
+    font-size: {{ max(6, $fItem - 2) }}pt;
 }
 
 /* ── FOOTER ── */
 .footer {
     position: absolute;
-    bottom: 25pt;
-    left: 35pt;
-    right: 35pt;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70pt;
     text-align: center;
-    border-top: 1pt solid rgba(197,160,89,0.3);
+    background: #111111;
+    border-top: 2pt solid #C5A059;
     padding-top: 15pt;
 }
 
 .ft-cta {
-    font-family: 'Times-Roman', serif;
-    font-size: 14pt;
-    color: #1A1A1A;
+    font-size: 12pt;
+    color: #C5A059;
     letter-spacing: 2pt;
     text-transform: uppercase;
     font-weight: bold;
-    margin-bottom: 6pt;
+    margin-bottom: 4pt;
 }
 
 .ft-contact {
-    font-size: 8.5pt;
-    color: #555555;
+    font-size: 7.5pt;
+    color: #888888;
     letter-spacing: 1pt;
 }
 
-.ft-contact strong { color: #C5A059; }
+.ft-contact strong { color: #D4AF37; }
 
 </style>
 </head>
@@ -267,7 +267,7 @@ body {
     <div class="brand-title">Anggita Wedding Organizer</div>
     <div class="brand-sub">Professional Wedding Services</div>
 
-    <div class="ornament">~ ❖ ~</div>
+    <div class="ornament">&#10022; &nbsp; &#9672; &nbsp; &#10022;</div>
 
     <div class="pkg-name">{{ $package->name }}</div>
     
