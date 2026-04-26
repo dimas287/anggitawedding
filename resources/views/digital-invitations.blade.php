@@ -1,5 +1,6 @@
 @extends('layouts.guest')
 @section('title', 'Undangan Digital – Anggita WO')
+@section('meta_description', 'Buat undangan digital pernikahan premium dan elegan dengan Anggita Wedding Organizer. Dilengkapi fitur RSVP interaktif, galeri foto, peta lokasi, dan manajemen tamu.')
 
 @section('content')
 @php

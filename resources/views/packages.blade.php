@@ -1,5 +1,36 @@
 @extends('layouts.guest')
 @section('title', 'Paket Wedding – Anggita WO')
+@section('meta_description', 'Eksplorasi pilihan paket wedding eksklusif dari Anggita Wedding Organizer. Kami menawarkan paket rumahan dan gedung dengan harga transparan dan fasilitas lengkap.')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "ItemList",
+  "itemListElement": [
+    @foreach($packages as $index => $package)
+    {
+      "@type": "ListItem",
+      "position": {{ $index + 1 }},
+      "item": {
+        "@type": "Product",
+        "name": "{{ $package->name }}",
+        "description": "{{ $package->description }}",
+        "image": "{{ $package->resolved_poster_url ?? asset('images/logo.png') }}",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "IDR",
+          "price": "{{ $package->hasActivePromo() ? $package->effective_price : $package->price }}",
+          "availability": "https://schema.org/InStock",
+          "url": "{{ url()->current() }}#paket"
+        }
+      }
+    }{{ !$loop->last ? ',' : '' }}
+    @endforeach
+  ]
+}
+</script>
+@endpush
 
 @section('content')
 <div class="min-h-screen pt-28 pb-16 bg-transparent">

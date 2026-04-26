@@ -1,5 +1,6 @@
 @extends('layouts.guest')
 @section('title', 'Portofolio – Anggita WO')
+@section('meta_description', 'Lihat galeri portofolio pernikahan yang telah ditangani oleh Anggita Wedding Organizer. Temukan inspirasi konsep, dekorasi, dan momen indah pasangan kami.')
 
 @section('content')
 <div class="min-h-screen bg-white dark:bg-[#0A0A0A] pt-32 pb-24 transition-colors duration-500">

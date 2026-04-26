@@ -1,5 +1,41 @@
 @extends('layouts.guest')
 @section('title', 'FAQ – Anggita WO')
+@section('meta_description', 'Temukan jawaban atas pertanyaan seputar layanan Anggita Wedding Organizer, proses booking, kebijakan pembayaran, hingga detail paket pernikahan.')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Kapan waktu terbaik untuk memesan paket wedding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Idealnya pemesanan dilakukan 6-12 bulan sebelum hari H agar kami dapat memastikan ketersediaan vendor terbaik dan memiliki waktu cukup untuk persiapan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah bisa custom paket di luar yang tersedia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tentu saja! Semua paket kami bersifat fleksibel. Anda dapat berkonsultasi dengan tim planner kami untuk menyesuaikan item, vendor, atau budget sesuai impian Anda."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Bagaimana sistem pembayaran di Anggita Wedding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sistem kami sangat aman dan terstruktur. Booking fee (DP 30%) untuk mengunci tanggal, termin kedua 40% (H-30), dan pelunasan 30% (H-7). Kami juga menyediakan opsi pembayaran online yang aman."
+      }
+    }
+  ]
+}
+</script>
+@endpush
 
 @section('content')
 <div class="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] pt-24 pb-16 transition-colors duration-500">

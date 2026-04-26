@@ -59,6 +59,41 @@
     {{-- PWA --}}
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#111111">
+
+    {{-- JSON-LD LocalBusiness --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Anggita Wedding Organizer",
+      "image": "{{ asset('images/logo.png') }}",
+      "@id": "{{ url('/') }}",
+      "url": "{{ url('/') }}",
+      "telephone": "+628123456789",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Surabaya",
+        "addressLocality": "Surabaya",
+        "addressRegion": "Jawa Timur",
+        "addressCountry": "ID"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "08:00",
+        "closes": "20:00"
+      }
+    }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>

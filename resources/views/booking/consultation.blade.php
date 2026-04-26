@@ -1,5 +1,6 @@
 @extends('layouts.guest')
 @section('title', 'Booking Konsultasi Gratis')
+@section('meta_description', 'Jadwalkan konsultasi gratis dengan tim Anggita Wedding Organizer. Kami siap mendengarkan impian pernikahan Anda dan memberikan solusi terbaik.')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] pt-24 pb-16">

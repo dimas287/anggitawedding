@@ -37,6 +37,7 @@ use Illuminate\Http\Request;
 // PUBLIC ROUTES
 // ============================================================
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
 Route::get('/faq', [LandingController::class, 'faq'])->name('faq');

@@ -1,7 +1,36 @@
 @extends('layouts.guest')
 
-@section('title', ($post->meta_title ?? $post->title) . ' – Anggita WO')
 @section('meta_description', $post->meta_description ?? $post->excerpt ?? Str::limit(strip_tags($post->content), 160))
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ url()->current() }}"
+  },
+  "headline": "{{ $post->title }}",
+  "description": "{{ $post->meta_description ?? $post->excerpt ?? Str::limit(strip_tags($post->content), 160) }}",
+  "image": "{{ $post->resolved_image_url }}",  
+  "author": {
+    "@type": "Organization",
+    "name": "Anggita Wedding Organizer"
+  },  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anggita Wedding Organizer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('images/logo.png') }}"
+    }
+  },
+  "datePublished": "{{ $post->published_at ? $post->published_at->tz('UTC')->toAtomString() : $post->created_at->tz('UTC')->toAtomString() }}",
+  "dateModified": "{{ $post->updated_at->tz('UTC')->toAtomString() }}"
+}
+</script>
+@endpush
 
 @section('content')
 <main class="pt-32 pb-20">
@@ -53,8 +82,8 @@
         @endif
 
         {{-- Content --}}
-        <div class="max-w-none font-space text-gray-700 dark:text-gray-300 leading-relaxed mb-20 article-content">
-            {!! $post->content !!}
+        <div class="prose prose-lg dark:prose-invert max-w-none mt-10" data-reveal data-reveal-direction="up" style="--reveal-delay:.3s;">
+            {!! clean($post->content) !!}
         </div>
 
         {{-- Related Posts --}}

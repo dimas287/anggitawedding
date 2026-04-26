@@ -1,5 +1,6 @@
 @extends('layouts.guest')
 @section('title', 'Anggita Wedding Organizer – Wujudkan Pernikahan Impian Anda')
+@section('meta_description', 'Anggita Wedding Organizer Surabaya mewujudkan pernikahan impian Anda. Layanan lengkap mulai dari dekorasi, rias pengantin, dokumentasi, hingga undangan digital premium.')
 
 @push('head')
 <style>
