@@ -265,8 +265,8 @@ body {
                 <div class="p-label">Mulai Dari</div>
                 <div class="p-main">{{ $package->formatted_price }}</div>
             @endif
-            <div class="p-dp">DP 30% &nbsp;:&nbsp; <strong>Rp {{ number_format($package->dp_amount, 0, ',', '.') }}</strong></div>
         </div>
+
     </div>
 
     {{-- META --}}
@@ -332,8 +332,9 @@ body {
             <tr>
                 <td>
                     <div class="ft-cta">Hubungi Kami Sekarang</div>
-                    <div class="ft-sub">Konsultasi gratis &nbsp;&#183;&nbsp; DP ringan 30% &nbsp;&#183;&nbsp; Garansi kepuasan penuh</div>
+                    <div class="ft-sub">Konsultasi gratis &nbsp;&#183;&nbsp; Layanan Profesional &nbsp;&#183;&nbsp; Garansi kepuasan penuh</div>
                 </td>
+
                 <td>
                     <div class="ft-ct">
                         <strong>WA:</strong> +62 812-3456-7890 &nbsp;&nbsp;
