@@ -46,6 +46,26 @@ Route::get('/fix-db', function () {
     }
     return 'Kolom views sudah ada di database.';
 });
+
+Route::get('/fix-assets', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        $storageOutput = \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        $storageOutput = $e->getMessage();
+    }
+
+    $basePath = base_path('public/build');
+    $publicPath = public_path('build');
+    $copyStatus = 'Tidak perlu copy (jalur sama).';
+
+    if ($basePath !== $publicPath && file_exists($basePath)) {
+        \Illuminate\Support\Facades\File::copyDirectory($basePath, $publicPath);
+        $copyStatus = "Berhasil menyalin build folder dari $basePath ke $publicPath";
+    }
+
+    return "Status Storage Link: $storageOutput <br> Status CSS Build: $copyStatus";
+});
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
