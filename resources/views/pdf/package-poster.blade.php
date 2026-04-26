@@ -35,6 +35,11 @@
             $col2[] = $sec;
         }
     }
+
+    $hasPromo = $package->hasActivePromo();
+    $heroHeight = $hasPromo ? 230 : 200;
+    $contentTop = $hasPromo ? 260 : 230;
+    $contentHeight = $hasPromo ? 610 : 640;
 @endphp
 <style>
 @page { margin: 0; size: 540pt 960pt; }
@@ -70,7 +75,7 @@ body {
 .hero {
     position: absolute;
     top: 16pt; left: 16pt; right: 16pt;
-    height: 200pt;
+    height: {{ $heroHeight }}pt;
     background: #111111;
     color: #FFFFFF;
     text-align: center;
@@ -81,7 +86,7 @@ body {
 .brand-title { font-size: 13pt; color: #C5A059; letter-spacing: 3pt; font-weight: bold; }
 .brand-sub { font-size: 6.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; }
 .ornament { font-size: 9pt; color: rgba(197,160,89,0.7); margin: 6pt 0; }
-.pkg-name { font-size: {{ $fHeroName }}pt; font-weight: bold; color: #FFFFFF; letter-spacing: 1.5pt; margin-bottom: 5pt; }
+.pkg-name { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroName }}pt; font-weight: bold; color: #FFFFFF; letter-spacing: 1.5pt; margin-bottom: 5pt; }
 
 .tier-badge {
     display: inline-block; padding: 3pt 16pt; border-radius: 15pt;
@@ -95,20 +100,19 @@ body {
     border-top: 1pt solid rgba(197,160,89,0.3); border-bottom: 1pt solid rgba(197,160,89,0.3);
 }
 .p-label { font-size: 7pt; color: #C5A059; letter-spacing: 2pt; margin-bottom: 2pt; }
-.p-strike { font-size: 9pt; color: #666666; text-decoration: line-through; }
-.p-main { font-size: {{ $fHeroPrice }}pt; font-weight: bold; color: #E8C84A; line-height: 1; }
+.p-strike { font-size: 10pt; color: #888888; text-decoration: line-through; }
+.p-main { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroPrice }}pt; font-weight: bold; color: #E8C84A; line-height: 1; margin-top: 2pt; }
 
 .promo-tag {
-    display: inline-block; background: #E83A65; color: #FFFFFF;
-    font-size: 6pt; font-weight: bold; letter-spacing: 1pt;
-    padding: 2pt 8pt; border-radius: 8pt; margin-bottom: 2pt;
+    font-size: 8pt; color: #E8C84A; letter-spacing: 2pt;
+    text-transform: uppercase; margin-bottom: 2pt;
 }
 
 /* ── CONTENT AREA ── */
 .content-area {
     position: absolute;
-    top: 230pt; left: 30pt; right: 30pt;
-    height: 640pt; /* Area pasti untuk fitur */
+    top: {{ $contentTop }}pt; left: 30pt; right: 30pt;
+    height: {{ $contentHeight }}pt; /* Area pasti untuk fitur */
     overflow: hidden; /* Potong jika kelebihan, cegah halaman baru */
 }
 
@@ -187,8 +191,11 @@ body {
 
     <div class="price-container">
         @if($package->hasActivePromo())
-            <div class="promo-tag">Promo Spesial</div><br>
-            <span class="p-label">Normal: <span class="p-strike">{{ $package->formatted_price }}</span></span><br>
+            <div class="promo-tag">&mdash; Special Promo &mdash;</div>
+            <div style="margin-bottom: 2pt;">
+                <span style="font-size: 9pt; color: #666666; font-style: italic;">Normal: </span>
+                <span class="p-strike">{{ $package->formatted_price }}</span>
+            </div>
             <div class="p-main">{{ $package->formattedEffectivePrice }}</div>
         @else
             <div class="p-label">Mulai Dari</div>
