@@ -48,23 +48,34 @@ Route::get('/fix-db', function () {
 });
 
 Route::get('/fix-assets', function () {
+    $results = [];
     try {
         \Illuminate\Support\Facades\Artisan::call('storage:link');
-        $storageOutput = \Illuminate\Support\Facades\Artisan::output();
+        $results[] = "Storage Link: " . \Illuminate\Support\Facades\Artisan::output();
     } catch (\Exception $e) {
-        $storageOutput = $e->getMessage();
+        $results[] = "Storage Link Error: " . $e->getMessage();
     }
 
-    $basePath = base_path('public/build');
-    $publicPath = public_path('build');
-    $copyStatus = 'Tidak perlu copy (jalur sama).';
+    $cssPath = public_path('build/assets/app-CMB86oAG.css');
+    $exists = file_exists($cssPath);
+    $results[] = "CSS File Exists: " . ($exists ? 'Yes' : 'No');
 
-    if ($basePath !== $publicPath && file_exists($basePath)) {
-        \Illuminate\Support\Facades\File::copyDirectory($basePath, $publicPath);
-        $copyStatus = "Berhasil menyalin build folder dari $basePath ke $publicPath";
+    if ($exists) {
+        $results[] = "CSS Permissions: " . substr(sprintf('%o', fileperms($cssPath)), -4);
+        try {
+            chmod($cssPath, 0644);
+            chmod(public_path('build/assets'), 0755);
+            chmod(public_path('build'), 0755);
+            $results[] = "Permissions fixed to 644/755.";
+        } catch (\Exception $e) {
+            $results[] = "Chmod Error: " . $e->getMessage();
+        }
+    } else {
+        $files = file_exists(public_path('build/assets')) ? scandir(public_path('build/assets')) : 'Assets folder missing';
+        $results[] = "Files in build/assets: " . json_encode($files);
     }
 
-    return "Status Storage Link: $storageOutput <br> Status CSS Build: $copyStatus";
+    return implode("<br>", $results);
 });
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
