@@ -13,7 +13,9 @@ class DocumentController extends Controller
 {
     public function store(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $request->validate([
             'name' => 'required|string|max:100',
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png,webp,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240',
@@ -38,7 +40,9 @@ class DocumentController extends Controller
     public function download(Document $document)
     {
         $booking = $document->booking;
-        if ($booking->user_id !== Auth::id() && !Auth::user()->isAdmin()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if (!$document->is_visible_to_client && !Auth::user()->isAdmin()) abort(403);
         return Storage::disk('local')->download($document->file_path, $document->name);
     }

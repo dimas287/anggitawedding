@@ -88,7 +88,7 @@ class DashboardController extends Controller
         if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
             abort(403);
         }
-        if ($fitting->booking_id !== $booking->id || ($fitting->created_by && $fitting->created_by !== Auth::id())) {
+        if ($fitting->booking_id !== $booking->id || ($fitting->created_by && $fitting->created_by != Auth::id() && !Auth::user()->isAdmin())) {
             abort(403);
         }
 

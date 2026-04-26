@@ -112,7 +112,9 @@ class ChatController extends Controller
 
     public function typing(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $this->touchLastOnline(Auth::user(), $request);
         $request->validate(['is_typing' => 'required|boolean']);
         $this->setTyping($booking, Auth::id(), $request->boolean('is_typing'));
