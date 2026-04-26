@@ -90,6 +90,11 @@
                             <td class="px-6 py-4 text-center text-gray-700">{{ $package->popular_score ?? 0 }}</td>
                             <td class="px-6 py-4 text-center text-gray-700">{{ $package->sort_order }}</td>
                             <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{{ route('admin.packages.poster', $package) }}" target="_blank"
+                                   title="Unduh Poster Paket"
+                                   class="inline-flex items-center gap-1 text-sm text-purple-600 hover:text-purple-700 font-semibold">
+                                    <i class="fas fa-file-image"></i> Poster
+                                </a>
                                 <button @click="openEdit(@js($package))" class="inline-flex items-center gap-1 text-sm text-yellow-600 hover:text-yellow-700 font-semibold">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
@@ -103,6 +108,7 @@
                                     </button>
                                 </form>
                             </td>
+
                         </tr>
                     @empty
                         <tr>

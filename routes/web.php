@@ -296,6 +296,8 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     Route::resource('packages', AdminPackageController::class)->except(['show', 'create', 'edit']);
     Route::delete('packages/{package}/media/{media}', [AdminPackageController::class, 'deleteMedia'])->name('packages.media.destroy');
     Route::post('packages/{package}/media/reorder', [AdminPackageController::class, 'reorderMedia'])->name('packages.media.reorder');
+    Route::get('packages/{package}/poster', [AdminPackageController::class, 'downloadPoster'])->name('packages.poster');
+
     Route::resource('hero-slides', HeroSlideController::class)->except(['create', 'edit', 'show']);
     Route::get('site-content', [SiteContentController::class, 'edit'])->name('site-content.edit');
     Route::post('site-content/hero', [SiteContentController::class, 'updateHero'])->name('site-content.hero');

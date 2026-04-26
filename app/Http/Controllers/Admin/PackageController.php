@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 use App\Models\PackageMediaItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+
 
 class PackageController extends Controller
 {
@@ -91,6 +93,18 @@ class PackageController extends Controller
 
         $package->delete();
         return back()->with('success', 'Paket berhasil dihapus.');
+    }
+
+    public function downloadPoster(Package $package)
+    {
+        $pdf = Pdf::loadView('pdf.package-poster', compact('package'))
+            ->setPaper('A4', 'portrait')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', false)
+            ->setOption('defaultFont', 'DejaVu Sans');
+
+        $filename = 'poster-' . Str::slug($package->name) . '.pdf';
+        return $pdf->download($filename);
     }
 
     public function deleteMedia(Package $package, PackageMediaItem $media)
