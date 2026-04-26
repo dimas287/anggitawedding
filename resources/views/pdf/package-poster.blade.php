@@ -14,16 +14,17 @@
     $fHeroName = 26; $fHeroPrice = 34; 
     
     // Ukuran diperbesar signifikan agar sangat jelas dibaca di layar HP
-    if ($weight <= 15) {
-        $fItem = 14; $pCell = 12; $sItem = 6; $fSecTitle = 16;
-    } elseif ($weight <= 30) {
-        $fItem = 12; $pCell = 10; $sItem = 5; $fSecTitle = 14;
-    } elseif ($weight <= 45) {
-        $fItem = 11; $pCell = 8; $sItem = 4; $fSecTitle = 12.5;
+    // Adaptive Engine yang sudah di-tuning agar muat lebih banyak konten
+    if ($weight <= 20) {
+        $fItem = 13; $pCell = 12; $sItem = 5; $fSecTitle = 15;
+    } elseif ($weight <= 40) {
+        $fItem = 11.5; $pCell = 10; $sItem = 4; $fSecTitle = 13;
     } elseif ($weight <= 60) {
-        $fItem = 10; $pCell = 6;  $sItem = 3; $fSecTitle = 11.5;
+        $fItem = 10; $pCell = 8; $sItem = 3; $fSecTitle = 11.5;
+    } elseif ($weight <= 80) {
+        $fItem = 9; $pCell = 6;  $sItem = 2; $fSecTitle = 10.5;
     } else {
-        $fItem = 9; $pCell = 4;  $sItem = 2; $fSecTitle = 10.5;
+        $fItem = 8; $pCell = 4;  $sItem = 1.5; $fSecTitle = 9.5;
     }
 
     $col1 = [];
@@ -37,9 +38,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 215 : 180;
-    $contentTop = $hasPromo ? 245 : 210;
-    $contentHeight = $hasPromo ? 635 : 670;
+    $heroHeight = $hasPromo ? 205 : 170;
+    $contentTop = $hasPromo ? 230 : 195;
+    $contentHeight = $hasPromo ? 660 : 695;
 @endphp
 <style>
 @page { margin: 0; size: 540pt 960pt; }
@@ -61,12 +62,12 @@ body {
  */
 
 .frame-outer {
-    position: absolute; top: 12pt; left: 12pt; right: 12pt; bottom: 12pt;
+    position: absolute; top: 10pt; left: 10pt; right: 10pt; bottom: 10pt;
     border: 1pt solid #C5A059;
     z-index: 100;
 }
 .frame-inner {
-    position: absolute; top: 16pt; left: 16pt; right: 16pt; bottom: 16pt;
+    position: absolute; top: 14pt; left: 14pt; right: 14pt; bottom: 14pt;
     border: 0.5pt solid rgba(197,160,89,0.5);
     z-index: 100;
 }
@@ -74,7 +75,7 @@ body {
 /* ── HERO ── */
 .hero {
     position: absolute;
-    top: 16pt; left: 16pt; right: 16pt;
+    top: 14pt; left: 14pt; right: 14pt;
     height: {{ $heroHeight }}pt;
     background: #111111;
     color: #FFFFFF;
@@ -110,16 +111,17 @@ body {
 /* ── CONTENT AREA ── */
 .content-area {
     position: absolute;
-    top: {{ $contentTop }}pt; left: 30pt; right: 30pt;
+    top: {{ $contentTop }}pt; left: 24pt; right: 24pt;
     height: {{ $contentHeight }}pt; /* Area pasti untuk fitur */
     overflow: hidden; /* Potong jika kelebihan, cegah halaman baru */
+    padding-top: 5pt;
 }
 
 .desc-txt {
     text-align: center;
     font-size: 11pt;
-    color: #444444; font-style: italic; font-weight: bold; line-height: 1.4;
-    margin-bottom: 15pt;
+    color: #444444; font-style: italic; font-weight: bold; line-height: 1.3;
+    margin-bottom: 8pt;
 }
 
 /* Float Layout pengganti Table untuk mencegah pemotongan baris DomPDF */
@@ -134,20 +136,20 @@ body {
     border-top: 2.5pt solid #C5A059;
     border-radius: 4pt;
     padding: {{ $pCell }}pt;
-    margin-bottom: 6pt;
+    margin-bottom: 5pt;
     box-shadow: 0 2pt 5pt rgba(0,0,0,0.02);
 }
 
 .card-title {
     font-size: {{ $fSecTitle }}pt; font-weight: bold; color: #1A1A1A;
-    letter-spacing: 1pt; text-transform: uppercase; margin-bottom: 4pt;
-    border-bottom: 1pt dashed rgba(197,160,89,0.3); padding-bottom: 3pt;
+    letter-spacing: 1pt; text-transform: uppercase; margin-bottom: 3pt;
+    border-bottom: 1pt dashed rgba(197,160,89,0.3); padding-bottom: 2pt;
 }
 
 .feat-item {
     font-size: {{ $fItem }}pt; color: #222222;
     padding: {{ $sItem }}pt 0 {{ $sItem }}pt 10pt;
-    position: relative; line-height: 1.15;
+    position: relative; line-height: 1.1;
 }
 .feat-item::before {
     content: '◆'; color: #C5A059; position: absolute; left: 0; top: {{ $sItem }}pt;
@@ -156,16 +158,16 @@ body {
 
 .footer {
     position: absolute;
-    bottom: 16pt; left: 16pt; right: 16pt;
-    height: 60pt;
+    bottom: 14pt; left: 14pt; right: 14pt;
+    height: 55pt;
     background: #111111;
     border-top: 2pt solid #C5A059;
     text-align: center;
-    padding-top: 10pt;
+    padding-top: 8pt;
 }
 
-.ft-cta { font-size: 12pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 4pt; }
-.ft-contact { font-size: 8pt; color: #888888; letter-spacing: 1.5pt; line-height: 1.5; font-weight: bold; }
+.ft-cta { font-size: 12pt; color: #C5A059; letter-spacing: 2pt; font-weight: bold; margin-bottom: 2pt; }
+.ft-contact { font-size: 8pt; color: #888888; letter-spacing: 1.5pt; line-height: 1.4; font-weight: bold; }
 .ft-contact strong { color: #D4AF37; }
 
 </style>
