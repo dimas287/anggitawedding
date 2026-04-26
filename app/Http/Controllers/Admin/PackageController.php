@@ -97,14 +97,20 @@ class PackageController extends Controller
 
     public function downloadPoster(Package $package)
     {
+        $format = request('format', 'pdf');
+        
+        if (in_array($format, ['jpg', 'png'])) {
+            return view('pdf.package-poster-web', compact('package', 'format'));
+        }
+
         $pdf = Pdf::loadView('pdf.package-poster', compact('package'))
-            ->setPaper('A4', 'portrait')
+            ->setPaper([0, 0, 540, 960], 'portrait')
             ->setOption('isHtml5ParserEnabled', true)
-            ->setOption('isRemoteEnabled', false)
+            ->setOption('isRemoteEnabled', true)
             ->setOption('defaultFont', 'DejaVu Sans');
 
         $filename = 'poster-' . Str::slug($package->name) . '.pdf';
-        return $pdf->download($filename);
+        return $pdf->stream($filename);
     }
 
     public function deleteMedia(Package $package, PackageMediaItem $media)

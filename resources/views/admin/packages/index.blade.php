@@ -90,11 +90,24 @@
                             <td class="px-6 py-4 text-center text-gray-700">{{ $package->popular_score ?? 0 }}</td>
                             <td class="px-6 py-4 text-center text-gray-700">{{ $package->sort_order }}</td>
                             <td class="px-6 py-4 text-right space-x-2">
-                                <a href="{{ route('admin.packages.poster', $package) }}" target="_blank"
-                                   title="Unduh Poster Paket"
-                                   class="inline-flex items-center gap-1 text-sm text-purple-600 hover:text-purple-700 font-semibold">
-                                    <i class="fas fa-file-image"></i> Poster
-                                </a>
+                                <div x-data="{ openOptions: false }" class="relative inline-block text-left" @click.away="openOptions = false">
+                                    <button @click="openOptions = !openOptions" type="button" class="inline-flex items-center gap-1 text-sm text-purple-600 hover:text-purple-700 font-semibold focus:outline-none">
+                                        <i class="fas fa-file-image"></i> Poster <i class="fas fa-chevron-down text-[10px] ml-0.5"></i>
+                                    </button>
+                                    <div x-show="openOptions" x-transition x-cloak class="origin-top-right absolute right-0 mt-2 w-36 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+                                        <div class="py-1">
+                                            <a href="{{ route('admin.packages.poster', $package) }}" target="_blank" @click="openOptions = false" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 font-medium">
+                                                <i class="fas fa-file-pdf w-5 text-red-500"></i> PDF
+                                            </a>
+                                            <a href="{{ route('admin.packages.poster', ['package' => $package->id, 'format' => 'jpg']) }}" target="_blank" @click="openOptions = false" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 font-medium">
+                                                <i class="fas fa-file-image w-5 text-blue-500"></i> JPG High-Res
+                                            </a>
+                                            <a href="{{ route('admin.packages.poster', ['package' => $package->id, 'format' => 'png']) }}" target="_blank" @click="openOptions = false" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 font-medium">
+                                                <i class="fas fa-image w-5 text-green-500"></i> PNG Transparan
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button @click="openEdit(@js($package))" class="inline-flex items-center gap-1 text-sm text-yellow-600 hover:text-yellow-700 font-semibold">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
