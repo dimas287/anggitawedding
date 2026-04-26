@@ -2,22 +2,26 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-@php
-    /* ══════ ADAPTIVE ENGINE ══════ */
-    $sections     = $package->feature_sections;
-    $totalItems   = collect($sections)->sum(fn($s) => count($s['items'] ?? []));
-    $numSections  = count($sections);
+    @php
+        /* ══════ ADAPTIVE ENGINE ══════ */
+        $sections     = $package->feature_sections;
+        $totalItems   = collect($sections)->sum(fn($s) => count($s['items'] ?? []));
+        $numSections  = count($sections);
 
-    /* Content volume → font/spacing tier */
-    if      ($totalItems <= 8)  { $iF=13;  $iSp=8;  $nF=40; $pF=46; $cPad='14px 16px'; $hPad=28; }
-    elseif  ($totalItems <= 16) { $iF=11;  $iSp=6;  $nF=36; $pF=40; $cPad='11px 14px'; $hPad=24; }
-    elseif  ($totalItems <= 26) { $iF=10;  $iSp=5;  $nF=30; $pF=34; $cPad='9px 12px';  $hPad=20; }
-    elseif  ($totalItems <= 38) { $iF=9;   $iSp=4;  $nF=26; $pF=30; $cPad='8px 10px';  $hPad=16; }
-    else                        { $iF=7.5; $iSp=3;  $nF=22; $pF=26; $cPad='6px 8px';   $hPad=12; }
+        /* Content volume weighting: Items + (Sections * 4) to account for headers */
+        $weight = $totalItems + ($numSections * 4);
 
-    /* Always 2 columns — row pairs */
-    $rowPairs = array_chunk($sections, 2);
-@endphp
+        if      ($weight <= 12) { $tier='xl'; $iF=13;  $iSp=8; $nF=40; $pF=46; $cPad='14px 16px'; $hPad=28; }
+        elseif  ($weight <= 24) { $tier='lg'; $iF=11;  $iSp=6; $nF=36; $pF=40; $cPad='11px 14px'; $hPad=24; }
+        elseif  ($weight <= 38) { $tier='md'; $iF=10;  $iSp=5; $nF=30; $pF=34; $cPad='9px 12px';  $hPad=20; }
+        elseif  ($weight <= 52) { $tier='sm'; $iF=8.5; $iSp=4; $nF=26; $pF=30; $cPad='7px 10px';  $hPad=16; }
+        elseif  ($weight <= 70) { $tier='xs'; $iF=7.5; $iSp=3; $nF=22; $pF=26; $cPad='5px 8px';   $hPad=12; }
+        else                    { $tier='xxs';$iF=6.5; $iSp=2; $nF=18; $pF=22; $cPad='4px 6px';   $hPad=10; }
+
+        /* Always 2 columns for sections */
+        $rowPairs = array_chunk($sections, 2);
+    @endphp
+
 <style>
 @page { margin:0; size:A4 portrait; }
 * { box-sizing:border-box; margin:0; padding:0; }
