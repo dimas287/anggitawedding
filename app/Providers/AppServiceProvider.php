@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             return \Illuminate\Cache\RateLimiting\Limit::perMinute(30)->by($request->ip());
         });
 
-        if (config('app.force_https', false)) {
+        if (str_contains(config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
 
