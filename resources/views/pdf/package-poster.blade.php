@@ -37,9 +37,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 230 : 200;
-    $contentTop = $hasPromo ? 260 : 230;
-    $contentHeight = $hasPromo ? 610 : 640;
+    $heroHeight = $hasPromo ? 200 : 170;
+    $contentTop = $hasPromo ? 215 : 185;
+    $contentHeight = $hasPromo ? 665 : 695;
 @endphp
 <style>
 @page { margin: 0; size: 540pt 960pt; }
@@ -84,8 +84,7 @@ body {
 }
 
 .brand-title { font-size: 13pt; color: #C5A059; letter-spacing: 3pt; font-weight: bold; }
-.brand-sub { font-size: 7.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; }
-.ornament { font-size: 10pt; color: rgba(197,160,89,0.7); margin: 6pt 0; }
+.brand-sub { font-size: 7.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; margin-bottom: 8pt; }
 .pkg-name { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroName }}pt; font-weight: bold; color: #FFFFFF; letter-spacing: 1.5pt; margin-bottom: 5pt; }
 
 .tier-badge {
@@ -179,8 +178,6 @@ body {
 <div class="hero">
     <div class="brand-title">Anggita Wedding Organizer</div>
     <div class="brand-sub">Professional Wedding Services</div>
-
-    <div class="ornament">&#10022; &nbsp; &#9672; &nbsp; &#10022;</div>
 
     <div class="pkg-name">{{ $package->name }}</div>
     
