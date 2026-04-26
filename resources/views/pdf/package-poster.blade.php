@@ -40,13 +40,6 @@
     $heroHeight = $hasPromo ? 230 : 200;
     $contentTop = $hasPromo ? 260 : 230;
     $contentHeight = $hasPromo ? 610 : 640;
-    
-    // Logo SVG
-    $logoPath = public_path('images/brand/anggita-logo-main.svg');
-    $logoSrc = '';
-    if (file_exists($logoPath)) {
-        $logoSrc = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents($logoPath));
-    }
 @endphp
 <style>
 @page { margin: 0; size: 540pt 960pt; }
@@ -88,14 +81,6 @@ body {
     text-align: center;
     padding-top: 15pt;
     border-bottom: 2pt solid #C5A059;
-}
-
-.hero-logo {
-    position: absolute;
-    top: 15pt;
-    left: 15pt;
-    width: 45pt;
-    height: auto;
 }
 
 .brand-title { font-size: 13pt; color: #C5A059; letter-spacing: 3pt; font-weight: bold; }
@@ -192,9 +177,6 @@ body {
 <div class="frame-inner"></div>
 
 <div class="hero">
-    @if($logoSrc)
-        <img src="{{ $logoSrc }}" class="hero-logo" alt="Logo">
-    @endif
     <div class="brand-title">Anggita Wedding Organizer</div>
     <div class="brand-sub">Professional Wedding Services</div>
 

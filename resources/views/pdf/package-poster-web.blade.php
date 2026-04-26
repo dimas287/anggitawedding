@@ -93,14 +93,6 @@ body {
     text-align: center; padding-top: 15pt; border-bottom: 2pt solid #C5A059;
 }
 
-.hero-logo {
-    position: absolute;
-    top: 15pt;
-    left: 15pt;
-    width: 45pt;
-    height: auto;
-}
-
 .brand-title { font-size: 13pt; color: #C5A059; letter-spacing: 3pt; font-weight: bold; }
 .brand-sub { font-size: 7.5pt; color: #888888; letter-spacing: 2pt; margin-top: 2pt; }
 .ornament { font-size: 10pt; color: rgba(197,160,89,0.7); margin: 6pt 0; }
@@ -190,7 +182,6 @@ body {
     <div class="frame-inner"></div>
 
     <div class="hero">
-        <img src="{{ asset('images/brand/anggita-logo-main.svg') }}" class="hero-logo" alt="Logo">
         <div class="brand-title">Anggita Wedding Organizer</div>
         <div class="brand-sub">Professional Wedding Services</div>
 
