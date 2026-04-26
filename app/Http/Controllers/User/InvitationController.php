@@ -23,7 +23,9 @@ class InvitationController extends Controller
 
     public function index(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $booking->loadMissing('package', 'invitation.template');
 
         $isInvitationOnly = $this->isInvitationOnlyOrder($booking);
@@ -40,7 +42,9 @@ class InvitationController extends Controller
 
     public function edit(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $booking->loadMissing('package', 'invitation');
 
         $isInvitationOnly = $this->isInvitationOnlyOrder($booking);
@@ -54,7 +58,9 @@ class InvitationController extends Controller
 
     public function update(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
 
         $request->validate([
             'template_id' => 'nullable|exists:invitation_templates,id',
@@ -158,7 +164,9 @@ class InvitationController extends Controller
 
     public function publish(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
 
         $booking->loadMissing('package', 'invitation');
         $isInvitationOnly = $this->isInvitationOnlyOrder($booking);
@@ -206,7 +214,9 @@ class InvitationController extends Controller
 
     public function rsvpStats(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $invitation = $booking->invitation;
         if (!$invitation) abort(404);
         $invitation->loadCount('views');

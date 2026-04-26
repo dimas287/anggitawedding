@@ -30,7 +30,9 @@ class DashboardController extends Controller
 
     public function bookingShow(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses ke booking ini.');
+        }
         $booking->load('package', 'payments', 'extraCharges', 'invitation', 'consultations', 'vendors', 'documents', 'review', 'fittings', 'wardrobeItems');
         $unreadChats = \App\Models\Chat::where('booking_id', $booking->id)
             ->where('receiver_id', Auth::id())->where('is_read', false)->count();
@@ -40,7 +42,9 @@ class DashboardController extends Controller
 
     public function downloadInvoice(Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
 
         $booking->load('user', 'package', 'payments', 'extraCharges', 'invitation.template');
         $extraTotal = $booking->active_extra_charges_total;
@@ -57,7 +61,9 @@ class DashboardController extends Controller
 
     public function storeFitting(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
 
         $data = $request->validate([
             'scheduled_at' => 'required|date|after:now',
@@ -79,7 +85,9 @@ class DashboardController extends Controller
 
     public function deleteFitting(Booking $booking, BookingFitting $fitting)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($fitting->booking_id !== $booking->id || ($fitting->created_by && $fitting->created_by !== Auth::id())) {
             abort(403);
         }
@@ -135,7 +143,9 @@ class DashboardController extends Controller
 
     public function review(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($booking->status !== 'completed') {
             return back()->with('error', 'Ulasan hanya bisa diberikan setelah event selesai.');
         }
@@ -166,7 +176,9 @@ class DashboardController extends Controller
 
     public function changePackage(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($booking->status !== 'pending') {
             return back()->with('error', 'Paket hanya bisa diganti ketika status booking masih pending.');
         }
@@ -191,7 +203,9 @@ class DashboardController extends Controller
 
     public function rescheduleBooking(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if (!in_array($booking->status, ['pending', 'dp_paid'], true)) {
             return back()->with('error', 'Perubahan tanggal hanya tersedia untuk booking pending atau yang sudah bayar DP.');
         }
@@ -215,7 +229,9 @@ class DashboardController extends Controller
 
     public function cancelBooking(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($booking->status !== 'pending') {
             return back()->with('error', 'Booking hanya bisa dibatalkan sebelum pembayaran DP.');
         }

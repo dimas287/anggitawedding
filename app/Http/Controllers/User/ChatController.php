@@ -14,7 +14,9 @@ class ChatController extends Controller
 {
     public function index(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $this->touchLastOnline(Auth::user(), $request);
         $admin = User::where('role', 'admin')->first();
         $chats = Chat::where('booking_id', $booking->id)
@@ -31,7 +33,9 @@ class ChatController extends Controller
 
     public function send(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $this->touchLastOnline(Auth::user(), $request);
         $request->validate([
             'message' => 'required_without:attachment|string|nullable|max:2000',
@@ -63,7 +67,9 @@ class ChatController extends Controller
 
     public function getMessages(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         $this->touchLastOnline(Auth::user(), $request);
         $admin = User::where('role', 'admin')->first();
         $chats = Chat::where('booking_id', $booking->id)

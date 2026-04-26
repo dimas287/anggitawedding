@@ -49,7 +49,9 @@ class PaymentController extends Controller
                 ->with('info', 'Silakan login terlebih dahulu untuk melanjutkan pembayaran.');
         }
 
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($booking->payment_status !== 'unpaid') {
             return redirect()->route('user.booking.show', $booking->id);
         }
@@ -64,7 +66,9 @@ class PaymentController extends Controller
 
     public function process(Request $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
 
         $meta = $this->fulfillmentService->getPaymentMeta($booking);
 
@@ -118,7 +122,9 @@ class PaymentController extends Controller
 
     public function manual(StoreManualPaymentRequest $request, Booking $booking)
     {
-        if ($booking->user_id !== Auth::id()) abort(403);
+        if (Auth::user()->isAdmin() === false && $booking->user_id != Auth::id()) {
+            abort(403);
+        }
         if ($booking->payment_status !== 'unpaid') {
             return redirect()->route('user.booking.show', $booking->id);
         }
