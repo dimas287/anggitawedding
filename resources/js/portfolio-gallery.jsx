@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 openedImageWidth="90vw"
                 openedImageHeight="90vh"
                 padFactor={0.1}
+                segments={18}
                 overlayBlurColor="var(--dome-bg, #0A0A0A)"
             />
         );
