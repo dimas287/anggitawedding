@@ -216,26 +216,27 @@
                             @php $sections = $package->feature_sections; @endphp
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 flex-1 items-start auto-rows-min">
                                 @forelse($sections as $section)
-                                    <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-[#1A1A1A]/60 p-4 flex flex-col gap-2 min-h-[180px] relative group">
+                                    <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white/40 dark:bg-[#1A1A1A]/40 p-4 flex flex-col gap-2 min-h-[180px] relative group overflow-hidden">
                                         @if($section['title'])
-                                            <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400 font-semibold sticky top-0 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm z-10 pb-1">{{ $section['title'] }}</p>
+                                            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 font-bold sticky top-0 z-10 pb-2 mb-2 border-b border-gray-100/50 dark:border-white/5 backdrop-blur-md -mx-4 px-4">{{ $section['title'] }}</p>
                                         @endif
                                         <div class="relative flex-1">
-                                            <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-56 overflow-y-auto pr-2 feature-scroll-area">
+                                            <ul class="space-y-2 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-52 overflow-y-auto pr-2 feature-scroll-area">
                                                 @foreach($section['items'] as $item)
                                                 <li class="flex items-start gap-2">
-                                                    <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
-                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
+                                                    <span class="w-4 h-4 rounded-full bg-yellow-100/80 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[8px]"></i>
                                                     </span>
-                                                    <span class="break-words">{{ $item }}</span>
+                                                    <span class="break-words font-medium">{{ $item }}</span>
                                                 </li>
                                                 @endforeach
                                             </ul>
-                                            @if(count($section['items']) > 6)
-                                            <div class="feature-scroll-fade pointer-events-none absolute bottom-0 left-0 right-2 h-12 bg-gradient-to-t from-white/95 dark:from-[#1A1A1A]/95 to-transparent rounded-b-lg flex items-end justify-center pb-1 transition-opacity">
-                                                <div class="flex items-center gap-1 text-[10px] text-gray-400 dark:text-gray-500 animate-bounce">
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                                                    <span>scroll</span>
+                                            @if(count($section['items']) > 5)
+                                            <div class="feature-scroll-fade pointer-events-none absolute bottom-0 left-0 right-2 h-14 bg-gradient-to-t from-white/90 dark:from-[#1A1A1A]/90 via-white/40 dark:via-[#1A1A1A]/40 to-transparent rounded-b-lg flex items-end justify-center pb-2 transition-opacity">
+                                                <div class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-yellow-600/80 dark:text-yellow-500/80 animate-pulse bg-white/80 dark:bg-black/40 px-3 py-1 rounded-full border border-yellow-100 dark:border-yellow-900/30 shadow-sm">
+                                                    <i class="fas fa-mouse-pointer text-[8px]"></i>
+                                                    <span>Scroll dalam kotak</span>
+                                                    <i class="fas fa-chevron-down text-[8px]"></i>
                                                 </div>
                                             </div>
                                             @endif
