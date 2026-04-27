@@ -409,7 +409,7 @@
     <form id="dream-section" action="{{ route('admin.site-content.dream') }}" method="POST" enctype="multipart/form-data"
           class="bg-white rounded-2xl shadow-sm p-6 space-y-6"
           x-data="dreamManager({ highlights: $el.dataset.highlights ? JSON.parse($el.dataset.highlights) : [] })"
-          :data-highlights='@json($dreamHighlights)'>
+          data-highlights='@json($dreamHighlights)'>
         @csrf
         <div class="flex items-center justify-between">
             <div>
