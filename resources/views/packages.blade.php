@@ -216,20 +216,30 @@
                             @php $sections = $package->feature_sections; @endphp
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 flex-1 items-start auto-rows-min">
                                 @forelse($sections as $section)
-                                    <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-[#1A1A1A]/60 p-4 flex flex-col gap-2 min-h-[180px]">
+                                    <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-[#1A1A1A]/60 p-4 flex flex-col gap-2 min-h-[180px] relative group">
                                         @if($section['title'])
-                                            <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400 font-semibold">{{ $section['title'] }}</p>
+                                            <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400 font-semibold sticky top-0 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm z-10 pb-1">{{ $section['title'] }}</p>
                                         @endif
-                                        <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-56 overflow-y-auto pr-1">
-                                            @foreach($section['items'] as $item)
-                                            <li class="flex items-start gap-2">
-                                                <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
-                                                    <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
-                                                </span>
-                                                <span class="break-words">{{ $item }}</span>
-                                            </li>
-                                            @endforeach
-                                        </ul>
+                                        <div class="relative flex-1">
+                                            <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-56 overflow-y-auto pr-2 feature-scroll-area">
+                                                @foreach($section['items'] as $item)
+                                                <li class="flex items-start gap-2">
+                                                    <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
+                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
+                                                    </span>
+                                                    <span class="break-words">{{ $item }}</span>
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                            @if(count($section['items']) > 6)
+                                            <div class="feature-scroll-fade pointer-events-none absolute bottom-0 left-0 right-2 h-12 bg-gradient-to-t from-white/95 dark:from-[#1A1A1A]/95 to-transparent rounded-b-lg flex items-end justify-center pb-1 transition-opacity">
+                                                <div class="flex items-center gap-1 text-[10px] text-gray-400 dark:text-gray-500 animate-bounce">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                                    <span>scroll</span>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 @empty
                                     <div class="rounded-2xl border border-dashed border-gray-200 dark:border-gray-800 p-4 text-center text-xs text-gray-400">
@@ -460,4 +470,77 @@ function packageExplorer(initialTab) {
     };
 }
 </script>
+
+<script>
+// Auto-hide the scroll fade indicator when user scrolls to bottom
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.feature-scroll-area').forEach(el => {
+        const fade = el.parentElement?.querySelector('.feature-scroll-fade');
+        if (!fade) return;
+        
+        const checkScroll = () => {
+            const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
+            fade.style.opacity = atBottom ? '0' : '1';
+        };
+        
+        el.addEventListener('scroll', checkScroll, { passive: true });
+        checkScroll();
+    });
+});
+</script>
+
+<style>
+/* Custom scrollbar for feature lists */
+.feature-scroll-area {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(202, 138, 4, 0.3) transparent;
+}
+
+.feature-scroll-area::-webkit-scrollbar {
+    width: 4px;
+}
+
+.feature-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.feature-scroll-area::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, rgba(202, 138, 4, 0.2), rgba(202, 138, 4, 0.5));
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.feature-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, rgba(202, 138, 4, 0.4), rgba(202, 138, 4, 0.7));
+}
+
+/* Dark mode scrollbar */
+.dark .feature-scroll-area {
+    scrollbar-color: rgba(234, 179, 8, 0.3) transparent;
+}
+
+.dark .feature-scroll-area::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, rgba(234, 179, 8, 0.15), rgba(234, 179, 8, 0.4));
+}
+
+.dark .feature-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, rgba(234, 179, 8, 0.3), rgba(234, 179, 8, 0.6));
+}
+
+/* Fade transition */
+.feature-scroll-fade {
+    transition: opacity 0.3s ease;
+}
+
+/* Subtle bounce animation for scroll indicator */
+@keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}
+
+.feature-scroll-fade .animate-bounce {
+    animation: gentleBounce 1.5s ease-in-out infinite;
+}
+</style>
 @endpush
