@@ -234,7 +234,13 @@ body {
                         <div class="card-title">{{ $sec['title'] }}</div>
                     @endif
                     @foreach($sec['items'] as $item)
-                        <div class="feat-item">{{ $item }}</div>
+                        @if(str_starts_with(trim($item), '##'))
+                            <div style="font-size: {{ $fItem - 0.5 }}pt; font-weight: bold; color: #666666; text-transform: uppercase; margin-top: 5pt; margin-bottom: 2pt; border-bottom: 0.5pt solid rgba(197,160,89,0.2); padding-bottom: 1pt;">
+                                {{ ltrim(trim($item), '# ') }}
+                            </div>
+                        @else
+                            <div class="feat-item">{{ $item }}</div>
+                        @endif
                     @endforeach
                 </div>
             @endforeach
