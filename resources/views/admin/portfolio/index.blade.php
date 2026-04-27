@@ -125,14 +125,10 @@
                                         <h4 class="text-sm font-semibold text-gray-800">Media Tambahan</h4>
                                         <p class="text-xs text-gray-500">Tambah beberapa foto atau video untuk card ini.</p>
                                     </div>
-                                    <button type="button" class="text-xs text-gray-500" @click="mediaOpen = false">Tutup</button>
-                                </div>
-                                <div class="flex items-center justify-between mb-3">
-                                    <div>
-                                        <h4 class="text-sm font-semibold text-gray-800">Media Tambahan</h4>
-                                        <p class="text-xs text-gray-500">Tambah beberapa foto atau video untuk card ini.</p>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-[11px] text-gray-400">{{ $img->mediaItems->count() }} item</span>
+                                        <button type="button" class="text-xs text-gray-500 hover:text-gray-700" @click="mediaOpen = false">Tutup</button>
                                     </div>
-                                    <span class="text-[11px] text-gray-400">{{ $img->mediaItems->count() }} item</span>
                                 </div>
 
                                 <div class="space-y-3">

@@ -44,15 +44,16 @@ function buildItems(pool, seg) {
     return coords.map(c => ({ ...c, src: '', alt: '', type: 'image', embed: '' }));
   }
 
-  const normalizedImages = pool.map(image => {
+  const normalizedImages = pool.map((image, idx) => {
     if (typeof image === 'string') {
-      return { src: image, alt: '', type: 'image', embed: '' };
+      return { src: image, alt: '', type: 'image', embed: '', cardIndex: idx };
     }
     return { 
       src: image.src || '', 
       alt: image.alt || '',
       type: image.type || 'image',
-      embed: image.embed || ''
+      embed: image.embed || '',
+      cardIndex: image.cardIndex !== undefined ? image.cardIndex : idx
     };
   });
 
@@ -76,7 +77,8 @@ function buildItems(pool, seg) {
     src: usedImages[i].src,
     alt: usedImages[i].alt,
     type: usedImages[i].type,
-    embed: usedImages[i].embed
+    embed: usedImages[i].embed,
+    cardIndex: usedImages[i].cardIndex
   }));
 }
 
@@ -105,7 +107,9 @@ export default function DomeGallery({
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
   grayscale = true,
-  autoRotateSpeed = -0.05
+  autoRotateSpeed = -0.05,
+  onTileClick = null,
+  disableEnlarge = false
 }) {
   const rootRef = useRef(null);
   const mainRef = useRef(null);
@@ -598,27 +602,43 @@ export default function DomeGallery({
     [enlargeTransitionMs, lockScroll, openedImageHeight, openedImageWidth, segments, unlockScroll]
   );
 
-  const onTileClick = useCallback(
+  const handleTileClick = useCallback(
     e => {
       if (draggingRef.current) return;
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+      if (disableEnlarge && onTileClick) {
+        const parent = e.currentTarget.parentElement;
+        const cardIndex = parseInt(parent?.dataset?.cardindex ?? '-1', 10);
+        const src = parent?.dataset?.src || '';
+        const alt = parent?.dataset?.alt || '';
+        onTileClick({ cardIndex, src, alt });
+        return;
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [openItemFromElement, disableEnlarge, onTileClick]
   );
 
-  const onTilePointerUp = useCallback(
+  const handleTilePointerUp = useCallback(
     e => {
       if (e.pointerType !== 'touch') return;
       if (draggingRef.current) return;
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+      if (disableEnlarge && onTileClick) {
+        const parent = e.currentTarget.parentElement;
+        const cardIndex = parseInt(parent?.dataset?.cardindex ?? '-1', 10);
+        const src = parent?.dataset?.src || '';
+        const alt = parent?.dataset?.alt || '';
+        onTileClick({ cardIndex, src, alt });
+        return;
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [openItemFromElement, disableEnlarge, onTileClick]
   );
 
   useEffect(() => {
@@ -650,6 +670,8 @@ export default function DomeGallery({
                 data-src={it.src}
                 data-type={it.type}
                 data-embed={it.embed}
+                data-alt={it.alt}
+                data-cardindex={it.cardIndex}
                 data-offset-x={it.x}
                 data-offset-y={it.y}
                 data-size-x={it.sizeX}
@@ -666,8 +688,8 @@ export default function DomeGallery({
                   role="button"
                   tabIndex={0}
                   aria-label={it.alt || 'Open media'}
-                  onClick={onTileClick}
-                  onPointerUp={onTilePointerUp}
+                  onClick={handleTileClick}
+                  onPointerUp={handleTilePointerUp}
                 >
                   {it.type === 'video' ? (
                      it.embed ? (

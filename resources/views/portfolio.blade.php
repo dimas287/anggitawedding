@@ -34,32 +34,41 @@
 
         @if(isset($portfolioImages) && $portfolioImages->count() > 0)
         @php
-            $domeImages = collect();
+            $domeCards = collect();
             foreach($portfolioImages as $img) {
                 $coverUrl = $img->image_path ? (\Illuminate\Support\Str::startsWith($img->image_path, ['http://', 'https://', '/storage/']) ? $img->image_path : Storage::url($img->image_path)) : null;
-                if ($coverUrl) {
-                    $domeImages->push([
-                        'src' => asset($coverUrl),
-                        'alt' => $img->title ?? 'Galeri',
-                        'type' => 'image',
-                        'embed' => ''
-                    ]);
-                }
+                if (!$coverUrl) continue;
+
+                $mediaSlides = collect();
+                // Cover image as first slide
+                $mediaSlides->push([
+                    'src' => asset($coverUrl),
+                    'type' => 'image',
+                    'embed' => ''
+                ]);
+                // Additional media items
                 foreach($img->mediaItems as $media) {
                     $mediaUrl = $media->url ? (\Illuminate\Support\Str::startsWith($media->url, ['http://', 'https://', '/storage/']) ? $media->url : Storage::url($media->url)) : '';
-                    $domeImages->push([
-                        'src' => asset($mediaUrl),
-                        'alt' => $img->title ?? 'Galeri',
-                        'type' => $media->media_type ?? 'image',
-                        'embed' => $media->embed_url ?? ''
-                    ]);
+                    if ($mediaUrl) {
+                        $mediaSlides->push([
+                            'src' => asset($mediaUrl),
+                            'type' => $media->media_type ?? 'image',
+                            'embed' => $media->embed_url ?? ''
+                        ]);
+                    }
                 }
+
+                $domeCards->push([
+                    'cover' => asset($coverUrl),
+                    'title' => $img->title ?? '',
+                    'caption' => $img->caption ?? '',
+                    'media' => $mediaSlides->values()->toArray()
+                ]);
             }
-            $domeImages = $domeImages->unique('src')->values();
         @endphp
         
         <div class="mb-32 w-full h-[90vh] min-h-[800px] bg-white dark:bg-[#0A0A0A] rounded-[40px] overflow-hidden relative shadow-2xl dome-container border border-gray-100 dark:border-white/5" data-reveal>
-            <div id="react-dome-gallery" class="w-full h-full" data-images="{{ json_encode($domeImages) }}"></div>
+            <div id="react-dome-gallery" class="w-full h-full" data-cards='@json($domeCards)'></div>
             
             <div class="absolute bottom-6 right-6 pointer-events-none hidden md:block">
                 <div class="bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 text-white/70 text-xs tracking-widest uppercase shadow-xl">
