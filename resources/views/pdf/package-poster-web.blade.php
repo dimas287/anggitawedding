@@ -12,7 +12,7 @@
     // Bobot dihitung lebih ketat
     $weight = $totalItems + ($numSections * 4);
 
-    $fHeroName = 26; $fHeroPrice = 34; 
+    $fHeroName = 26; $fHeroPrice = 30; 
     
     // Adaptive Engine yang sudah di-tuning agar muat lebih banyak konten
     if ($weight <= 20) {
@@ -136,7 +136,7 @@ body {
 .card {
     background: #FFFFFF; border: 1pt solid rgba(197,160,89,0.25);
     border-top: 2.5pt solid #C5A059; border-radius: 4pt;
-    padding: {{ $pCell }}pt; margin-bottom: 5pt; box-shadow: 0 2pt 5pt rgba(0,0,0,0.02);
+    padding: {{ $pCell }}pt; margin-bottom: 8pt; box-shadow: 0 2pt 5pt rgba(0,0,0,0.02);
 }
 
 .card-title {
@@ -148,7 +148,7 @@ body {
 .feat-item {
     font-size: {{ $fItem }}pt; color: #222222;
     padding: {{ $sItem }}pt 0 {{ $sItem }}pt 10pt;
-    position: relative; line-height: 1.1;
+    position: relative; line-height: 1.35;
 }
 .feat-item::before {
     content: '◆'; color: #C5A059; position: absolute; left: 0; top: {{ $sItem }}pt;
