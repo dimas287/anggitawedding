@@ -223,12 +223,18 @@
                                         <div class="relative flex-1">
                                             <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-56 overflow-y-auto pr-2 feature-scroll-area">
                                                 @foreach($section['items'] as $item)
-                                                <li class="flex items-start gap-2">
-                                                    <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
-                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
-                                                    </span>
-                                                    <span class="break-words">{{ $item }}</span>
-                                                </li>
+                                                    @if(str_starts_with($item, '## '))
+                                                    <li class="pt-2 first:pt-0">
+                                                        <p class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ ltrim(substr($item, 3)) }}</p>
+                                                    </li>
+                                                    @else
+                                                    <li class="flex items-start gap-2">
+                                                        <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
+                                                            <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
+                                                        </span>
+                                                        <span class="break-words">{{ $item }}</span>
+                                                    </li>
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                             @if(count($section['items']) > 6)

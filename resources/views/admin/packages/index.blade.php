@@ -221,8 +221,9 @@
                                     <i class="fas fa-times mr-1"></i>Hapus
                                 </button>
                             </div>
-                            <label class="text-[11px] text-gray-500">Isi fitur (1 baris = 1 fitur)</label>
-                            <textarea x-model="section.items" @input="updatePayload()" rows="4" class="mt-1 w-full border rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400 font-mono" placeholder="Dekorasi pelaminan 12 m&#10;Gate pintu masuk&#10;Backdrop photobooth"></textarea>
+                            <label class="text-[11px] text-gray-500">Isi fitur (1 baris = 1 fitur). Awali baris dengan <code class="bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded font-mono text-[10px]">## </code> untuk membuat <strong>subjudul</strong>.</label>
+                            <textarea x-model="section.items" @input="updatePayload()" rows="5" class="mt-1 w-full border rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400 font-mono" placeholder="## untuk 250 pax :&#10;nasi goreng&#10;soto ayam&#10;olahan ikan&#10;## untuk 200 pax :&#10;bakso&#10;kikil"></textarea>
+                            <p class="text-[10px] text-gray-400 mt-1 italic"><i class="fas fa-info-circle mr-1"></i>Contoh subjudul: <code class="font-mono bg-gray-100 px-1 rounded">## untuk 250 pax :</code> — akan tampil sebagai heading kecil di halaman paket.</p>
                         </div>
                     </template>
 
