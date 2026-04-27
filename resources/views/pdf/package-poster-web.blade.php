@@ -38,9 +38,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 205 : 170;
-    $contentTop = $hasPromo ? 230 : 195;
-    $contentHeight = $hasPromo ? 660 : 695;
+    $heroHeight = $hasPromo ? 210 : 175;
+    $contentTop = $hasPromo ? 235 : 200;
+    $contentHeight = $hasPromo ? 655 : 690;
 @endphp
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -110,7 +110,7 @@ body {
 }
 .p-label { font-size: 8pt; color: #C5A059; letter-spacing: 2pt; margin-bottom: 2pt; }
 .p-strike { font-size: 11pt; color: #888888; text-decoration: line-through; }
-.p-main { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: {{ $fHeroPrice }}pt; font-weight: bold; color: #E8C84A; line-height: 1; margin-top: 2pt; }
+.p-main { font-family: 'DejaVu Serif', 'Times New Roman', serif; font-size: 30pt; font-weight: bold; color: #E8C84A; line-height: 1; margin-top: 2pt; }
 
 .promo-tag {
     font-size: 9pt; color: #E8C84A; letter-spacing: 2pt;
@@ -218,9 +218,9 @@ body {
                             <div class="card-title">{{ $sec['title'] }}</div>
                         @endif
                         @foreach($sec['items'] as $item)
-                            @if(str_starts_with($item, '## '))
+                            @if(str_starts_with(trim($item), '##'))
                                 <div style="font-size: {{ $fItem - 0.5 }}pt; font-weight: bold; color: #666666; text-transform: uppercase; margin-top: 5pt; margin-bottom: 2pt; border-bottom: 0.5pt solid rgba(197,160,89,0.2); padding-bottom: 1pt;">
-                                    {{ ltrim(substr($item, 3)) }}
+                                    {{ ltrim(trim($item), '# ') }}
                                 </div>
                             @else
                                 <div class="feat-item">{{ $item }}</div>
@@ -237,9 +237,9 @@ body {
                             <div class="card-title">{{ $sec['title'] }}</div>
                         @endif
                         @foreach($sec['items'] as $item)
-                            @if(str_starts_with($item, '## '))
+                            @if(str_starts_with(trim($item), '##'))
                                 <div style="font-size: {{ $fItem - 0.5 }}pt; font-weight: bold; color: #666666; text-transform: uppercase; margin-top: 5pt; margin-bottom: 2pt; border-bottom: 0.5pt solid rgba(197,160,89,0.2); padding-bottom: 1pt;">
-                                    {{ ltrim(substr($item, 3)) }}
+                                    {{ ltrim(trim($item), '# ') }}
                                 </div>
                             @else
                                 <div class="feat-item">{{ $item }}</div>

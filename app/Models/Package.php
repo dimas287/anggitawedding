@@ -209,7 +209,7 @@ class Package extends Model
     {
         return collect($this->feature_sections)
             ->flatMap(fn ($section) => $section['items'] ?? [])
-            ->reject(fn ($item) => str_starts_with($item, '## '))
+            ->reject(fn ($item) => str_starts_with(trim($item), '##'))
             ->values()
             ->all();
     }

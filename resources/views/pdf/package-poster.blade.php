@@ -11,7 +11,7 @@
     // Bobot dihitung lebih ketat
     $weight = $totalItems + ($numSections * 4);
 
-    $fHeroName = 26; $fHeroPrice = 34; 
+    $fHeroName = 26; $fHeroPrice = 30; 
     
     // Ukuran diperbesar signifikan agar sangat jelas dibaca di layar HP
     // Adaptive Engine yang sudah di-tuning agar muat lebih banyak konten
@@ -38,9 +38,9 @@
     }
 
     $hasPromo = $package->hasActivePromo();
-    $heroHeight = $hasPromo ? 205 : 170;
-    $contentTop = $hasPromo ? 230 : 195;
-    $contentHeight = $hasPromo ? 660 : 695;
+    $heroHeight = $hasPromo ? 210 : 175;
+    $contentTop = $hasPromo ? 235 : 200;
+    $contentHeight = $hasPromo ? 655 : 690;
 @endphp
 <style>
 @page { margin: 0; size: 540pt 960pt; }
@@ -215,9 +215,9 @@ body {
                         <div class="card-title">{{ $sec['title'] }}</div>
                     @endif
                     @foreach($sec['items'] as $item)
-                        @if(str_starts_with($item, '## '))
+                        @if(str_starts_with(trim($item), '##'))
                             <div style="font-size: {{ $fItem - 0.5 }}pt; font-weight: bold; color: #666666; text-transform: uppercase; margin-top: 5pt; margin-bottom: 2pt; border-bottom: 0.5pt solid rgba(197,160,89,0.2); padding-bottom: 1pt;">
-                                {{ ltrim(substr($item, 3)) }}
+                                {{ ltrim(trim($item), '# ') }}
                             </div>
                         @else
                             <div class="feat-item">{{ $item }}</div>

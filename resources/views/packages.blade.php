@@ -223,9 +223,9 @@
                                         <div class="relative flex-1">
                                             <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-snug max-h-56 overflow-y-auto pr-2 feature-scroll-area">
                                                 @foreach($section['items'] as $item)
-                                                    @if(str_starts_with($item, '## '))
+                                                    @if(str_starts_with(trim($item), '##'))
                                                     <li class="pt-2 first:pt-0">
-                                                        <p class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ ltrim(substr($item, 3)) }}</p>
+                                                        <p class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ ltrim(trim($item), '# ') }}</p>
                                                     </li>
                                                     @else
                                                     <li class="flex items-start gap-2">
