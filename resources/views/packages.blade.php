@@ -214,7 +214,7 @@
                             @endif
 
                             @php $sections = $package->feature_sections; @endphp
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 flex-1 items-start auto-rows-min">
+                            <div class="grid grid-cols-1 gap-4 mb-8 flex-1 items-start auto-rows-min">
                                 @forelse($sections as $section)
                                     <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-[#1A1A1A]/60 p-4 flex flex-col gap-2 min-h-[180px] relative group">
                                         @if($section['title'])

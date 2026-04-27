@@ -658,20 +658,26 @@
                                 @endif
 
                                 @php $sections = $package->feature_sections; @endphp
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 flex-1 items-start auto-rows-min">
+                                <div class="grid grid-cols-1 gap-4 mb-8 flex-1 items-start auto-rows-min">
                                     @forelse($sections as $section)
                                         <div class="rounded-2xl border border-gray-100 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 flex flex-col gap-2">
                                             @if($section['title'])
-                                                <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">{{ $section['title'] }}</p>
+                                                <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold border-b border-gray-100 dark:border-gray-700/50 pb-1">{{ $section['title'] }}</p>
                                             @endif
                                             <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-tight">
                                                 @foreach($section['items'] as $item)
-                                                <li class="flex items-center gap-2">
-                                                    <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0">
-                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
-                                                    </span>
-                                                    <span>{{ $item }}</span>
-                                                </li>
+                                                    @if(str_starts_with(trim($item), '##'))
+                                                        <li class="pt-2 first:pt-0">
+                                                            <p class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ ltrim(trim($item), '# ') }}</p>
+                                                        </li>
+                                                    @else
+                                                        <li class="flex items-start gap-2">
+                                                            <span class="w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                                <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[10px]"></i>
+                                                            </span>
+                                                            <span>{{ $item }}</span>
+                                                        </li>
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                         </div>
