@@ -508,6 +508,8 @@
                                 <option value="fa-magic">✨ Magic / Event</option>
                                 <option value="fa-clock">⏰ Time</option>
                                 <option value="fa-dove">🕊️ Dove / Peace</option>
+                                <option value="fa-money-bill-wave">💵 Uang / Budget</option>
+                                <option value="fa-coins">💰 Koin</option>
                                 <option value="fa-check-circle">✅ Accomplished</option>
                             </select>
                         </div>
