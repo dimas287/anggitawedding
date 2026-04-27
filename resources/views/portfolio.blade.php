@@ -58,7 +58,7 @@
             $domeImages = $domeImages->unique('src')->values();
         @endphp
         
-        <div class="mb-32 w-full h-[700px] bg-[#0A0A0A] rounded-[40px] overflow-hidden relative shadow-2xl" data-reveal>
+        <div class="mb-32 w-full h-[90vh] min-h-[800px] bg-white dark:bg-[#0A0A0A] rounded-[40px] overflow-hidden relative shadow-2xl dome-container border border-gray-100 dark:border-white/5" data-reveal>
             <div id="react-dome-gallery" class="w-full h-full" data-images="{{ json_encode($domeImages) }}"></div>
             
             <div class="absolute bottom-6 right-6 pointer-events-none hidden md:block">
@@ -250,6 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
     [data-reveal].revealed {
         opacity: 1;
         transform: translateY(0);
+    }
+    
+    .dome-container {
+        --dome-bg: #ffffff; /* Light mode color */
+    }
+    .dark .dome-container {
+        --dome-bg: #0A0A0A; /* Dark mode color */
     }
 </style>
 @endpush
