@@ -104,7 +104,8 @@ export default function DomeGallery({
   openedImageHeight = '350px',
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
-  grayscale = true
+  grayscale = true,
+  autoRotateSpeed = -0.05
 }) {
   const rootRef = useRef(null);
   const mainRef = useRef(null);
@@ -236,6 +237,30 @@ export default function DomeGallery({
   useEffect(() => {
     applyTransform(rotationRef.current.x, rotationRef.current.y);
   }, []);
+
+  const autoRotateRAF = useRef(null);
+
+  useEffect(() => {
+    const step = () => {
+      if (
+        !draggingRef.current &&
+        !inertiaRAF.current &&
+        !openingRef.current &&
+        rootRef.current?.getAttribute('data-enlarging') !== 'true'
+      ) {
+        const nextY = wrapAngleSigned(rotationRef.current.y + autoRotateSpeed);
+        rotationRef.current = { ...rotationRef.current, y: nextY };
+        applyTransform(rotationRef.current.x, nextY);
+      }
+      autoRotateRAF.current = requestAnimationFrame(step);
+    };
+    autoRotateRAF.current = requestAnimationFrame(step);
+    return () => {
+      if (autoRotateRAF.current) {
+        cancelAnimationFrame(autoRotateRAF.current);
+      }
+    };
+  }, [autoRotateSpeed]);
 
   const stopInertia = useCallback(() => {
     if (inertiaRAF.current) {
