@@ -62,10 +62,10 @@ const ProcessSectionStack = ({ items }) => {
     <ScrollStack 
       useWindowScroll={true} 
       itemDistance={40} 
-      itemStackDistance={isMobile ? 2 : 30}
+      itemStackDistance={isMobile ? 4 : 30}
       stackPosition="220px"
       baseScale={0.9}
-      itemScale={0.03}
+      itemScale={isMobile ? 0 : 0.03}
       blurAmount={0}
     >
       {itemPairs.map((pair, index) => (
