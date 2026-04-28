@@ -305,18 +305,15 @@ const ScrollStack = ({
       // Each wrapper becomes sticky at its own top offset
       // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
-        // Higher offset (280px) to clear the sticky header completely on all mobile screens
-        const topOffset = 280 + itemStackDistance * i;
+        // Tighter offset to sit right below the top-12 sticky header
+        const topOffset = 180 + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
         wrapper.style.marginBottom = '0px';
       });
 
-      // No spacer needed on mobile anymore — letting the section end naturally
-      // so header and cards scroll away together at the same time.
-
-      // Cards: just reset any leftover transform state
+      // Reset any leftover transform state
       cards.forEach(card => {
         card.style.willChange = 'auto';
         card.style.transform = 'none';
