@@ -212,38 +212,21 @@ const ScrollStack = ({
 
     if (isMobile && useWindowScroll) {
       // Mobile: pure CSS sticky — no JS needed at scroll time
-      // The header is now static (relative) on mobile, so it will scroll out of view naturally.
-      // We only need to trigger onStackComplete via an observer to notify the parent if needed.
+      // The section has min-height:250vh which provides scroll room.
+      // Header is sticky constrained by the section, so it will disappear
+      // naturally when the section scrolls past the viewport.
       const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            const header = document.getElementById('harmoni-header');
-            if (entry.isIntersecting) {
-              if (!stackCompletedRef.current) {
-                stackCompletedRef.current = true;
-                onStackComplete();
-              }
-              // Slide header out when last card is in position
-              if (header) {
-                header.style.transform = 'translateY(-100px)';
-                header.style.opacity = '0';
-              }
-            } else {
-              if (stackCompletedRef.current) {
-                stackCompletedRef.current = false;
-              }
-              // Bring header back when scrolling back up
-              if (header && entry.boundingClientRect.top > 0) {
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
-              }
+            if (entry.isIntersecting && !stackCompletedRef.current) {
+              stackCompletedRef.current = true;
+              onStackComplete();
+            } else if (!entry.isIntersecting && stackCompletedRef.current) {
+              stackCompletedRef.current = false;
             }
           },
-          { 
-            threshold: 0.9,
-            rootMargin: '-100px 0px 0px 0px'
-          }
+          { threshold: 0.5 }
         );
         observer.observe(lastWrapper);
         nativeScrollRef.current = () => observer.disconnect();
@@ -319,25 +302,22 @@ const ScrollStack = ({
 
     if (isMobile && useWindowScroll) {
       // ---- MOBILE: Pure CSS sticky, no JS transforms ----
+      // Calculate the actual offset of the header to pin cards below it
+      const headerEl = document.getElementById('harmoni-header');
+      const headerHeight = headerEl ? headerEl.offsetHeight : 160;
+      const navHeight = 80; // navbar is ~80px
+      const baseTopOffset = navHeight + headerHeight + 8;
+
       // Each wrapper becomes sticky at its own top offset
-      // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
-        // Offset starts below the header (which is sticky at top-24 + ~100px height)
-        const topOffset = 200 + itemStackDistance * i;
+        const topOffset = baseTopOffset + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
         wrapper.style.marginBottom = '0px';
+        wrapper.style.paddingLeft = '1rem';
+        wrapper.style.paddingRight = '1rem';
       });
-
-      // Add a spacer to the end of the inner container to provide scroll height
-      const inner = scroller.querySelector('.scroll-stack-inner');
-      if (inner && !inner.querySelector('.mobile-scroll-spacer')) {
-        const spacer = document.createElement('div');
-        spacer.className = 'mobile-scroll-spacer';
-        spacer.style.height = `${containerHeight * 0.7}px`; // Provide scroll room
-        inner.appendChild(spacer);
-      }
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
         card.style.willChange = 'auto';
