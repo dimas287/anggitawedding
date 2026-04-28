@@ -28,9 +28,10 @@ const AnimatedCard = ({ children, direction }) => {
   }, []);
 
   const baseClass = "transition-all duration-1000 ease-out transform h-full w-full";
-  // If direction is 'left', it means it should slide IN FROM the left (starts at -translate-x)
-  // If direction is 'right', it means it should slide IN FROM the right (starts at translate-x)
-  const hiddenClass = direction === 'left' ? "opacity-0 -translate-x-16" : "opacity-0 translate-x-16";
+  // On desktop (lg+), force cards to be fully visible and in place immediately
+  const hiddenClass = direction === 'left' 
+    ? "opacity-0 -translate-x-16 lg:translate-x-0 lg:opacity-100" 
+    : "opacity-0 translate-x-16 lg:translate-x-0 lg:opacity-100";
   const visibleClass = "opacity-100 translate-x-0";
 
   return (
@@ -42,20 +43,26 @@ const AnimatedCard = ({ children, direction }) => {
 
 const ProcessSectionStack = ({ items }) => {
   const itemPairs = chunkArray(items, 2);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile(); // Check on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const getDirection = (pairIndex, cardIndex) => {
-    if (pairIndex % 2 === 0) {
-      return cardIndex === 0 ? 'right' : 'left';
-    } else {
-      return cardIndex === 0 ? 'left' : 'right';
-    }
+    // Global index ensures perfect alternation (Right, Left, Right, Left, Right, Left)
+    const globalIndex = pairIndex * 2 + cardIndex;
+    return globalIndex % 2 === 0 ? 'right' : 'left';
   };
 
   return (
     <ScrollStack 
       useWindowScroll={true} 
       itemDistance={40} 
-      itemStackDistance={30}
+      itemStackDistance={isMobile ? 15 : 30}
       stackPosition="220px"
       baseScale={0.9}
       itemScale={0.03}
@@ -63,8 +70,7 @@ const ProcessSectionStack = ({ items }) => {
     >
       {itemPairs.map((pair, index) => (
         <ScrollStackItem key={index}>
-          {/* Increased gap from gap-6 to gap-16 on mobile for better spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-6 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 w-full">
             {pair.map((item, idx) => (
               <AnimatedCard key={idx} direction={getDirection(index, idx)}>
                 <div className="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none h-full flex flex-col justify-center">
