@@ -3,7 +3,9 @@ import Lenis from 'lenis';
 import './ScrollStack.css';
 
 export const ScrollStackItem = ({ children, itemClassName = '' }) => (
-  <div className={`scroll-stack-card ${itemClassName}`.trim()}>{children}</div>
+  <div className="scroll-stack-card-wrapper">
+    <div className={`scroll-stack-card ${itemClassName}`.trim()}>{children}</div>
+  </div>
 );
 
 const ScrollStack = ({
@@ -26,6 +28,7 @@ const ScrollStack = ({
   const animationFrameRef = useRef(null);
   const lenisRef = useRef(null);
   const cardsRef = useRef([]);
+  const wrappersRef = useRef([]);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
 
@@ -85,17 +88,18 @@ const ScrollStack = ({
     const scrollerHeight = scrollerElement.offsetHeight;
     const scrollerBottom = scrollerTop + scrollerHeight;
 
-    cardsRef.current.forEach((card, i) => {
-      if (!card) return;
+    wrappersRef.current.forEach((wrapper, i) => {
+      const card = cardsRef.current[i];
+      if (!wrapper || !card) return;
 
-      const cardTop = getElementOffset(card);
+      const cardTop = getElementOffset(wrapper);
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
       
       // Calculate the bottom position of the stack on the viewport
-      const cardHeight = card.offsetHeight;
-      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * cardsRef.current.length);
+      const cardHeight = wrapper.offsetHeight;
+      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
       
       // Pin ends when the bottom of the scroller reaches the bottom of the stack
       // This ensures the next section perfectly follows the stacked cards without empty space!
@@ -109,8 +113,8 @@ const ScrollStack = ({
       let blur = 0;
       if (blurAmount) {
         let topCardIndex = 0;
-        for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
+        for (let j = 0; j < wrappersRef.current.length; j++) {
+          const jCardTop = getElementOffset(wrappersRef.current[j]);
           const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
           if (scrollTop >= jTriggerStart) {
             topCardIndex = j;
@@ -266,7 +270,14 @@ const ScrollStack = ({
         : scroller.querySelectorAll('.scroll-stack-card')
     );
 
+    const wrappers = Array.from(
+      useWindowScroll
+        ? document.querySelectorAll('.scroll-stack-card-wrapper')
+        : scroller.querySelectorAll('.scroll-stack-card-wrapper')
+    );
+
     cardsRef.current = cards;
+    wrappersRef.current = wrappers;
     const transformsCache = lastTransformsRef.current;
 
     cards.forEach((card, i) => {
