@@ -3,15 +3,15 @@
     "file": "assets/all-DbRkgOy0.css",
     "src": "_all.min-!~{005}~.js"
   },
-  "_client-sch3SfBg.js": {
-    "file": "assets/client-sch3SfBg.js",
+  "_client-DT6j8k-R.js": {
+    "file": "assets/client-DT6j8k-R.js",
     "name": "client"
   },
-  "_proxy-Pt1QLvxO.js": {
-    "file": "assets/proxy-Pt1QLvxO.js",
+  "_proxy-Bd1vabiS.js": {
+    "file": "assets/proxy-Bd1vabiS.js",
     "name": "proxy",
     "imports": [
-      "_client-sch3SfBg.js"
+      "_client-DT6j8k-R.js"
     ]
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
@@ -31,20 +31,17 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BVf_ZlUj.css",
+    "file": "assets/app-CHTJhv_P.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-D1u1JACJ.js",
+    "file": "assets/app-Bj-GA2Lv.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
-    "imports": [
-      "_client-sch3SfBg.js"
-    ],
     "css": [
-      "assets/app-CoZ_lvaT.css",
+      "assets/app-BsM4JrO0.css",
       "assets/all-DbRkgOy0.css"
     ],
     "assets": [
@@ -55,12 +52,12 @@
     ]
   },
   "resources/js/invitation-app/main.jsx": {
-    "file": "assets/main-HxRbdY5P.js",
+    "file": "assets/main-B5_ikrkO.js",
     "name": "main",
     "src": "resources/js/invitation-app/main.jsx",
     "isEntry": true,
     "imports": [
-      "_client-sch3SfBg.js"
+      "_client-DT6j8k-R.js"
     ],
     "dynamicImports": [
       "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
@@ -69,13 +66,13 @@
     ]
   },
   "resources/js/invitation-app/src/templates/tema1/tema1.jsx": {
-    "file": "assets/tema1-nMqFmLgD.js",
+    "file": "assets/tema1-Cdbqh3FS.js",
     "name": "tema1",
     "src": "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_client-sch3SfBg.js",
-      "_proxy-Pt1QLvxO.js"
+      "_client-DT6j8k-R.js",
+      "_proxy-Bd1vabiS.js"
     ],
     "css": [
       "assets/all-DbRkgOy0.css"
@@ -88,25 +85,25 @@
     ]
   },
   "resources/js/invitation-app/src/templates/tema2/tema2.jsx": {
-    "file": "assets/tema2-DB9afhsg.js",
+    "file": "assets/tema2-OLgi1ffz.js",
     "name": "tema2",
     "src": "resources/js/invitation-app/src/templates/tema2/tema2.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_client-sch3SfBg.js",
-      "_proxy-Pt1QLvxO.js"
+      "_client-DT6j8k-R.js",
+      "_proxy-Bd1vabiS.js"
     ],
     "css": [
       "assets/tema2-BIT1mPn_.css"
     ]
   },
   "resources/js/invitation-app/src/templates/tema3/tema3.jsx": {
-    "file": "assets/tema3-_qLEKsec.js",
+    "file": "assets/tema3-D8-ieltK.js",
     "name": "tema3",
     "src": "resources/js/invitation-app/src/templates/tema3/tema3.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_client-sch3SfBg.js"
+      "_client-DT6j8k-R.js"
     ],
     "css": [
       "assets/tema3-DCBnqc6s.css",
@@ -120,12 +117,12 @@
     ]
   },
   "resources/js/portfolio-gallery.jsx": {
-    "file": "assets/portfolio-gallery-BbZDr70n.js",
+    "file": "assets/portfolio-gallery-zqAlBptE.js",
     "name": "portfolio-gallery",
     "src": "resources/js/portfolio-gallery.jsx",
     "isEntry": true,
     "imports": [
-      "_client-sch3SfBg.js"
+      "_client-DT6j8k-R.js"
     ],
     "css": [
       "assets/portfolio-gallery-57J7dGls.css"

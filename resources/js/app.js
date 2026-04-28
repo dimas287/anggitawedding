@@ -29,4 +29,3 @@ window.FullCalendar = {
     listPlugin,
 };
 
-import './process-stack-init';

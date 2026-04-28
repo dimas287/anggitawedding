@@ -717,30 +717,122 @@
     </div>
 </section>
 
-{{-- LAYANAN --}}
-<section class="py-24 bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500" id="layanan" data-reveal data-reveal-direction="up">
+{{-- LAYANAN / SCROLL STACK --}}
+@php $processPairs = array_chunk($processSection['items'], 2); @endphp
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500" id="layanan">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="sticky top-0 pt-24 pb-12 bg-white/80 dark:bg-[#0A0A0A]/80 backdrop-blur-md z-40 text-center mb-8" data-reveal>
+        {{-- Header --}}
+        <div class="text-center pt-24 pb-10">
             <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>
-        <div id="harmoni-pelayanan-root" data-items='@json($processSection['items'])'>
-            {{-- Fallback content for SEO and No-JS --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                @php $serviceDirections = ['left','right','up']; @endphp
-                @foreach($processSection['items'] as $service)
-                <div class="p-8 rounded-xl border border-gray-100 dark:border-white/10 transition-colors group section-glow bg-transparent dark:bg-[#111111]/50">
-                    <div class="w-10 h-10 rounded border border-gray-200 dark:border-white/15 flex items-center justify-center mb-6 transition-colors">
-                        <i class="fas {{ $service['icon'] }} text-gray-400 dark:text-gray-500"></i>
+
+        {{-- Stack Area --}}
+        <div class="process-stack-area" style="position:relative; overflow:hidden;">
+            @foreach($processPairs as $rowIndex => $pair)
+            <div class="process-row" data-row="{{ $rowIndex }}">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    @foreach($pair as $service)
+                    <div class="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none">
+                        <div class="w-12 h-12 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center mb-6 transition-colors">
+                            <i class="fas {{ $service['icon'] }} text-lg text-gray-400 dark:text-gray-500 group-hover:text-gray-800 dark:group-hover:text-yellow-400 transition-colors"></i>
+                        </div>
+                        <h3 class="font-medium text-lg text-gray-900 dark:text-white mb-3 tracking-wide">{{ $service['title'] }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{{ $service['desc'] }}</p>
                     </div>
-                    <h3 class="font-medium text-gray-900 dark:text-white mb-3 tracking-wide">{{ $service['title'] }}</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{{ $service['desc'] }}</p>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
     </div>
+    <div class="pb-24"></div>
 </section>
+
+<style>
+    .process-row {
+        border-radius: 1rem;
+        padding: 0;
+        box-sizing: border-box;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    const section = document.getElementById('layanan');
+    if (!section) return;
+
+    const rows = gsap.utils.toArray(section.querySelectorAll('.process-row'));
+    if (rows.length < 2) return;
+
+    const stackArea = section.querySelector('.process-stack-area');
+
+    // Measure the first row to set container height
+    const firstRowH = rows[0].offsetHeight;
+    const stackGap = 25;
+
+    // Set container height = first row height (all others will overlay)
+    stackArea.style.height = firstRowH + 'px';
+
+    // Position all rows absolutely except first
+    rows.forEach(function (row, i) {
+        if (i === 0) {
+            row.style.position = 'relative';
+            row.style.zIndex = rows.length + 1;
+        } else {
+            row.style.position = 'absolute';
+            row.style.top = '0';
+            row.style.left = '0';
+            row.style.right = '0';
+            row.style.zIndex = rows.length + 1 + i; // later rows on top
+            gsap.set(row, { yPercent: 110 }); // start below
+        }
+    });
+
+    // Total scroll distance for the pin
+    var scrollPerRow = 500;
+    var totalScroll = (rows.length - 1) * scrollPerRow;
+
+    // Create pinned timeline
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=' + totalScroll,
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+        }
+    });
+
+    // Animate each subsequent row sliding up
+    for (var i = 1; i < rows.length; i++) {
+        var rowLabel = 'row' + i;
+
+        // Slide current row up into view
+        tl.to(rows[i], {
+            yPercent: 0,
+            duration: 1,
+            ease: 'power2.out',
+        }, rowLabel);
+
+        // Scale down and darken all previous rows
+        for (var j = 0; j < i; j++) {
+            var depth = i - j;
+            tl.to(rows[j], {
+                scale: 1 - depth * 0.05,
+                y: -depth * stackGap,
+                filter: 'brightness(' + (1 - depth * 0.12) + ')',
+                duration: 1,
+                ease: 'power2.out',
+            }, rowLabel);
+        }
+    }
+});
+</script>
 
 {{-- UNDANGAN DIGITAL --}}
 <section class="relative z-30 bg-white dark:bg-[#0A0A0A]" id="undangan" data-reveal data-reveal-direction="up">
