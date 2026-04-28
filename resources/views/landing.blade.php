@@ -717,43 +717,40 @@
     </div>
 </section>
 
-{{-- LAYANAN / SCROLL STACK --}}
-@php $processPairs = array_chunk($processSection['items'], 2); @endphp
-<div class="layanan-scroll-wrapper relative">
-    <section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 sticky top-0 h-screen flex flex-col" id="layanan">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full">
-            {{-- Header --}}
-            <div class="text-center pt-16 lg:pt-24 pb-8 lg:pb-10 shrink-0">
-                <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
-                <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
-            </div>
-
-            {{-- Stack Area — no overflow-hidden here, JS adds it after setup --}}
-            <div class="process-stack-area relative w-full mb-8 lg:mb-16">
-                @foreach($processPairs as $rowIndex => $pair)
-                <div class="process-row w-full" data-row="{{ $rowIndex }}">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        @foreach($pair as $service)
-                        <div class="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none">
-                            <div class="w-12 h-12 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center mb-6 transition-colors">
-                                <i class="fas {{ $service['icon'] }} text-lg text-gray-400 dark:text-gray-500 group-hover:text-gray-800 dark:group-hover:text-yellow-400 transition-colors"></i>
-                            </div>
-                            <h3 class="font-medium text-lg text-gray-900 dark:text-white mb-3 tracking-wide">{{ $service['title'] }}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{{ $service['desc'] }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endforeach
-            </div>
+{{-- THE PROCESS (Harmoni Pelayanan) - GSAP PIN --}}
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10 min-h-screen flex flex-col justify-center" id="layanan">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full py-16 lg:py-24">
+        {{-- Header --}}
+        <div class="text-center pb-8 lg:pb-12 shrink-0">
+            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
+            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>
-    </section>
-</div>
+
+        {{-- Stack Area --}}
+        <div class="process-stack-area relative w-full mb-8 lg:mb-16">
+            @php $processPairs = array_chunk($processSection['items'], 2); @endphp
+            @foreach($processPairs as $rowIndex => $pair)
+            <div class="process-row w-full" data-row="{{ $rowIndex }}">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    @foreach($pair as $service)
+                    <div class="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none">
+                        <div class="w-12 h-12 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center mb-6 transition-colors">
+                            <i class="fas {{ $service['icon'] }} text-lg text-gray-400 dark:text-gray-500 group-hover:text-gray-800 dark:group-hover:text-yellow-400 transition-colors"></i>
+                        </div>
+                        <h3 class="font-medium text-lg text-gray-900 dark:text-white mb-3 tracking-wide">{{ $service['title'] }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{{ $service['desc'] }}</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 
 <script>
 (function() {
     function initScrollStack() {
-        // Poll until GSAP is loaded (app.js is type="module")
         if (!window.gsap || !window.ScrollTrigger) {
             return setTimeout(initScrollStack, 50);
         }
@@ -761,79 +758,71 @@
         var section = document.getElementById('layanan');
         if (!section) return;
 
-        var wrapper = section.closest('.layanan-scroll-wrapper');
-        if (!wrapper) return;
-
         var rows = window.gsap.utils.toArray(section.querySelectorAll('.process-row'));
         if (rows.length < 2) return;
 
         var stackArea = section.querySelector('.process-stack-area');
-        var firstRowH = rows[0].offsetHeight;
-        var stackGap = 25;
-        var scrollPerRow = 600;
-        var totalScroll = (rows.length - 1) * scrollPerRow;
+        
+        // Wait for fonts/images to render layout properly
+        setTimeout(function() {
+            var firstRowH = rows[0].offsetHeight;
+            var stackGap = 25;
+            var scrollPerRow = 600;
+            var totalScroll = (rows.length - 1) * scrollPerRow;
 
-        // Set wrapper height to create scroll space for sticky
-        wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
+            // Clip the stack area to exactly the first row's height
+            stackArea.style.height = firstRowH + 'px';
+            stackArea.style.overflow = 'hidden';
 
-        // Now set stack area to clipped container (prevent flex stretching)
-        stackArea.style.flex = 'none';
-        stackArea.style.height = firstRowH + 'px';
-        stackArea.style.overflow = 'hidden';
+            // Absolute position all rows after the first
+            rows.forEach(function (row, i) {
+                row.style.position = i === 0 ? 'relative' : 'absolute';
+                row.style.zIndex = i + 1;
+                if (i > 0) {
+                    row.style.top = '0';
+                    row.style.left = '0';
+                    row.style.right = '0';
+                    window.gsap.set(row, { yPercent: 110 });
+                }
+            });
 
-        // Position rows: first stays relative, rest start hidden below
-        rows.forEach(function (row, i) {
-            row.style.position = i === 0 ? 'relative' : 'absolute';
-            row.style.zIndex = i + 1;
-            if (i > 0) {
-                row.style.top = '0';
-                row.style.left = '0';
-                row.style.right = '0';
-                window.gsap.set(row, { yPercent: 110 });
-            }
-        });
+            // Create ScrollTrigger timeline WITH GSAP PIN
+            var tl = window.gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'center center',
+                    end: '+=' + totalScroll,
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.6,
+                    // Fix z-index overlap: keep it low so it stays behind other modal/menus
+                    pinType: "transform"
+                }
+            });
 
-        // Timeline driven by wrapper scroll — CSS sticky handles pinning
-        var tl = window.gsap.timeline({
-            scrollTrigger: {
-                trigger: wrapper,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 0.6,
-            }
-        });
-
-        // Animate each row sliding up and stacking
-        for (var i = 1; i < rows.length; i++) {
-            var rowLabel = 'row' + i;
-
-            tl.to(rows[i], {
-                yPercent: 0,
-                duration: 1,
-                ease: 'power2.out',
-            }, rowLabel);
-
-            for (var j = 0; j < i; j++) {
-                var depth = i - j;
-                tl.to(rows[j], {
-                    scale: 1 - depth * 0.05,
-                    y: -depth * stackGap,
-                    filter: 'brightness(' + (1 - depth * 0.12) + ')',
+            // Animate rows up
+            for (var i = 1; i < rows.length; i++) {
+                var rowLabel = 'row' + i;
+                tl.to(rows[i], {
+                    yPercent: 0,
                     duration: 1,
                     ease: 'power2.out',
                 }, rowLabel);
-            }
-        }
 
-        // Recalculate on resize
-        window.addEventListener('resize', function () {
-            wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
-            stackArea.style.height = rows[0].offsetHeight + 'px';
-            ScrollTrigger.refresh();
-        });
+                for (var j = 0; j < i; j++) {
+                    var depth = i - j;
+                    tl.to(rows[j], {
+                        scale: 1 - depth * 0.05,
+                        y: -depth * stackGap,
+                        filter: 'brightness(' + (1 - depth * 0.12) + ')',
+                        duration: 1,
+                        ease: 'power2.out',
+                    }, rowLabel);
+                }
+            }
+        }, 100);
     }
 
-    // Use window load (fires after modules) + polling fallback
     if (document.readyState === 'complete') {
         initScrollStack();
     } else {
