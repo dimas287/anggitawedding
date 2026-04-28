@@ -324,7 +324,7 @@ const ScrollStack = ({
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
-        wrapper.style.marginBottom = i < wrappers.length - 1 ? '25vh' : '0'; // Add reading delay between cards
+        wrapper.style.marginBottom = '0px';
       });
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
@@ -358,30 +358,11 @@ const ScrollStack = ({
 
     setupScrolling();
 
-    // Sync all cards to the same min-height to prevent text bleeding and ensure perfect overlap
-    const syncHeights = () => {
-      if (!cardsRef.current.length) return;
-      cardsRef.current.forEach(card => card.style.minHeight = 'auto');
-      let maxH = 0;
-      cardsRef.current.forEach(card => {
-        if (card.offsetHeight > maxH) maxH = card.offsetHeight;
-      });
-      cardsRef.current.forEach(card => card.style.minHeight = `${maxH}px`);
-    };
-
-    // Run initially and set up listeners for font loads/resizes
-    syncHeights();
-    window.addEventListener('resize', syncHeights);
-    if (document.fonts) {
-      document.fonts.ready.then(syncHeights);
-    }
-
     if (!isMobile || !useWindowScroll) {
       updateCardTransforms();
     }
 
     return () => {
-      window.removeEventListener('resize', syncHeights);
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (lenisRef.current) lenisRef.current.destroy();
       if (nativeScrollRef.current) {
