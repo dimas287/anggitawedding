@@ -10,7 +10,8 @@
     <link rel="canonical" href="{{ url()->current() }}">
     <script>
         // Set initial dark mode state to prevent flash
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Default to dark mode if no preference is saved
+        if (localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme')) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -18,7 +19,7 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.store('theme', {
-                mode: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+                mode: localStorage.getItem('theme') || 'dark',
                 toggle() {
                     this.mode = this.mode === 'dark' ? 'light' : 'dark';
                     localStorage.setItem('theme', this.mode);
