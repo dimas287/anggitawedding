@@ -211,10 +211,24 @@ const ScrollStack = ({
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     if (isMobile && useWindowScroll) {
-      // Mobile: pure CSS sticky — no JS needed at scroll time
-      // The header is sticky in Blade, and cards are sticky here.
-      // By not adding a spacer, the section will end naturally after the last card pins,
-      // causing the header and cards to scroll away together.
+      wrappersRef.current.forEach((wrapper, i) => {
+        wrapper.style.position = 'relative';
+        // Overlap wrappers to keep section height compact
+        wrapper.style.marginBottom = '-350px'; 
+        wrapper.style.overflow = 'visible';
+        wrapper.style.height = 'auto';
+
+        const card = cardsRef.current[i];
+        if (card) {
+          card.style.position = 'sticky';
+          card.style.top = `${220 + (i * itemStackDistance)}px`;
+          card.style.zIndex = `${40 + i}`;
+          card.style.willChange = 'auto';
+          card.style.transform = 'none';
+          card.style.filter = 'none';
+        }
+      });
+      
       const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
@@ -274,7 +288,7 @@ const ScrollStack = ({
       lenisRef.current = lenis;
       return lenis;
     }
-  }, [handleScroll, useWindowScroll, onStackComplete]);
+  }, [handleScroll, useWindowScroll, onStackComplete, itemStackDistance]);
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
@@ -300,26 +314,7 @@ const ScrollStack = ({
     const containerHeight = useWindowScroll ? window.innerHeight : scroller.clientHeight;
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
 
-    if (isMobile && useWindowScroll) {
-      // ---- MOBILE: Pure CSS sticky, no JS transforms ----
-      // Each wrapper becomes sticky at its own top offset
-      // so they stack up naturally as user scrolls
-      wrappers.forEach((wrapper, i) => {
-        // Tighter offset to sit right below the top-12 sticky header
-        const topOffset = 180 + itemStackDistance * i;
-        wrapper.style.position = 'sticky';
-        wrapper.style.top = `${topOffset}px`;
-        wrapper.style.zIndex = `${40 + i}`;
-        wrapper.style.marginBottom = '0px';
-      });
-
-      // Reset any leftover transform state
-      cards.forEach(card => {
-        card.style.willChange = 'auto';
-        card.style.transform = 'none';
-        card.style.filter = 'none';
-      });
-    } else {
+    if (!isMobile || !useWindowScroll) {
       // ---- DESKTOP: JS margin + transform approach ----
       wrappers.forEach((wrapper, i) => {
         wrapper.style.position = '';
