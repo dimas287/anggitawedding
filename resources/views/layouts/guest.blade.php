@@ -95,8 +95,6 @@
     </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -113,7 +111,7 @@
         ::selection { background: rgba(0, 0, 0, 0.1); color: #111; }
 
         html {
-            overflow-x: hidden;
+            overflow-x: clip;
             scroll-behavior: smooth;
         }
 
@@ -124,7 +122,7 @@
             position: relative;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: clip;
             -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;

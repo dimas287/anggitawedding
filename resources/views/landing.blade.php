@@ -729,9 +729,9 @@
             </div>
 
             {{-- Stack Area — no overflow-hidden here, JS adds it after setup --}}
-            <div class="process-stack-area relative flex-1 mb-8 lg:mb-16">
+            <div class="process-stack-area relative w-full mb-8 lg:mb-16">
                 @foreach($processPairs as $rowIndex => $pair)
-                <div class="process-row" data-row="{{ $rowIndex }}">
+                <div class="process-row w-full" data-row="{{ $rowIndex }}">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         @foreach($pair as $service)
                         <div class="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none">
@@ -753,8 +753,8 @@
 <script>
 (function() {
     function initScrollStack() {
-        // Poll until GSAP is loaded (app.js is type="module", loads after inline scripts)
-        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        // Poll until GSAP is loaded (app.js is type="module")
+        if (!window.gsap || !window.ScrollTrigger) {
             return setTimeout(initScrollStack, 50);
         }
 
@@ -764,7 +764,7 @@
         var wrapper = section.closest('.layanan-scroll-wrapper');
         if (!wrapper) return;
 
-        var rows = gsap.utils.toArray(section.querySelectorAll('.process-row'));
+        var rows = window.gsap.utils.toArray(section.querySelectorAll('.process-row'));
         if (rows.length < 2) return;
 
         var stackArea = section.querySelector('.process-stack-area');
@@ -776,7 +776,8 @@
         // Set wrapper height to create scroll space for sticky
         wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
 
-        // Now set stack area to clipped container
+        // Now set stack area to clipped container (prevent flex stretching)
+        stackArea.style.flex = 'none';
         stackArea.style.height = firstRowH + 'px';
         stackArea.style.overflow = 'hidden';
 
@@ -788,12 +789,12 @@
                 row.style.top = '0';
                 row.style.left = '0';
                 row.style.right = '0';
-                gsap.set(row, { yPercent: 110 });
+                window.gsap.set(row, { yPercent: 110 });
             }
         });
 
-        // Timeline driven by wrapper scroll — no pin needed, CSS sticky handles it
-        var tl = gsap.timeline({
+        // Timeline driven by wrapper scroll — CSS sticky handles pinning
+        var tl = window.gsap.timeline({
             scrollTrigger: {
                 trigger: wrapper,
                 start: 'top top',
