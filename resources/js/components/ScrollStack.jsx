@@ -90,7 +90,7 @@ const ScrollStack = ({
     const scrollerBottom = scrollerTop + scrollerHeight;
 
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
-    
+
     // Dynamically calculate header offset to prevent overlap
     const headerEl = document.getElementById('harmoni-header');
     let baseTopOffset = 0;
@@ -105,7 +105,7 @@ const ScrollStack = ({
 
     const lastCard = cardsRef.current[cardsRef.current.length - 1];
     const cardHeight = lastCard ? lastCard.offsetHeight : 0;
-    
+
     const effectiveStackPositionPx = isMobile ? baseTopOffset : stackPositionPx;
     const stackBottom = effectiveStackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
     const pinEnd = scrollerBottom - stackBottom;
@@ -200,7 +200,7 @@ const ScrollStack = ({
         stackCompletedRef.current = false;
       }
     }
-    
+
     isUpdatingRef.current = false;
   }, [
     itemScale,
@@ -236,7 +236,7 @@ const ScrollStack = ({
           });
         }
       };
-      
+
       window.addEventListener('scroll', handleNativeScroll, { passive: true });
       nativeScrollRef.current = () => {
         window.removeEventListener('scroll', handleNativeScroll);
@@ -315,7 +315,7 @@ const ScrollStack = ({
       const headerEl = document.getElementById('harmoni-header');
       let baseTopOffset = 80; // nav height fallback
       if (headerEl) {
-        const stickyTop = 80; // match top-20
+        const stickyTop = 100; // match top-20
         baseTopOffset = stickyTop + headerEl.offsetHeight + 10; // 10px gap
       }
 
