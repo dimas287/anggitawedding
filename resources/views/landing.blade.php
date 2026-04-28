@@ -728,8 +728,8 @@
                 <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
             </div>
 
-            {{-- Stack Area --}}
-            <div class="process-stack-area relative overflow-hidden flex-1 mb-8 lg:mb-16">
+            {{-- Stack Area — no overflow-hidden here, JS adds it after setup --}}
+            <div class="process-stack-area relative flex-1 mb-8 lg:mb-16">
                 @foreach($processPairs as $rowIndex => $pair)
                 <div class="process-row" data-row="{{ $rowIndex }}">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -751,83 +751,94 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    var section = document.getElementById('layanan');
-    if (!section) return;
-
-    var wrapper = section.closest('.layanan-scroll-wrapper');
-    if (!wrapper) return;
-
-    var rows = gsap.utils.toArray(section.querySelectorAll('.process-row'));
-    if (rows.length < 2) return;
-
-    var stackArea = section.querySelector('.process-stack-area');
-    var firstRowH = rows[0].offsetHeight;
-    var stackGap = 25;
-    var scrollPerRow = 500;
-    var totalScroll = (rows.length - 1) * scrollPerRow;
-
-    // Wrapper height = viewport + scroll distance for animations
-    wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
-
-    // Set stack area height to first row
-    stackArea.style.height = firstRowH + 'px';
-
-    // Position rows
-    rows.forEach(function (row, i) {
-        if (i === 0) {
-            row.style.position = 'relative';
-            row.style.zIndex = rows.length + 1;
-        } else {
-            row.style.position = 'absolute';
-            row.style.top = '0';
-            row.style.left = '0';
-            row.style.right = '0';
-            row.style.zIndex = rows.length + 1 + i;
-            gsap.set(row, { yPercent: 110 });
+(function() {
+    function initScrollStack() {
+        // Poll until GSAP is loaded (app.js is type="module", loads after inline scripts)
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+            return setTimeout(initScrollStack, 50);
         }
-    });
 
-    // Timeline driven by wrapper scroll — NO pin, CSS sticky handles it
-    var tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.6,
-        }
-    });
+        var section = document.getElementById('layanan');
+        if (!section) return;
 
-    // Animate each row sliding up and stacking
-    for (var i = 1; i < rows.length; i++) {
-        var rowLabel = 'row' + i;
+        var wrapper = section.closest('.layanan-scroll-wrapper');
+        if (!wrapper) return;
 
-        tl.to(rows[i], {
-            yPercent: 0,
-            duration: 1,
-            ease: 'power2.out',
-        }, rowLabel);
+        var rows = gsap.utils.toArray(section.querySelectorAll('.process-row'));
+        if (rows.length < 2) return;
 
-        for (var j = 0; j < i; j++) {
-            var depth = i - j;
-            tl.to(rows[j], {
-                scale: 1 - depth * 0.05,
-                y: -depth * stackGap,
-                filter: 'brightness(' + (1 - depth * 0.12) + ')',
+        var stackArea = section.querySelector('.process-stack-area');
+        var firstRowH = rows[0].offsetHeight;
+        var stackGap = 25;
+        var scrollPerRow = 600;
+        var totalScroll = (rows.length - 1) * scrollPerRow;
+
+        // Set wrapper height to create scroll space for sticky
+        wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
+
+        // Now set stack area to clipped container
+        stackArea.style.height = firstRowH + 'px';
+        stackArea.style.overflow = 'hidden';
+
+        // Position rows: first stays relative, rest start hidden below
+        rows.forEach(function (row, i) {
+            row.style.position = i === 0 ? 'relative' : 'absolute';
+            row.style.zIndex = i + 1;
+            if (i > 0) {
+                row.style.top = '0';
+                row.style.left = '0';
+                row.style.right = '0';
+                gsap.set(row, { yPercent: 110 });
+            }
+        });
+
+        // Timeline driven by wrapper scroll — no pin needed, CSS sticky handles it
+        var tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: wrapper,
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.6,
+            }
+        });
+
+        // Animate each row sliding up and stacking
+        for (var i = 1; i < rows.length; i++) {
+            var rowLabel = 'row' + i;
+
+            tl.to(rows[i], {
+                yPercent: 0,
                 duration: 1,
                 ease: 'power2.out',
             }, rowLabel);
+
+            for (var j = 0; j < i; j++) {
+                var depth = i - j;
+                tl.to(rows[j], {
+                    scale: 1 - depth * 0.05,
+                    y: -depth * stackGap,
+                    filter: 'brightness(' + (1 - depth * 0.12) + ')',
+                    duration: 1,
+                    ease: 'power2.out',
+                }, rowLabel);
+            }
         }
+
+        // Recalculate on resize
+        window.addEventListener('resize', function () {
+            wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
+            stackArea.style.height = rows[0].offsetHeight + 'px';
+            ScrollTrigger.refresh();
+        });
     }
 
-    // Recalculate on resize
-    window.addEventListener('resize', function () {
-        wrapper.style.height = (window.innerHeight + totalScroll) + 'px';
-        ScrollTrigger.refresh();
-    });
-});
+    // Use window load (fires after modules) + polling fallback
+    if (document.readyState === 'complete') {
+        initScrollStack();
+    } else {
+        window.addEventListener('load', initScrollStack);
+    }
+})();
 </script>
 
 {{-- UNDANGAN DIGITAL --}}
