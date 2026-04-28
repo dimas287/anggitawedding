@@ -719,7 +719,7 @@
 
 {{-- LAYANAN / SCROLL STACK --}}
 @php $processPairs = array_chunk($processSection['items'], 2); @endphp
-<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-[1]" id="layanan">
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-[1] min-h-screen" id="layanan">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
         <div class="text-center pt-24 pb-10">
