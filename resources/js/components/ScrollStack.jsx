@@ -89,78 +89,119 @@ const ScrollStack = ({
     const scrollerHeight = scrollerElement.offsetHeight;
     const scrollerBottom = scrollerTop + scrollerHeight;
 
-    wrappersRef.current.forEach((wrapper, i) => {
-      const card = cardsRef.current[i];
-      if (!wrapper || !card) return;
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
+    
+    // Dynamically calculate header offset to prevent overlap
+    const headerEl = document.getElementById('harmoni-header');
+    let baseTopOffset = 0;
+    if (headerEl) {
+      const stickyTop = isMobile ? 48 : 96; // match top-12 (48px) and lg:top-24 (96px)
+      baseTopOffset = stickyTop + headerEl.offsetHeight + (isMobile ? 10 : 20);
+    }
 
-      const cardTop = getElementOffset(wrapper);
-      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
+    let stackPositionPx = parsePercentage(stackPosition, containerHeight);
+    if (!isMobile && baseTopOffset > 0) {
+      stackPositionPx = Math.max(stackPositionPx, baseTopOffset);
+    }
 
-      const cardHeight = wrapper.offsetHeight;
-      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
-      const pinEnd = scrollerBottom - stackBottom;
+    const lastCard = cardsRef.current[cardsRef.current.length - 1];
+    const cardHeight = lastCard ? lastCard.offsetHeight : 0;
+    
+    const effectiveStackPositionPx = isMobile ? baseTopOffset : stackPositionPx;
+    const stackBottom = effectiveStackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
+    const pinEnd = scrollerBottom - stackBottom;
 
-      const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
-      const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
-      const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+    // Sync header exit
+    if (headerEl) {
+      if (scrollTop > pinEnd) {
+        const overflow = scrollTop - pinEnd;
+        headerEl.style.transform = `translate3d(0, -${overflow}px, 0)`;
+      } else {
+        headerEl.style.transform = 'translate3d(0, 0, 0)';
+      }
+    }
 
-      let blur = 0;
-      if (blurAmount) {
-        let topCardIndex = 0;
-        for (let j = 0; j < wrappersRef.current.length; j++) {
-          const jCardTop = getElementOffset(wrappersRef.current[j]);
-          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-          if (scrollTop >= jTriggerStart) topCardIndex = j;
+    // Only apply JS transforms to cards on desktop (mobile uses CSS sticky)
+    if (!isMobile) {
+      wrappersRef.current.forEach((wrapper, i) => {
+        const card = cardsRef.current[i];
+        if (!wrapper || !card) return;
+
+        const cardTop = getElementOffset(wrapper);
+        const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
+        const triggerEnd = cardTop - scaleEndPositionPx;
+        const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
+
+        const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
+        const targetScale = baseScale + i * itemScale;
+        const scale = 1 - scaleProgress * (1 - targetScale);
+        const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+
+        let blur = 0;
+        if (blurAmount) {
+          let topCardIndex = 0;
+          for (let j = 0; j < wrappersRef.current.length; j++) {
+            const jCardTop = getElementOffset(wrappersRef.current[j]);
+            const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
+            if (scrollTop >= jTriggerStart) topCardIndex = j;
+          }
+          if (i < topCardIndex) {
+            blur = Math.max(0, (topCardIndex - i) * blurAmount);
+          }
         }
-        if (i < topCardIndex) {
-          blur = Math.max(0, (topCardIndex - i) * blurAmount);
+
+        let translateY = 0;
+        const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
+        if (isPinned) {
+          translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
+        } else if (scrollTop > pinEnd) {
+          translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
         }
-      }
 
-      let translateY = 0;
-      const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-      if (isPinned) {
-        translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
-      } else if (scrollTop > pinEnd) {
-        translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
-      }
+        const newTransform = {
+          translateY: Math.round(translateY * 100) / 100,
+          scale: Math.round(scale * 1000) / 1000,
+          rotation: Math.round(rotation * 100) / 100,
+          blur: Math.round(blur * 100) / 100
+        };
 
-      const newTransform = {
-        translateY: Math.round(translateY * 100) / 100,
-        scale: Math.round(scale * 1000) / 1000,
-        rotation: Math.round(rotation * 100) / 100,
-        blur: Math.round(blur * 100) / 100
-      };
+        const lastTransform = lastTransformsRef.current.get(i);
+        const hasChanged =
+          !lastTransform ||
+          Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
+          Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
+          Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
+          Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
 
-      const lastTransform = lastTransformsRef.current.get(i);
-      const hasChanged =
-        !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
-
-      if (hasChanged) {
-        const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
-        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
-        card.style.transform = transform;
-        card.style.filter = filter;
-        lastTransformsRef.current.set(i, newTransform);
-      }
-
-      if (i === cardsRef.current.length - 1) {
-        const isInView = scrollTop >= pinStart && scrollTop <= pinEnd;
-        if (isInView && !stackCompletedRef.current) {
-          stackCompletedRef.current = true;
-          onStackComplete?.();
-        } else if (!isInView && stackCompletedRef.current) {
-          stackCompletedRef.current = false;
+        if (hasChanged) {
+          const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+          const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
+          card.style.transform = transform;
+          card.style.filter = filter;
+          lastTransformsRef.current.set(i, newTransform);
         }
+
+        if (i === cardsRef.current.length - 1) {
+          const isInView = scrollTop >= pinStart && scrollTop <= pinEnd;
+          if (isInView && !stackCompletedRef.current) {
+            stackCompletedRef.current = true;
+            onStackComplete?.();
+          } else if (!isInView && stackCompletedRef.current) {
+            stackCompletedRef.current = false;
+          }
+        }
+      });
+    } else {
+      // Mobile onStackComplete fallback
+      const isInView = scrollTop <= pinEnd;
+      if (!isInView && !stackCompletedRef.current) {
+        stackCompletedRef.current = true;
+        onStackComplete?.();
+      } else if (isInView && stackCompletedRef.current) {
+        stackCompletedRef.current = false;
       }
-    });
+    }
+    
     isUpdatingRef.current = false;
   }, [
     itemScale,
@@ -186,26 +227,21 @@ const ScrollStack = ({
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     if (isMobile && useWindowScroll) {
-      // Mobile: pure CSS sticky — no JS needed at scroll time
-      // The section has min-height:250vh which provides scroll room.
-      // Header is sticky constrained by the section, so it will disappear
-      // naturally when the section scrolls past the viewport.
-      const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
-      if (lastWrapper && onStackComplete) {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting && !stackCompletedRef.current) {
-              stackCompletedRef.current = true;
-              onStackComplete();
-            } else if (!entry.isIntersecting && stackCompletedRef.current) {
-              stackCompletedRef.current = false;
-            }
-          },
-          { threshold: 0.5 }
-        );
-        observer.observe(lastWrapper);
-        nativeScrollRef.current = () => observer.disconnect();
-      }
+      // Mobile: pure CSS sticky for cards
+      // We still need JS to sync the header exit animation
+      const handleNativeScroll = () => {
+        if (!animationFrameRef.current) {
+          animationFrameRef.current = requestAnimationFrame(() => {
+            updateCardTransforms();
+            animationFrameRef.current = null;
+          });
+        }
+      };
+      
+      window.addEventListener('scroll', handleNativeScroll, { passive: true });
+      nativeScrollRef.current = () => {
+        window.removeEventListener('scroll', handleNativeScroll);
+      };
       return null;
     }
 
@@ -277,10 +313,12 @@ const ScrollStack = ({
 
     if (isMobile && useWindowScroll) {
       // ---- MOBILE: Pure CSS sticky, no JS transforms ----
-      // Measure the actual rendered header to position cards exactly below it
-      // On mobile the header is not sticky, so getBoundingClientRect reflects its natural scroll position
-      const navHeight = 80;
-      const baseTopOffset = navHeight + 20;
+      const headerEl = document.getElementById('harmoni-header');
+      let baseTopOffset = 80; // nav height fallback
+      if (headerEl) {
+        const stickyTop = 48; // match top-12
+        baseTopOffset = stickyTop + headerEl.offsetHeight + 10; // 10px gap
+      }
 
       wrappers.forEach((wrapper, i) => {
         const topOffset = baseTopOffset + itemStackDistance * i;
