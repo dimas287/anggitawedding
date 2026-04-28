@@ -107,8 +107,7 @@ const ScrollStack = ({
     const cardHeight = lastCard ? lastCard.offsetHeight : 0;
 
     const effectiveStackPositionPx = isMobile ? baseTopOffset : stackPositionPx;
-    const mobileMarginPx = isMobile ? containerHeight * 0.25 : 0;
-    const stackBottom = effectiveStackPositionPx + cardHeight + mobileMarginPx + (itemStackDistance * (wrappersRef.current.length - 1));
+    const stackBottom = effectiveStackPositionPx + cardHeight + (itemStackDistance * (wrappersRef.current.length - 1));
     const pinEnd = scrollerBottom - stackBottom;
 
     // Sync header exit
@@ -325,7 +324,7 @@ const ScrollStack = ({
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
-        wrapper.style.marginBottom = '25vh'; // Add reading delay between cards
+        wrapper.style.marginBottom = i < wrappers.length - 1 ? '25vh' : '0'; // Add reading delay between cards
       });
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
