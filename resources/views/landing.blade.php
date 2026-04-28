@@ -718,15 +718,17 @@
 </section>
 
 {{-- THE PROCESS (Harmoni Pelayanan) --}}
-<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10" id="layanan" style="min-height: 250vh;">
-    {{-- Header pinned at top of SECTION, constrained by section height --}}
-    <div id="harmoni-header" class="text-center pt-16 pb-8 lg:pt-24 lg:pb-12 sticky top-20 z-50 pointer-events-none">
-        <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
-        <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
-    </div>
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10" id="layanan">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 lg:py-24">
+        {{-- Header: sticky on desktop, scrolls normally on mobile --}}
+        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 relative lg:sticky lg:top-24 z-50 pointer-events-none">
+            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
+            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
+        </div>
 
-    {{-- Stack Area React Mount Point — must be full-width block AFTER header --}}
-    <div id="harmoni-pelayanan-root" data-items="{{ json_encode($processSection['items']) }}" class="w-full relative z-20"></div>
+        {{-- Stack Area React Mount Point --}}
+        <div id="harmoni-pelayanan-root" data-items="{{ json_encode($processSection['items']) }}" class="w-full relative z-20"></div>
+    </div>
 </section>
 
 {{-- UNDANGAN DIGITAL --}}

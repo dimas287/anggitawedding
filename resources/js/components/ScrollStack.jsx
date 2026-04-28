@@ -161,31 +161,6 @@ const ScrollStack = ({
         }
       }
     });
-
-    // Synchronize the external sticky header exit animation
-    const header = document.getElementById('harmoni-header');
-    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
-
-    // Only run header animation on desktop to avoid mobile jitter
-    if (header && cardsRef.current.length > 0 && !isMobile) {
-      const containerHeight = getScrollData().containerHeight;
-      const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-      const lastCard = cardsRef.current[cardsRef.current.length - 1];
-      const cardHeight = lastCard.offsetHeight;
-      const scrollerElement = scrollerRef.current;
-      const scrollerTop = getElementOffset(scrollerElement);
-      const scrollerBottom = scrollerTop + scrollerElement.offsetHeight;
-      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * cardsRef.current.length);
-      const pinEnd = scrollerBottom - stackBottom;
-      const { scrollTop } = getScrollData();
-      if (scrollTop > pinEnd) {
-        const overflow = scrollTop - pinEnd;
-        header.style.transform = `translate3d(0, -${overflow}px, 0)`;
-      } else {
-        header.style.transform = 'translate3d(0, 0, 0)';
-      }
-    }
-
     isUpdatingRef.current = false;
   }, [
     itemScale,
@@ -302,21 +277,20 @@ const ScrollStack = ({
 
     if (isMobile && useWindowScroll) {
       // ---- MOBILE: Pure CSS sticky, no JS transforms ----
-      // Calculate the actual offset of the header to pin cards below it
+      // Measure the actual rendered header to position cards exactly below it
       const headerEl = document.getElementById('harmoni-header');
-      const headerHeight = headerEl ? headerEl.offsetHeight : 160;
-      const navHeight = 80; // navbar is ~80px
-      const baseTopOffset = navHeight + headerHeight + 8;
+      // On mobile the header is not sticky, so getBoundingClientRect reflects its natural scroll position
+      // We use offsetTop + offsetHeight relative to the scroller container instead
+      const navHeight = 80;
+      const headerHeight = headerEl ? headerEl.offsetHeight : 140;
+      const baseTopOffset = navHeight + headerHeight;
 
-      // Each wrapper becomes sticky at its own top offset
       wrappers.forEach((wrapper, i) => {
         const topOffset = baseTopOffset + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
         wrapper.style.marginBottom = '0px';
-        wrapper.style.paddingLeft = '1rem';
-        wrapper.style.paddingRight = '1rem';
       });
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
