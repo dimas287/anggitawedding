@@ -279,11 +279,23 @@ const ScrollStack = ({
     cardsRef.current = cards;
     wrappersRef.current = wrappers;
     const transformsCache = lastTransformsRef.current;
+    
+    const containerHeight = useWindowScroll ? window.innerHeight : scroller.clientHeight;
+    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
+
+    wrappers.forEach((wrapper, i) => {
+      if (i < wrappers.length - 1) {
+        // Calculate the exact margin needed so the next card enters the bottom of the viewport
+        // exactly when the current card reaches its pinned position.
+        const pinPos = stackPositionPx + itemStackDistance * i;
+        const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
+        // Ensure margin is never negative and respects a minimum distance
+        const margin = Math.max(itemDistance, calculatedMargin);
+        wrapper.style.marginBottom = `${margin}px`;
+      }
+    });
 
     cards.forEach((card, i) => {
-      if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`;
-      }
       card.style.willChange = 'transform, filter';
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
