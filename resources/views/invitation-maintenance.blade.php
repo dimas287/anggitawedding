@@ -3,7 +3,7 @@
 @section('title', 'Sedang Pembaruan – Anggita Wedding Organizer')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#FAF9F6] dark:bg-[#0A0A0A]">
+<div class="min-h-screen pt-24 pb-12 flex items-center justify-center relative overflow-hidden bg-[#FAF9F6] dark:bg-[#0A0A0A]">
     {{-- Decorative Background Elements --}}
     <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-100/40 rounded-full blur-[120px]"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-amber-100/40 rounded-full blur-[120px]"></div>
