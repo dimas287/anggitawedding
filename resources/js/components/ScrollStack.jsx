@@ -166,6 +166,7 @@ const ScrollStack = ({
     const header = document.getElementById('harmoni-header');
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
+    // Only run header animation on desktop to avoid mobile jitter
     if (header && cardsRef.current.length > 0 && !isMobile) {
       const containerHeight = getScrollData().containerHeight;
       const stackPositionPx = parsePercentage(stackPosition, containerHeight);
@@ -302,21 +303,22 @@ const ScrollStack = ({
       // Each wrapper becomes sticky at its own top offset
       // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
-        const topOffset = stackPositionPx + itemStackDistance * i;
+        // Offset starts after the header (top-24 = 96px) plus some padding
+        const topOffset = 100 + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
-        wrapper.style.zIndex = `${i + 1}`;
-        
-        // Restore margin on mobile so the container has height to scroll through
-        if (i < wrappers.length - 1) {
-          const pinPos = stackPositionPx + itemStackDistance * i;
-          const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
-          const margin = Math.max(itemDistance, calculatedMargin);
-          wrapper.style.marginBottom = `${margin}px`;
-        } else {
-          wrapper.style.marginBottom = '0px';
-        }
+        wrapper.style.zIndex = `${40 + i}`; // Higher than header (z-30)
+        wrapper.style.marginBottom = '0px';
       });
+
+      // Add a spacer to the end of the inner container to provide scroll height
+      const inner = scroller.querySelector('.scroll-stack-inner');
+      if (inner && !inner.querySelector('.mobile-scroll-spacer')) {
+        const spacer = document.createElement('div');
+        spacer.className = 'mobile-scroll-spacer';
+        spacer.style.height = `${containerHeight * 0.8}px`; // Provide scroll room
+        inner.appendChild(spacer);
+      }
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
         card.style.willChange = 'auto';
