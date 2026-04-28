@@ -211,36 +211,39 @@ const ScrollStack = ({
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     if (isMobile && useWindowScroll) {
-      wrappersRef.current.forEach((wrapper, i) => {
-        wrapper.style.position = 'relative';
-        // Overlap wrappers to keep section height compact
-        wrapper.style.marginBottom = '-350px'; 
-        wrapper.style.overflow = 'visible';
-        wrapper.style.height = 'auto';
-
-        const card = cardsRef.current[i];
-        if (card) {
-          card.style.position = 'sticky';
-          card.style.top = `${220 + (i * itemStackDistance)}px`;
-          card.style.zIndex = `${40 + i}`;
-          card.style.willChange = 'auto';
-          card.style.transform = 'none';
-          card.style.filter = 'none';
-        }
-      });
-      
+      // Mobile: pure CSS sticky — no JS needed at scroll time
+      // The header is now static (relative) on mobile, so it will scroll out of view naturally.
+      // We only need to trigger onStackComplete via an observer to notify the parent if needed.
       const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            if (entry.isIntersecting && !stackCompletedRef.current) {
-              stackCompletedRef.current = true;
-              onStackComplete();
-            } else if (!entry.isIntersecting && stackCompletedRef.current) {
-              stackCompletedRef.current = false;
+            const header = document.getElementById('harmoni-header');
+            if (entry.isIntersecting) {
+              if (!stackCompletedRef.current) {
+                stackCompletedRef.current = true;
+                onStackComplete();
+              }
+              // Slide header out when last card is in position
+              if (header) {
+                header.style.transform = 'translateY(-100px)';
+                header.style.opacity = '0';
+              }
+            } else {
+              if (stackCompletedRef.current) {
+                stackCompletedRef.current = false;
+              }
+              // Bring header back when scrolling back up
+              if (header && entry.boundingClientRect.top > 0) {
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+              }
             }
           },
-          { threshold: 0.5 }
+          { 
+            threshold: 0.9,
+            rootMargin: '-100px 0px 0px 0px'
+          }
         );
         observer.observe(lastWrapper);
         nativeScrollRef.current = () => observer.disconnect();
@@ -288,7 +291,7 @@ const ScrollStack = ({
       lenisRef.current = lenis;
       return lenis;
     }
-  }, [handleScroll, useWindowScroll, onStackComplete, itemStackDistance]);
+  }, [handleScroll, useWindowScroll, onStackComplete]);
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
@@ -314,7 +317,34 @@ const ScrollStack = ({
     const containerHeight = useWindowScroll ? window.innerHeight : scroller.clientHeight;
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
 
-    if (!isMobile || !useWindowScroll) {
+    if (isMobile && useWindowScroll) {
+      // ---- MOBILE: Pure CSS sticky, no JS transforms ----
+      // Each wrapper becomes sticky at its own top offset
+      // so they stack up naturally as user scrolls
+      wrappers.forEach((wrapper, i) => {
+        // Offset starts below the header (which is sticky at top-24 + ~100px height)
+        const topOffset = 200 + itemStackDistance * i;
+        wrapper.style.position = 'sticky';
+        wrapper.style.top = `${topOffset}px`;
+        wrapper.style.zIndex = `${40 + i}`;
+        wrapper.style.marginBottom = '0px';
+      });
+
+      // Add a spacer to the end of the inner container to provide scroll height
+      const inner = scroller.querySelector('.scroll-stack-inner');
+      if (inner && !inner.querySelector('.mobile-scroll-spacer')) {
+        const spacer = document.createElement('div');
+        spacer.className = 'mobile-scroll-spacer';
+        spacer.style.height = `${containerHeight * 0.7}px`; // Provide scroll room
+        inner.appendChild(spacer);
+      }
+      // Cards: just reset any leftover transform state
+      cards.forEach(card => {
+        card.style.willChange = 'auto';
+        card.style.transform = 'none';
+        card.style.filter = 'none';
+      });
+    } else {
       // ---- DESKTOP: JS margin + transform approach ----
       wrappers.forEach((wrapper, i) => {
         wrapper.style.position = '';
