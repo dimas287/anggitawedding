@@ -278,12 +278,9 @@ const ScrollStack = ({
     if (isMobile && useWindowScroll) {
       // ---- MOBILE: Pure CSS sticky, no JS transforms ----
       // Measure the actual rendered header to position cards exactly below it
-      const headerEl = document.getElementById('harmoni-header');
       // On mobile the header is not sticky, so getBoundingClientRect reflects its natural scroll position
-      // We use offsetTop + offsetHeight relative to the scroller container instead
       const navHeight = 80;
-      const headerHeight = headerEl ? headerEl.offsetHeight : 140;
-      const baseTopOffset = navHeight + headerHeight;
+      const baseTopOffset = navHeight + 20;
 
       wrappers.forEach((wrapper, i) => {
         const topOffset = baseTopOffset + itemStackDistance * i;
