@@ -168,6 +168,22 @@ const ScrollStack = ({
       }
     });
 
+    // Synchronize the external sticky header exit animation
+    const header = document.getElementById('harmoni-header');
+    if (header && cardsRef.current.length > 0) {
+      const lastCard = cardsRef.current[cardsRef.current.length - 1];
+      const cardHeight = lastCard.offsetHeight;
+      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * cardsRef.current.length);
+      const pinEnd = scrollerBottom - stackBottom;
+      
+      if (scrollTop > pinEnd) {
+        const overflow = scrollTop - pinEnd;
+        header.style.transform = `translate3d(0, -${overflow}px, 0)`;
+      } else {
+        header.style.transform = 'translate3d(0, 0, 0)';
+      }
+    }
+
     isUpdatingRef.current = false;
   }, [
     itemScale,
@@ -195,12 +211,9 @@ const ScrollStack = ({
         duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 2,
         infinite: false,
         wheelMultiplier: 1,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075
+        lerp: 0.1
       });
 
       lenis.on('scroll', handleScroll);
@@ -223,16 +236,11 @@ const ScrollStack = ({
         duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 2,
         infinite: false,
         gestureOrientationHandler: true,
         normalizeWheel: true,
         wheelMultiplier: 1,
-        touchInertiaMultiplier: 35,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchInertia: 0.6
+        lerp: 0.1
       });
 
       lenis.on('scroll', handleScroll);
