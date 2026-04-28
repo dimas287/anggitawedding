@@ -582,9 +582,9 @@
             <div class="px-5 py-4 space-y-1">
                 @foreach($navItems as $item)
                     @if(isset($item['is_dropdown']) && $item['is_dropdown'])
-                        <div x-data="{ submenuOpen: false }" class="rounded-2xl overflow-hidden transition-colors" :class="submenuOpen ? 'bg-gray-50 border border-gray-100 dark:bg-white/5 dark:border-white/5' : 'border border-transparent'">
+                        <div x-data="{ submenuOpen: {{ request()->routeIs($item['active_routes']) ? 'true' : 'false' }} }" class="rounded-2xl overflow-hidden transition-colors" :class="submenuOpen ? 'bg-gray-50 border border-gray-100 dark:bg-white/5 dark:border-white/5' : 'border border-transparent'">
                             <button @click="submenuOpen = !submenuOpen" class="w-full flex items-center justify-between py-3 px-3 text-gray-800 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none">
-                                <span>{{ $item['label'] }}</span>
+                                <span class="{{ request()->routeIs($item['active_routes']) ? 'text-yellow-600 dark:text-yellow-500' : '' }}">{{ $item['label'] }}</span>
                                 <i class="fas fa-chevron-down text-[10px] transition-transform duration-300" :class="submenuOpen ? 'rotate-180 text-yellow-600 dark:text-yellow-500' : 'text-gray-400 dark:text-gray-600'"></i>
                             </button>
                             <div x-show="submenuOpen" x-collapse>
