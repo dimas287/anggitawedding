@@ -811,14 +811,20 @@
                 outline?.classList.remove('cursor-hover');
             });
         });
-        window.addEventListener('scroll', () => {
-            const btt = document.getElementById('backToTop');
-            if (window.scrollY > 400) {
-                btt?.classList.add('is-visible');
-            } else {
-                btt?.classList.remove('is-visible');
-            }
-        });
+        const btt = document.getElementById('backToTop');
+        const footer = document.querySelector('footer');
+        if (btt && footer) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        btt.classList.add('is-visible');
+                    } else {
+                        btt.classList.remove('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            observer.observe(footer);
+        }
 
 
     </script>

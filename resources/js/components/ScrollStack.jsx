@@ -164,7 +164,9 @@ const ScrollStack = ({
 
     // Synchronize the external sticky header exit animation
     const header = document.getElementById('harmoni-header');
-    if (header && cardsRef.current.length > 0) {
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
+
+    if (header && cardsRef.current.length > 0 && !isMobile) {
       const containerHeight = getScrollData().containerHeight;
       const stackPositionPx = parsePercentage(stackPosition, containerHeight);
       const lastCard = cardsRef.current[cardsRef.current.length - 1];
@@ -304,8 +306,16 @@ const ScrollStack = ({
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${i + 1}`;
-        wrapper.style.marginBottom = '0px';
-        // No transform needed — the browser handles the sticking
+        
+        // Restore margin on mobile so the container has height to scroll through
+        if (i < wrappers.length - 1) {
+          const pinPos = stackPositionPx + itemStackDistance * i;
+          const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
+          const margin = Math.max(itemDistance, calculatedMargin);
+          wrapper.style.marginBottom = `${margin}px`;
+        } else {
+          wrapper.style.marginBottom = '0px';
+        }
       });
       // Cards: just reset any leftover transform state
       cards.forEach(card => {
