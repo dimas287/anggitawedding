@@ -721,7 +721,7 @@
 <section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10 min-h-screen flex flex-col justify-center" id="layanan">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full py-16 lg:py-24">
         {{-- Header --}}
-        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 sticky top-24 z-10 pointer-events-none transition-all duration-700 ease-in-out">
+        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 relative lg:sticky lg:top-24 z-10 pointer-events-none transition-all duration-700 ease-in-out">
             <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>

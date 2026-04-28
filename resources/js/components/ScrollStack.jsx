@@ -212,49 +212,23 @@ const ScrollStack = ({
 
     if (isMobile && useWindowScroll) {
       // Mobile: pure CSS sticky — no JS needed at scroll time
-      // Just fire onStackComplete via IntersectionObserver on the last card
+      // The header is now static (relative) on mobile, so it will scroll out of view naturally.
+      // We only need to trigger onStackComplete via an observer to notify the parent if needed.
       const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            const header = document.getElementById('harmoni-header');
-            if (entry.isIntersecting) {
-              if (!stackCompletedRef.current) {
-                stackCompletedRef.current = true;
-                onStackComplete();
-              }
-              // Slide header out when last card is in position
-              if (header) {
-                header.style.transform = 'translateY(-50px)';
-                header.style.opacity = '0';
-                header.style.pointerEvents = 'none';
-              }
-            } else {
-              if (stackCompletedRef.current) {
-                stackCompletedRef.current = false;
-              }
-              // Bring header back when scrolling back up
-              if (header && entry.boundingClientRect.top > 0) {
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
-                header.style.pointerEvents = 'auto';
-              }
+            if (entry.isIntersecting && !stackCompletedRef.current) {
+              stackCompletedRef.current = true;
+              onStackComplete();
+            } else if (!entry.isIntersecting && stackCompletedRef.current) {
+              stackCompletedRef.current = false;
             }
           },
-          { 
-            threshold: 0.8,
-            rootMargin: '-100px 0px 0px 0px' // Trigger slightly before it hits the very top
-          }
+          { threshold: 0.5 }
         );
         observer.observe(lastWrapper);
-        nativeScrollRef.current = () => {
-          observer.disconnect();
-          const header = document.getElementById('harmoni-header');
-          if (header) {
-            header.style.transform = '';
-            header.style.opacity = '';
-          }
-        };
+        nativeScrollRef.current = () => observer.disconnect();
       }
       return null;
     }
@@ -330,11 +304,11 @@ const ScrollStack = ({
       // Each wrapper becomes sticky at its own top offset
       // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
-        // Offset starts after the header (top-24 = 96px) plus some padding
-        const topOffset = 120 + itemStackDistance * i;
+        // Offset starts near the top since the header scrolls away natively on mobile
+        const topOffset = 24 + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
-        wrapper.style.zIndex = `${40 + i}`; // Higher than header (z-30)
+        wrapper.style.zIndex = `${40 + i}`;
         wrapper.style.marginBottom = '0px';
       });
 
@@ -343,7 +317,7 @@ const ScrollStack = ({
       if (inner && !inner.querySelector('.mobile-scroll-spacer')) {
         const spacer = document.createElement('div');
         spacer.className = 'mobile-scroll-spacer';
-        spacer.style.height = `${containerHeight * 0.8}px`; // Provide scroll room
+        spacer.style.height = `${containerHeight * 0.7}px`; // Provide scroll room
         inner.appendChild(spacer);
       }
       // Cards: just reset any leftover transform state
