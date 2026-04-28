@@ -315,7 +315,7 @@ const ScrollStack = ({
       const headerEl = document.getElementById('harmoni-header');
       let baseTopOffset = 80; // nav height fallback
       if (headerEl) {
-        const stickyTop = 100; // match top-20
+        const stickyTop = 80; // match top-20
         baseTopOffset = stickyTop + headerEl.offsetHeight + 10; // 10px gap
       }
 

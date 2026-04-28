@@ -721,7 +721,7 @@
 <section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10 min-h-screen flex flex-col justify-center" id="layanan">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full py-16 lg:py-24">
         {{-- Header: sticky, will scroll up synchronously with cards via JS --}}
-        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 sticky top-25 lg:top-24 z-30 pointer-events-none">
+        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 sticky top-20 lg:top-24 z-30 pointer-events-none">
             <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>
