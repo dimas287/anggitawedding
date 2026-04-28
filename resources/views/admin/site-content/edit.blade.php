@@ -526,6 +526,95 @@
             </div>
         </div>
     </form>
+    
+    {{-- Process Section --}}
+    @php
+        $processItems = old('process.items', $process['items'] ?? []);
+    @endphp
+    <form id="process-section" action="{{ route('admin.site-content.process') }}" method="POST"
+          class="bg-white rounded-2xl shadow-sm p-6 space-y-6"
+          x-data="processManager({ items: $el.dataset.items ? JSON.parse($el.dataset.items) : [] })"
+          data-items='@json($processItems)'>
+        @csrf
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800">Section "Proses Pelayanan"</h3>
+                <p class="text-sm text-gray-500">Atur tahapan proses pelayanan (Harmoni Pelayanan).</p>
+            </div>
+            <button type="submit" class="px-5 py-2.5 rounded-xl gold-gradient text-white text-sm font-semibold">Simpan Section</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="text-xs font-semibold text-gray-600">Eyebrow / Label kecil</label>
+                <input type="text" name="process[eyebrow]" value="{{ old('process.eyebrow', $process['eyebrow'] ?? '') }}" class="mt-1 w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-yellow-400">
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-600">Judul utama</label>
+                <input type="text" name="process[heading]" value="{{ old('process.heading', $process['heading'] ?? '') }}" class="mt-1 w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-yellow-400">
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h4 class="text-sm font-semibold text-gray-700">Tahapan Proses</h4>
+                <button type="button" class="text-xs font-semibold text-yellow-600" @click="addItem()"><i class="fas fa-plus mr-1"></i>Tambah tahap</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <template x-for="(item, index) in items" :key="index">
+                    <div class="border rounded-2xl p-4 space-y-3 relative">
+                        <button type="button" class="absolute top-2 right-2 text-gray-400 hover:text-red-500" @click="removeItem(index)"><i class="fas fa-times"></i></button>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-500 flex items-center justify-between">
+                                Ikon
+                                <template x-if="item.icon">
+                                    <i :class="`fas ${item.icon} text-yellow-600`" class="text-xs"></i>
+                                </template>
+                            </label>
+                            <select class="mt-1 w-full border rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400" 
+                                    :name="`process[items][${index}][icon]`" 
+                                    x-model="item.icon">
+                                <option value="fa-heart">❤️ Heart</option>
+                                <option value="fa-ring">💍 Ring</option>
+                                <option value="fa-calendar-check">📅 Calendar</option>
+                                <option value="fa-envelope-open-text">✉️ Envelope</option>
+                                <option value="fa-camera">📸 Camera</option>
+                                <option value="fa-video">🎥 Video</option>
+                                <option value="fa-map-marked-alt">📍 Map / Location</option>
+                                <option value="fa-user-friends">👥 Guests / Couple</option>
+                                <option value="fa-music">🎵 Music</option>
+                                <option value="fa-birthday-cake">🎂 Cake</option>
+                                <option value="fa-glass-cheers">🥂 Cheers</option>
+                                <option value="fa-star">⭐ Star</option>
+                                <option value="fa-gem">💎 Gem</option>
+                                <option value="fa-crown">👑 Crown</option>
+                                <option value="fa-gift">🎁 Gift</option>
+                                <option value="fa-church">⛪ Church / Venue</option>
+                                <option value="fa-home">🏠 Home / Stay</option>
+                                <option value="fa-utensils">🍴 Catering / Food</option>
+                                <option value="fa-magic">✨ Magic / Event</option>
+                                <option value="fa-clock">⏰ Time</option>
+                                <option value="fa-dove">🕊️ Dove / Peace</option>
+                                <option value="fa-money-bill-wave">💵 Uang / Budget</option>
+                                <option value="fa-coins">💰 Koin</option>
+                                <option value="fa-credit-card">💳 Credit Card</option>
+                                <option value="fa-comments">💬 Comments / Chat</option>
+                                <option value="fa-file-pdf">📄 PDF / File</option>
+                                <option value="fa-check-circle">✅ Accomplished</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-500">Judul Tahap</label>
+                            <input type="text" class="mt-1 w-full border rounded-xl px-3 py-2 text-sm" :name="`process[items][${index}][title]`" x-model="item.title">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-500">Deskripsi</label>
+                            <textarea class="mt-1 w-full border rounded-xl px-3 py-2 text-sm" rows="3" :name="`process[items][${index}][desc]`" x-model="item.desc"></textarea>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </form>
 
     {{-- Highlight Media Cards --}}
     <section id="highlight-cards" class="bg-white rounded-2xl shadow-sm p-6 space-y-5" x-data="highlightCardManager({
@@ -875,6 +964,19 @@ function dreamManager(config) {
         removeHighlight(index) {
             if (this.highlights.length === 1) return;
             this.highlights.splice(index, 1);
+        }
+    };
+}
+
+function processManager(config) {
+    return {
+        items: config.items.length ? config.items : [{ icon: 'fa-calendar-check', title: '', desc: '' }],
+        addItem() {
+            this.items.push({ icon: 'fa-calendar-check', title: '', desc: '' });
+        },
+        removeItem(index) {
+            if (this.items.length === 1) return;
+            this.items.splice(index, 1);
         }
     };
 }

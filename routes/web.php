@@ -365,6 +365,7 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     Route::get('site-content', [SiteContentController::class, 'edit'])->name('site-content.edit');
     Route::post('site-content/hero', [SiteContentController::class, 'updateHero'])->name('site-content.hero');
     Route::post('site-content/dream', [SiteContentController::class, 'updateDream'])->name('site-content.dream');
+    Route::post('site-content/process', [SiteContentController::class, 'updateProcess'])->name('site-content.process');
     Route::post('site-content/highlight-cards', [SiteContentController::class, 'storeHighlightCard'])->name('site-content.highlight-cards.store');
     Route::put('site-content/highlight-cards/{card}', [SiteContentController::class, 'updateHighlightCard'])->name('site-content.highlight-cards.update');
     Route::delete('site-content/highlight-cards/{card}', [SiteContentController::class, 'destroyHighlightCard'])->name('site-content.highlight-cards.destroy');

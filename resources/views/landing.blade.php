@@ -721,18 +721,12 @@
 <section class="py-24 bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500" id="layanan" data-reveal data-reveal-direction="up">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16" data-reveal>
-            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">The Process</span>
-            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">Harmoni Pelayanan</h2>
+            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
+            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             @php $serviceDirections = ['left','right','up']; @endphp
-            @foreach([
-                ['icon' => 'fa-calendar-check', 'title' => 'Reservasi Seamless', 'desc' => 'Pesan paket wedding kapan saja. Proses elegan dengan konfirmasi eksklusif.', 'color' => 'blue'],
-                ['icon' => 'fa-credit-card', 'title' => 'Transaksi Privasi', 'desc' => 'Sistem pembayaran aman dengan opsi termin yang mengedepankan privasi Anda.', 'color' => 'green'],
-                ['icon' => 'fa-envelope-open-text', 'title' => 'Undangan Interaktif', 'desc' => 'Sentuhan digital modern untuk RSVP dan e-invitation yang mudah dibagikan.', 'color' => 'pink'],
-                ['icon' => 'fa-comments', 'title' => 'Diskusi Personal', 'desc' => 'Wedding planner dedikatif siap merespons setiap detail impian pernikahan Anda.', 'color' => 'purple'],
-                ['icon' => 'fa-file-pdf', 'title' => 'Dokumentasi Rapi', 'desc' => 'Seluruh rundown dan arsip dokumen tertata indah dalam format PDF profesional.', 'color' => 'red'],
-            ] as $service)
+            @foreach($processSection['items'] as $service)
             <div class="p-8 rounded-xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-colors group section-glow bg-transparent dark:bg-[#111111]/50" data-reveal data-reveal-direction="{{ $serviceDirections[$loop->index % count($serviceDirections)] }}" style="--reveal-delay: {{ $loop->index * 0.07 }}s;">
                 <div class="w-10 h-10 rounded border border-gray-200 dark:border-white/15 flex items-center justify-center mb-6 transition-colors">
                     <i class="fas {{ $service['icon'] }} text-gray-400 dark:text-gray-500 group-hover:text-gray-800 dark:group-hover:text-yellow-400 transition-colors"></i>

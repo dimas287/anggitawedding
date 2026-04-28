@@ -79,10 +79,20 @@ class LandingController extends Controller
 
         $posts = Post::published()->latest()->take(6)->get();
 
-        $highlightCards = DreamHighlightCard::where('is_active', true)
-            ->orderBy('sort_order')
-            ->orderBy('id')
-            ->get();
+        $processDefaults = [
+            'eyebrow' => 'The Process',
+            'heading' => 'Harmoni Pelayanan',
+            'items' => [
+                ['icon' => 'fa-calendar-check', 'title' => 'Reservasi Seamless', 'desc' => 'Pesan paket wedding kapan saja. Proses elegan dengan konfirmasi eksklusif.'],
+                ['icon' => 'fa-credit-card', 'title' => 'Transaksi Privasi', 'desc' => 'Sistem pembayaran aman dengan opsi termin yang mengedepankan privasi Anda.'],
+                ['icon' => 'fa-envelope-open-text', 'title' => 'Undangan Interaktif', 'desc' => 'Sentuhan digital modern untuk RSVP dan e-invitation yang mudah dibagikan.'],
+                ['icon' => 'fa-comments', 'title' => 'Diskusi Personal', 'desc' => 'Wedding planner dedikatif siap merespons setiap detail impian pernikahan Anda.'],
+                ['icon' => 'fa-file-pdf', 'title' => 'Dokumentasi Rapi', 'desc' => 'Seluruh rundown dan arsip dokumen tertata indah dalam format PDF profesional.'],
+            ]
+        ];
+        $processSetting = SiteSetting::getJson('landing_process_section', []) ?? [];
+        $processSection = array_merge(Arr::except($processDefaults, ['items']), Arr::except($processSetting, ['items']));
+        $processSection['items'] = $processSetting['items'] ?? $processDefaults['items'];
 
         return view('landing', compact(
             'packages',
@@ -96,6 +106,7 @@ class LandingController extends Controller
             'heroSlides',
             'heroCopy',
             'dreamSection',
+            'processSection',
             'posts',
             'highlightCards'
         ));

@@ -92,11 +92,41 @@ class SiteContentController extends Controller
         $slides = HeroSlide::orderBy('sort_order')->orderBy('id')->get();
         $highlightCards = DreamHighlightCard::orderBy('sort_order')->orderBy('id')->get();
 
+        $process = SiteSetting::getJson('landing_process_section', [
+            'eyebrow' => 'The Process',
+            'heading' => 'Harmoni Pelayanan',
+            'items' => [
+                ['icon' => 'fa-calendar-check', 'title' => 'Reservasi Seamless', 'desc' => 'Pesan paket wedding kapan saja. Proses elegan dengan konfirmasi eksklusif.'],
+                ['icon' => 'fa-credit-card', 'title' => 'Transaksi Privasi', 'desc' => 'Sistem pembayaran aman dengan opsi termin yang mengedepankan privasi Anda.'],
+                ['icon' => 'fa-envelope-open-text', 'title' => 'Undangan Interaktif', 'desc' => 'Sentuhan digital modern untuk RSVP dan e-invitation yang mudah dibagikan.'],
+                ['icon' => 'fa-comments', 'title' => 'Diskusi Personal', 'desc' => 'Wedding planner dedikatif siap merespons setiap detail impian pernikahan Anda.'],
+                ['icon' => 'fa-file-pdf', 'title' => 'Dokumentasi Rapi', 'desc' => 'Seluruh rundown dan arsip dokumen tertata indah dalam format PDF profesional.'],
+            ]
+        ]);
+
         return view('admin.site-content.edit', compact(
-            'hero', 'dream', 'stats', 'portfolioStats', 'footer', 'slides', 'brand', 'consultationSettings',
+            'hero', 'dream', 'process', 'stats', 'portfolioStats', 'footer', 'slides', 'brand', 'consultationSettings',
             'maintenanceMode', 'maintenanceMessage', 'globalMaintenanceMode', 'globalMaintenanceMessage',
             'highlightCards'
         ));
+    }
+
+    public function updateProcess(Request $request)
+    {
+        $data = $request->validate([
+            'process' => 'required|array',
+            'process.eyebrow' => 'nullable|string|max:150',
+            'process.heading' => 'nullable|string|max:255',
+            'process.items' => 'nullable|array|max:10',
+            'process.items.*.icon' => 'nullable|string|max:50',
+            'process.items.*.title' => 'nullable|string|max:120',
+            'process.items.*.desc' => 'nullable|string|max:255',
+        ]);
+
+        SiteSetting::setJson('landing_process_section', $data['process']);
+
+        return redirect()->route('admin.site-content.edit', ['section' => 'process-section'])
+            ->with('success', 'Section "Proses Pelayanan" berhasil diperbarui.');
     }
 
     public function updateMaintenance(Request $request)
