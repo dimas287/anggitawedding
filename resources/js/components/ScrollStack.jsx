@@ -81,7 +81,7 @@ const ScrollStack = ({
     isUpdatingRef.current = true;
 
     const { scrollTop, containerHeight } = getScrollData();
-    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
+    let stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
     const scrollerElement = scrollerRef.current;
@@ -99,7 +99,6 @@ const ScrollStack = ({
       baseTopOffset = stickyTop + headerEl.offsetHeight + (isMobile ? 10 : 20);
     }
 
-    let stackPositionPx = parsePercentage(stackPosition, containerHeight);
     if (!isMobile && baseTopOffset > 0) {
       stackPositionPx = Math.max(stackPositionPx, baseTopOffset);
     }
