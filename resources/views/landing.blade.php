@@ -1185,9 +1185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             pinSpacing: true,
                             scrub: 1, 
                             anticipatePin: 1,
-                            invalidateOnRefresh: true,
-                            onLeave: () => gsap.to("#highlight-stack-container", { opacity: 0, duration: 0.3 }),
-                            onEnterBack: () => gsap.to("#highlight-stack-container", { opacity: 1, duration: 0.3 }),
+                            invalidateOnRefresh: true
                         }
                     });
                     createStackingAnimation(tl);
@@ -1219,9 +1217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             pinSpacing: true,
                             scrub: 0.8, 
                             anticipatePin: 1,
-                            invalidateOnRefresh: true,
-                            onLeave: () => gsap.to("#highlight-stack-container", { opacity: 0, duration: 0.3 }),
-                            onEnterBack: () => gsap.to("#highlight-stack-container", { opacity: 1, duration: 0.3 }),
+                            invalidateOnRefresh: true
                         }
                     });
                     createStackingAnimation(tl);

@@ -62,7 +62,7 @@ const ProcessSectionStack = ({ items }) => {
     <ScrollStack 
       useWindowScroll={true} 
       itemDistance={40} 
-      itemStackDistance={isMobile ? 15 : 30}
+      itemStackDistance={isMobile ? 8 : 30}
       stackPosition="220px"
       baseScale={0.9}
       itemScale={0.03}
