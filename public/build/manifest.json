@@ -31,12 +31,12 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B1zyJJHA.css",
+    "file": "assets/app-D5wgTgY4.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Cn0rG6K3.js",
+    "file": "assets/app-DdzE9HK_.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -44,7 +44,7 @@
       "_client-sch3SfBg.js"
     ],
     "css": [
-      "assets/app-Dw8-wk7V.css",
+      "assets/app-BAJ920TE.css",
       "assets/all-DbRkgOy0.css"
     ],
     "assets": [

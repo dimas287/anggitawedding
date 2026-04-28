@@ -718,16 +718,26 @@
 </section>
 
 {{-- THE PROCESS (Harmoni Pelayanan) --}}
-<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10" id="layanan">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 lg:py-24">
-        {{-- Header: sticky on desktop, scrolls normally on mobile --}}
-        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 relative lg:sticky lg:top-24 z-50 pointer-events-none">
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-10 min-h-screen flex flex-col justify-center" id="layanan">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full py-16 lg:py-24">
+        {{-- Header: sticky on desktop via JS, scrolls normally on mobile --}}
+        <div id="harmoni-header" class="text-center pb-8 lg:pb-12 shrink-0 z-30 pointer-events-none">
             <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>
+        <script>
+            // Apply sticky only on desktop to avoid mobile header-follows-cards bug
+            (function() {
+                var h = document.getElementById('harmoni-header');
+                if (h && window.innerWidth >= 1024) {
+                    h.style.position = 'sticky';
+                    h.style.top = '96px';
+                }
+            })();
+        </script>
 
         {{-- Stack Area React Mount Point --}}
-        <div id="harmoni-pelayanan-root" data-items="{{ json_encode($processSection['items']) }}" class="w-full relative z-20"></div>
+        <div id="harmoni-pelayanan-root" data-items="{{ json_encode($processSection['items']) }}" class="w-full h-full relative z-20"></div>
     </div>
 </section>
 
