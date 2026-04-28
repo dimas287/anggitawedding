@@ -107,7 +107,7 @@ const ScrollStack = ({
     const cardHeight = lastCard ? lastCard.offsetHeight : 0;
 
     const effectiveStackPositionPx = isMobile ? baseTopOffset : stackPositionPx;
-    const stackBottom = effectiveStackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
+    const stackBottom = effectiveStackPositionPx + cardHeight + (itemStackDistance * (wrappersRef.current.length - 1));
     const pinEnd = scrollerBottom - stackBottom;
 
     // Sync header exit
