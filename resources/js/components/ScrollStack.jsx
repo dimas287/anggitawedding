@@ -95,7 +95,7 @@ const ScrollStack = ({
     const headerEl = document.getElementById('harmoni-header');
     let baseTopOffset = 0;
     if (headerEl) {
-      const stickyTop = isMobile ? 48 : 96; // match top-12 (48px) and lg:top-24 (96px)
+      const stickyTop = isMobile ? 80 : 96; // match top-20 (80px) and lg:top-24 (96px)
       baseTopOffset = stickyTop + headerEl.offsetHeight + (isMobile ? 10 : 20);
     }
 
@@ -315,7 +315,7 @@ const ScrollStack = ({
       const headerEl = document.getElementById('harmoni-header');
       let baseTopOffset = 80; // nav height fallback
       if (headerEl) {
-        const stickyTop = 48; // match top-12
+        const stickyTop = 80; // match top-20
         baseTopOffset = stickyTop + headerEl.offsetHeight + 10; // 10px gap
       }
 
