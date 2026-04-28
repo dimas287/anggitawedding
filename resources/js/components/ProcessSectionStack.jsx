@@ -18,7 +18,7 @@ const ProcessSectionStack = ({ items }) => {
       useWindowScroll={true} 
       itemDistance={40} 
       itemStackDistance={30}
-      stackPosition="20%"
+      stackPosition="220px"
       baseScale={0.9}
       itemScale={0.03}
       blurAmount={0}
