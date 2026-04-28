@@ -31,6 +31,7 @@ const ScrollStack = ({
   const wrappersRef = useRef([]);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
+  const nativeScrollRef = useRef(null);
 
   const calculateProgress = useCallback((scrollTop, start, end) => {
     if (scrollTop < start) return 0;
@@ -74,9 +75,9 @@ const ScrollStack = ({
     [useWindowScroll]
   );
 
+  // Desktop-only JS transform update — NOT used on mobile
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
-
     isUpdatingRef.current = true;
 
     const { scrollTop, containerHeight } = getScrollData();
@@ -96,13 +97,9 @@ const ScrollStack = ({
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
-      
-      // Calculate the bottom position of the stack on the viewport
+
       const cardHeight = wrapper.offsetHeight;
       const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * wrappersRef.current.length);
-      
-      // Pin ends when the bottom of the scroller reaches the bottom of the stack
-      // This ensures the next section perfectly follows the stacked cards without empty space!
       const pinEnd = scrollerBottom - stackBottom;
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
@@ -116,20 +113,15 @@ const ScrollStack = ({
         for (let j = 0; j < wrappersRef.current.length; j++) {
           const jCardTop = getElementOffset(wrappersRef.current[j]);
           const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-          if (scrollTop >= jTriggerStart) {
-            topCardIndex = j;
-          }
+          if (scrollTop >= jTriggerStart) topCardIndex = j;
         }
-
         if (i < topCardIndex) {
-          const depthInStack = topCardIndex - i;
-          blur = Math.max(0, depthInStack * blurAmount);
+          blur = Math.max(0, (topCardIndex - i) * blurAmount);
         }
       }
 
       let translateY = 0;
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-
       if (isPinned) {
         translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
       } else if (scrollTop > pinEnd) {
@@ -154,10 +146,8 @@ const ScrollStack = ({
       if (hasChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
-
         card.style.transform = transform;
         card.style.filter = filter;
-
         lastTransformsRef.current.set(i, newTransform);
       }
 
@@ -175,11 +165,16 @@ const ScrollStack = ({
     // Synchronize the external sticky header exit animation
     const header = document.getElementById('harmoni-header');
     if (header && cardsRef.current.length > 0) {
+      const containerHeight = getScrollData().containerHeight;
+      const stackPositionPx = parsePercentage(stackPosition, containerHeight);
       const lastCard = cardsRef.current[cardsRef.current.length - 1];
       const cardHeight = lastCard.offsetHeight;
+      const scrollerElement = scrollerRef.current;
+      const scrollerTop = getElementOffset(scrollerElement);
+      const scrollerBottom = scrollerTop + scrollerElement.offsetHeight;
       const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * cardsRef.current.length);
       const pinEnd = scrollerBottom - stackBottom;
-      
+      const { scrollTop } = getScrollData();
       if (scrollTop > pinEnd) {
         const overflow = scrollTop - pinEnd;
         header.style.transform = `translate3d(0, -${overflow}px, 0)`;
@@ -209,27 +204,29 @@ const ScrollStack = ({
     updateCardTransforms();
   }, [updateCardTransforms]);
 
-  const nativeScrollRef = useRef(null);
-
   const setupScrolling = useCallback(() => {
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     if (isMobile && useWindowScroll) {
-      // On mobile: use native scroll + rAF for buttery smooth touch scrolling
-      // Lenis fights with native touch momentum and causes jitter on phones
-      let ticking = false;
-      const onNativeScroll = () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateCardTransforms();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      };
-      window.addEventListener('scroll', onNativeScroll, { passive: true });
-      nativeScrollRef.current = onNativeScroll;
-      return null; // no lenis instance
+      // Mobile: pure CSS sticky — no JS needed at scroll time
+      // Just fire onStackComplete via IntersectionObserver on the last card
+      const lastWrapper = wrappersRef.current[wrappersRef.current.length - 1];
+      if (lastWrapper && onStackComplete) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting && !stackCompletedRef.current) {
+              stackCompletedRef.current = true;
+              onStackComplete();
+            } else if (!entry.isIntersecting && stackCompletedRef.current) {
+              stackCompletedRef.current = false;
+            }
+          },
+          { threshold: 0.5 }
+        );
+        observer.observe(lastWrapper);
+        nativeScrollRef.current = () => observer.disconnect();
+      }
+      return null;
     }
 
     if (useWindowScroll) {
@@ -241,21 +238,17 @@ const ScrollStack = ({
         wheelMultiplier: 1,
         lerp: 0.1
       });
-
       lenis.on('scroll', handleScroll);
-
       const raf = time => {
         lenis.raf(time);
         animationFrameRef.current = requestAnimationFrame(raf);
       };
       animationFrameRef.current = requestAnimationFrame(raf);
-
       lenisRef.current = lenis;
       return lenis;
     } else {
       const scroller = scrollerRef.current;
       if (!scroller) return;
-
       const lenis = new Lenis({
         wrapper: scroller,
         content: scroller.querySelector('.scroll-stack-inner'),
@@ -263,35 +256,32 @@ const ScrollStack = ({
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         infinite: false,
-        gestureOrientationHandler: true,
         normalizeWheel: true,
         wheelMultiplier: 1,
         lerp: 0.1
       });
-
       lenis.on('scroll', handleScroll);
-
       const raf = time => {
         lenis.raf(time);
         animationFrameRef.current = requestAnimationFrame(raf);
       };
       animationFrameRef.current = requestAnimationFrame(raf);
-
       lenisRef.current = lenis;
       return lenis;
     }
-  }, [handleScroll, updateCardTransforms, useWindowScroll]);
+  }, [handleScroll, useWindowScroll, onStackComplete]);
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
+
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
     const cards = Array.from(
       useWindowScroll
         ? document.querySelectorAll('.scroll-stack-card')
         : scroller.querySelectorAll('.scroll-stack-card')
     );
-
     const wrappers = Array.from(
       useWindowScroll
         ? document.querySelectorAll('.scroll-stack-card-wrapper')
@@ -301,46 +291,63 @@ const ScrollStack = ({
     cardsRef.current = cards;
     wrappersRef.current = wrappers;
     const transformsCache = lastTransformsRef.current;
-    
+
     const containerHeight = useWindowScroll ? window.innerHeight : scroller.clientHeight;
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
 
-    wrappers.forEach((wrapper, i) => {
-      if (i < wrappers.length - 1) {
-        // Calculate the exact margin needed so the next card enters the bottom of the viewport
-        // exactly when the current card reaches its pinned position.
-        const pinPos = stackPositionPx + itemStackDistance * i;
-        const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
-        // Ensure margin is never negative and respects a minimum distance
-        let margin = Math.max(itemDistance, calculatedMargin);
-        
-        wrapper.style.marginBottom = `${margin}px`;
-      }
-    });
-
-    cards.forEach((card, i) => {
-      card.style.willChange = 'transform, filter';
-      card.style.transformOrigin = 'top center';
-      card.style.backfaceVisibility = 'hidden';
-      card.style.transform = 'translateZ(0)';
-      card.style.webkitTransform = 'translateZ(0)';
-      card.style.perspective = '1000px';
-      card.style.webkitPerspective = '1000px';
-    });
+    if (isMobile && useWindowScroll) {
+      // ---- MOBILE: Pure CSS sticky, no JS transforms ----
+      // Each wrapper becomes sticky at its own top offset
+      // so they stack up naturally as user scrolls
+      wrappers.forEach((wrapper, i) => {
+        const topOffset = stackPositionPx + itemStackDistance * i;
+        wrapper.style.position = 'sticky';
+        wrapper.style.top = `${topOffset}px`;
+        wrapper.style.zIndex = `${i + 1}`;
+        wrapper.style.marginBottom = '0px';
+        // No transform needed — the browser handles the sticking
+      });
+      // Cards: just reset any leftover transform state
+      cards.forEach(card => {
+        card.style.willChange = 'auto';
+        card.style.transform = 'none';
+        card.style.filter = 'none';
+      });
+    } else {
+      // ---- DESKTOP: JS margin + transform approach ----
+      wrappers.forEach((wrapper, i) => {
+        wrapper.style.position = '';
+        wrapper.style.top = '';
+        wrapper.style.zIndex = `${i + 1}`;
+        if (i < wrappers.length - 1) {
+          const pinPos = stackPositionPx + itemStackDistance * i;
+          const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
+          const margin = Math.max(itemDistance, calculatedMargin);
+          wrapper.style.marginBottom = `${margin}px`;
+        }
+      });
+      cards.forEach((card, i) => {
+        card.style.willChange = 'transform, filter';
+        card.style.transformOrigin = 'top center';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.transform = 'translateZ(0)';
+        card.style.webkitTransform = 'translateZ(0)';
+        card.style.perspective = '1000px';
+        card.style.webkitPerspective = '1000px';
+      });
+    }
 
     setupScrolling();
 
-    updateCardTransforms();
+    if (!isMobile || !useWindowScroll) {
+      updateCardTransforms();
+    }
 
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-      }
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      if (lenisRef.current) lenisRef.current.destroy();
       if (nativeScrollRef.current) {
-        window.removeEventListener('scroll', nativeScrollRef.current);
+        nativeScrollRef.current(); // calls observer.disconnect()
         nativeScrollRef.current = null;
       }
       stackCompletedRef.current = false;
@@ -361,7 +368,8 @@ const ScrollStack = ({
     useWindowScroll,
     onStackComplete,
     setupScrolling,
-    updateCardTransforms
+    updateCardTransforms,
+    parsePercentage
   ]);
 
   return (
