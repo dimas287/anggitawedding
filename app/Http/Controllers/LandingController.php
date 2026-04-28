@@ -94,6 +94,11 @@ class LandingController extends Controller
         $processSection = array_merge(Arr::except($processDefaults, ['items']), Arr::except($processSetting, ['items']));
         $processSection['items'] = $processSetting['items'] ?? $processDefaults['items'];
 
+        $highlightCards = DreamHighlightCard::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
         return view('landing', compact(
             'packages',
             'packagesByCategory',
