@@ -359,11 +359,30 @@ const ScrollStack = ({
 
     setupScrolling();
 
+    // Sync all cards to the same min-height to prevent text bleeding and ensure perfect overlap
+    const syncHeights = () => {
+      if (!cardsRef.current.length) return;
+      cardsRef.current.forEach(card => card.style.minHeight = 'auto');
+      let maxH = 0;
+      cardsRef.current.forEach(card => {
+        if (card.offsetHeight > maxH) maxH = card.offsetHeight;
+      });
+      cardsRef.current.forEach(card => card.style.minHeight = `${maxH}px`);
+    };
+
+    // Run initially and set up listeners for font loads/resizes
+    syncHeights();
+    window.addEventListener('resize', syncHeights);
+    if (document.fonts) {
+      document.fonts.ready.then(syncHeights);
+    }
+
     if (!isMobile || !useWindowScroll) {
       updateCardTransforms();
     }
 
     return () => {
+      window.removeEventListener('resize', syncHeights);
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (lenisRef.current) lenisRef.current.destroy();
       if (nativeScrollRef.current) {
