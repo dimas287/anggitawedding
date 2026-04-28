@@ -217,17 +217,44 @@ const ScrollStack = ({
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            if (entry.isIntersecting && !stackCompletedRef.current) {
-              stackCompletedRef.current = true;
-              onStackComplete();
-            } else if (!entry.isIntersecting && stackCompletedRef.current) {
-              stackCompletedRef.current = false;
+            const header = document.getElementById('harmoni-header');
+            if (entry.isIntersecting) {
+              if (!stackCompletedRef.current) {
+                stackCompletedRef.current = true;
+                onStackComplete();
+              }
+              // Slide header out when last card is in position
+              if (header) {
+                header.style.transform = 'translateY(-50px)';
+                header.style.opacity = '0';
+                header.style.pointerEvents = 'none';
+              }
+            } else {
+              if (stackCompletedRef.current) {
+                stackCompletedRef.current = false;
+              }
+              // Bring header back when scrolling back up
+              if (header && entry.boundingClientRect.top > 0) {
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+                header.style.pointerEvents = 'auto';
+              }
             }
           },
-          { threshold: 0.5 }
+          { 
+            threshold: 0.8,
+            rootMargin: '-100px 0px 0px 0px' // Trigger slightly before it hits the very top
+          }
         );
         observer.observe(lastWrapper);
-        nativeScrollRef.current = () => observer.disconnect();
+        nativeScrollRef.current = () => {
+          observer.disconnect();
+          const header = document.getElementById('harmoni-header');
+          if (header) {
+            header.style.transform = '';
+            header.style.opacity = '';
+          }
+        };
       }
       return null;
     }
@@ -304,7 +331,7 @@ const ScrollStack = ({
       // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
         // Offset starts after the header (top-24 = 96px) plus some padding
-        const topOffset = 100 + itemStackDistance * i;
+        const topOffset = 120 + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`; // Higher than header (z-30)
