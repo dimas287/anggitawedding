@@ -212,7 +212,7 @@ const ScrollStack = ({
   const setupLenis = useCallback(() => {
     if (useWindowScroll) {
       const lenis = new Lenis({
-        duration: 2.0,
+        duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         infinite: false,
@@ -291,11 +291,6 @@ const ScrollStack = ({
         const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
         // Ensure margin is never negative and respects a minimum distance
         let margin = Math.max(itemDistance, calculatedMargin);
-        
-        // On mobile, reduce the margin by 150px so the next card comes in tighter
-        if (window.innerWidth < 1024) {
-            margin = Math.max(itemDistance, margin - 150);
-        }
         
         wrapper.style.marginBottom = `${margin}px`;
       }
