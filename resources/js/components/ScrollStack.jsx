@@ -80,11 +80,10 @@ const ScrollStack = ({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
-    const endElement = useWindowScroll
-      ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
-
-    const endElementTop = endElement ? getElementOffset(endElement) : 0;
+    const scrollerElement = scrollerRef.current;
+    const scrollerTop = getElementOffset(scrollerElement);
+    const scrollerHeight = scrollerElement.offsetHeight;
+    const scrollerBottom = scrollerTop + scrollerHeight;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
@@ -93,7 +92,14 @@ const ScrollStack = ({
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const pinEnd = endElementTop - containerHeight / 2;
+      
+      // Calculate the bottom position of the stack on the viewport
+      const cardHeight = card.offsetHeight;
+      const stackBottom = stackPositionPx + cardHeight + (itemStackDistance * cardsRef.current.length);
+      
+      // Pin ends when the bottom of the scroller reaches the bottom of the stack
+      // This ensures the next section perfectly follows the stacked cards without empty space!
+      const pinEnd = scrollerBottom - stackBottom;
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;
@@ -304,8 +310,6 @@ const ScrollStack = ({
     <div className={`scroll-stack-scroller ${className}`.trim()} ref={scrollerRef}>
       <div className="scroll-stack-inner">
         {children}
-        {/* Spacer so the last pin can release cleanly */}
-        <div className="scroll-stack-end" />
       </div>
     </div>
   );

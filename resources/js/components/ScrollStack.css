@@ -12,22 +12,17 @@
 }
 
 .scroll-stack-inner {
-  padding: 10vh 1rem 0;
+  padding: 10vh 1rem 50vh;
   min-height: 100vh;
 }
 @media (min-width: 1024px) {
   .scroll-stack-inner {
-    padding: 10vh 5rem 0;
+    padding: 10vh 5rem 50vh;
   }
 }
 
 .scroll-stack-card-wrapper {
   position: relative;
-}
-
-.scroll-stack-end {
-  width: 100%;
-  height: 50vh; /* This provides the scroll space for the stack animation to complete */
 }
 
 .scroll-stack-card {
