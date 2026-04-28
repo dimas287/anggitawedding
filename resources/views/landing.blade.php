@@ -719,7 +719,7 @@
 
 {{-- LAYANAN / SCROLL STACK --}}
 @php $processPairs = array_chunk($processSection['items'], 2); @endphp
-<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500" id="layanan">
+<section class="bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500 relative z-[1]" id="layanan">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
         <div class="text-center pt-24 pb-10">
@@ -786,8 +786,8 @@ document.addEventListener('DOMContentLoaded', function () {
             row.style.top = '0';
             row.style.left = '0';
             row.style.right = '0';
-            row.style.zIndex = rows.length + 1 + i; // later rows on top
-            gsap.set(row, { yPercent: 110 }); // start below
+            row.style.zIndex = rows.length + 1 + i;
+            gsap.set(row, { yPercent: 110 });
         }
     });
 
@@ -805,8 +805,22 @@ document.addEventListener('DOMContentLoaded', function () {
             pinSpacing: true,
             scrub: 0.6,
             anticipatePin: 1,
+            onRefresh: function(self) {
+                // Set z-index on the GSAP-generated pin-spacer so it doesn't overlap other sections
+                if (self.pin && self.pin.parentElement) {
+                    self.pin.parentElement.style.zIndex = '1';
+                }
+            }
         }
     });
+
+    // After ScrollTrigger creates the pin-spacer, set its z-index
+    setTimeout(function() {
+        var pinSpacer = section.parentElement;
+        if (pinSpacer && pinSpacer.classList.contains('pin-spacer')) {
+            pinSpacer.style.zIndex = '1';
+        }
+    }, 100);
 
     // Animate each subsequent row sliding up
     for (var i = 1; i < rows.length; i++) {
