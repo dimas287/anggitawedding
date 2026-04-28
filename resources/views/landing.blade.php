@@ -1197,12 +1197,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. WhatsApp Float Reveal Logic (Mobile Only)
                 const waButton = document.getElementById('floating-whatsapp-container');
                 if (waButton) {
-                    gsap.set(waButton, { opacity: 0, pointerEvents: "none" });
+                    gsap.set(waButton, { autoAlpha: 0 });
                     ScrollTrigger.create({
                         trigger: "#dream-section",
                         start: "bottom center",
-                        onEnter: () => gsap.to(waButton, { opacity: 1, pointerEvents: "auto", duration: 0.5 }),
-                        onLeaveBack: () => gsap.to(waButton, { opacity: 0, pointerEvents: "none", duration: 0.5 }),
+                        onEnter: () => gsap.to(waButton, { autoAlpha: 1, duration: 0.5 }),
+                        onLeaveBack: () => gsap.to(waButton, { autoAlpha: 0, duration: 0.5 }),
                     });
                 }
 
