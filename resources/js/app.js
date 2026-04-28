@@ -28,3 +28,5 @@ window.FullCalendar = {
     dayGridPlugin,
     listPlugin,
 };
+
+import './process-stack-init';
