@@ -218,14 +218,32 @@ const ScrollStack = ({
       if (lastWrapper && onStackComplete) {
         const observer = new IntersectionObserver(
           ([entry]) => {
-            if (entry.isIntersecting && !stackCompletedRef.current) {
-              stackCompletedRef.current = true;
-              onStackComplete();
-            } else if (!entry.isIntersecting && stackCompletedRef.current) {
-              stackCompletedRef.current = false;
+            const header = document.getElementById('harmoni-header');
+            if (entry.isIntersecting) {
+              if (!stackCompletedRef.current) {
+                stackCompletedRef.current = true;
+                onStackComplete();
+              }
+              // Slide header out when last card is in position
+              if (header) {
+                header.style.transform = 'translateY(-100px)';
+                header.style.opacity = '0';
+              }
+            } else {
+              if (stackCompletedRef.current) {
+                stackCompletedRef.current = false;
+              }
+              // Bring header back when scrolling back up
+              if (header && entry.boundingClientRect.top > 0) {
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+              }
             }
           },
-          { threshold: 0.5 }
+          { 
+            threshold: 0.9,
+            rootMargin: '-100px 0px 0px 0px'
+          }
         );
         observer.observe(lastWrapper);
         nativeScrollRef.current = () => observer.disconnect();
@@ -304,8 +322,8 @@ const ScrollStack = ({
       // Each wrapper becomes sticky at its own top offset
       // so they stack up naturally as user scrolls
       wrappers.forEach((wrapper, i) => {
-        // Offset starts near the top since the header scrolls away natively on mobile
-        const topOffset = 24 + itemStackDistance * i;
+        // Offset starts below the header (which is sticky at top-24 + ~100px height)
+        const topOffset = 200 + itemStackDistance * i;
         wrapper.style.position = 'sticky';
         wrapper.style.top = `${topOffset}px`;
         wrapper.style.zIndex = `${40 + i}`;
