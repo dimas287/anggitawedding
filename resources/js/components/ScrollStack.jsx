@@ -86,33 +86,54 @@ const ScrollStack = ({
 
     const endElementTop = endElement ? getElementOffset(endElement) : 0;
 
+    // Pre-calculate effective indices (row indices)
+    const cardOffsets = cardsRef.current.map(card => getElementOffset(card));
+    
+    // Group offsets with a 5px tolerance
+    const uniqueOffsets = [];
+    cardOffsets.forEach(offset => {
+      const existing = uniqueOffsets.find(u => Math.abs(u - offset) < 5);
+      if (!existing) {
+        uniqueOffsets.push(offset);
+      }
+    });
+    uniqueOffsets.sort((a, b) => a - b);
+    
+    const rowIndices = cardOffsets.map(offset => {
+      const match = uniqueOffsets.find(u => Math.abs(u - offset) < 5);
+      return uniqueOffsets.indexOf(match);
+    });
+
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const cardTop = getElementOffset(card);
-      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
+      const rowIndex = rowIndices[i];
+      const cardTop = cardOffsets[i];
+      
+      const triggerStart = cardTop - stackPositionPx - itemStackDistance * rowIndex;
       const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
+      const pinStart = cardTop - stackPositionPx - itemStackDistance * rowIndex;
       const pinEnd = endElementTop - containerHeight / 2;
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
-      const targetScale = baseScale + i * itemScale;
+      const targetScale = baseScale + rowIndex * itemScale;
       const scale = 1 - scaleProgress * (1 - targetScale);
-      const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+      const rotation = rotationAmount ? rowIndex * rotationAmount * scaleProgress : 0;
 
       let blur = 0;
       if (blurAmount) {
-        let topCardIndex = 0;
+        let topRowIndex = 0;
         for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
-          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
+          const jRowIndex = rowIndices[j];
+          const jCardTop = cardOffsets[j];
+          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * jRowIndex;
           if (scrollTop >= jTriggerStart) {
-            topCardIndex = j;
+            topRowIndex = Math.max(topRowIndex, jRowIndex);
           }
         }
 
-        if (i < topCardIndex) {
-          const depthInStack = topCardIndex - i;
+        if (rowIndex < topRowIndex) {
+          const depthInStack = topRowIndex - rowIndex;
           blur = Math.max(0, depthInStack * blurAmount);
         }
       }
@@ -121,9 +142,9 @@ const ScrollStack = ({
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
 
       if (isPinned) {
-        translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
+        translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * rowIndex;
       } else if (scrollTop > pinEnd) {
-        translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
+        translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * rowIndex;
       }
 
       const newTransform = {

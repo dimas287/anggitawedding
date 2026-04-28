@@ -720,7 +720,7 @@
 {{-- LAYANAN --}}
 <section class="py-24 bg-white dark:bg-[#0A0A0A] section-glow transition-colors duration-500" id="layanan" data-reveal data-reveal-direction="up">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16" data-reveal>
+        <div class="sticky top-0 pt-24 pb-12 bg-white/80 dark:bg-[#0A0A0A]/80 backdrop-blur-md z-40 text-center mb-8" data-reveal>
             <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{{ $processSection['eyebrow'] ?? 'The Process' }}</span>
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white mt-2">{{ $processSection['heading'] ?? 'Harmoni Pelayanan' }}</h2>
         </div>

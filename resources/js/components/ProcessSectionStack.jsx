@@ -5,11 +5,12 @@ const ProcessSectionStack = ({ items }) => {
   return (
     <ScrollStack 
       useWindowScroll={true} 
-      itemDistance={50} 
-      itemStackDistance={20}
-      stackPosition="15%"
-      baseScale={0.92}
-      itemScale={0.02}
+      itemDistance={40} 
+      itemStackDistance={30}
+      stackPosition="220px"
+      baseScale={0.9}
+      itemScale={0.03}
+      blurAmount={0}
     >
       {items.map((item, index) => (
         <ScrollStackItem key={index}>
