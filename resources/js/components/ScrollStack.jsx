@@ -290,7 +290,13 @@ const ScrollStack = ({
         const pinPos = stackPositionPx + itemStackDistance * i;
         const calculatedMargin = containerHeight - pinPos - wrapper.offsetHeight;
         // Ensure margin is never negative and respects a minimum distance
-        const margin = Math.max(itemDistance, calculatedMargin);
+        let margin = Math.max(itemDistance, calculatedMargin);
+        
+        // On mobile, reduce the margin by 150px so the next card comes in tighter
+        if (window.innerWidth < 1024) {
+            margin = Math.max(itemDistance, margin - 150);
+        }
+        
         wrapper.style.marginBottom = `${margin}px`;
       }
     });

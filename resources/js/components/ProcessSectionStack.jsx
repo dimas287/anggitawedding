@@ -62,7 +62,7 @@ const ProcessSectionStack = ({ items }) => {
     <ScrollStack 
       useWindowScroll={true} 
       itemDistance={40} 
-      itemStackDistance={isMobile ? 8 : 30}
+      itemStackDistance={isMobile ? 2 : 30}
       stackPosition="220px"
       baseScale={0.9}
       itemScale={0.03}
@@ -70,7 +70,7 @@ const ProcessSectionStack = ({ items }) => {
     >
       {itemPairs.map((pair, index) => (
         <ScrollStackItem key={index}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-6 w-full">
             {pair.map((item, idx) => (
               <AnimatedCard key={idx} direction={getDirection(index, idx)}>
                 <div className="p-8 rounded-2xl border border-gray-100 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all group bg-white dark:bg-[#111111] shadow-lg dark:shadow-none h-full flex flex-col justify-center">
