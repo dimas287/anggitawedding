@@ -380,10 +380,10 @@
         [
             'label' => 'Paket',
             'is_dropdown' => true,
-            'active_routes' => ['packages', 'digital-invitations', 'booking.select-package'],
+            'active_routes' => ['packages', 'digital-invitations', 'booking.select-package', 'booking.form', 'invitation.maintenance', 'invitation-order.start'],
             'children' => [
-                ['route' => 'packages', 'label' => 'Paket Wedding', 'icon' => 'fa-ring', 'desc' => 'Perencanaan momen bersejarah Anda'],
-                ['route' => 'digital-invitations', 'label' => 'Undangan Digital', 'icon' => 'fa-envelope-open-text', 'desc' => 'Sebarkan kabar bahagia secara elegan'],
+                ['route' => 'packages', 'active_routes' => ['packages', 'booking.select-package', 'booking.form'], 'label' => 'Paket Wedding', 'icon' => 'fa-ring', 'desc' => 'Perencanaan momen bersejarah Anda'],
+                ['route' => 'digital-invitations', 'active_routes' => ['digital-invitations', 'invitation.maintenance', 'invitation-order.start'], 'label' => 'Undangan Digital', 'icon' => 'fa-envelope-open-text', 'desc' => 'Sebarkan kabar bahagia secara elegan'],
             ]
         ],
         ['route' => 'portfolio', 'label' => 'Portofolio'],
@@ -437,13 +437,14 @@
                                  
                                 <div class="bg-white/95 dark:bg-[#111111]/95 backdrop-blur-2xl border border-gray-100 dark:border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.08)] rounded-2xl overflow-hidden p-2">
                                     @foreach($item['children'] as $child)
-                                    <a href="{{ route($child['route']) }}" class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50/80 dark:hover:bg-white/5 transition-all group/link">
-                                        <div class="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center shrink-0 group-hover/link:scale-110 group-hover/link:bg-yellow-100 dark:group-hover/link:bg-yellow-900/40 transition-all duration-300">
+                                    @php $isChildActive = request()->routeIs($child['active_routes'] ?? $child['route']); @endphp
+                                    <a href="{{ route($child['route']) }}" class="flex items-start gap-4 p-4 rounded-xl {{ $isChildActive ? 'bg-yellow-50/50 dark:bg-yellow-900/10' : 'hover:bg-gray-50/80 dark:hover:bg-white/5' }} transition-all group/link">
+                                        <div class="w-10 h-10 rounded-full {{ $isChildActive ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600' : 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500' }} flex items-center justify-center shrink-0 group-hover/link:scale-110 group-hover/link:bg-yellow-100 dark:group-hover/link:bg-yellow-900/40 transition-all duration-300">
                                             <i class="fas {{ $child['icon'] }}"></i>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5 group-hover/link:text-yellow-600 dark:group-hover/link:text-yellow-500 transition-colors">{{ $child['label'] }}</p>
-                                            <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed normal-case tracking-normal">{{ $child['desc'] }}</p>
+                                            <p class="text-sm font-semibold {{ $isChildActive ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white' }} mb-0.5 group-hover/link:text-yellow-600 dark:group-hover/link:text-yellow-500 transition-colors">{{ $child['label'] }}</p>
+                                            <p class="text-[11px] {{ $isChildActive ? 'text-yellow-700/70 dark:text-yellow-400/70' : 'text-gray-500 dark:text-gray-400' }} leading-relaxed normal-case tracking-normal">{{ $child['desc'] }}</p>
                                         </div>
                                     </a>
                                     @endforeach
@@ -590,7 +591,8 @@
                             <div x-show="submenuOpen" x-collapse>
                                 <div class="px-3 pb-3 space-y-1 pt-1">
                                     @foreach($item['children'] as $child)
-                                        <a href="{{ route($child['route']) }}" class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm {{ request()->routeIs($child['route']) ? 'text-yellow-600 dark:text-yellow-500 bg-white dark:bg-black/20 border-gray-100 dark:border-white/5 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-white dark:hover:bg-black/20 border-transparent hover:border-gray-100 dark:hover:border-white/5' }} transition-all border">
+                                        @php $isChildActive = request()->routeIs($child['active_routes'] ?? $child['route']); @endphp
+                                        <a href="{{ route($child['route']) }}" class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm {{ $isChildActive ? 'text-yellow-600 dark:text-yellow-500 bg-white dark:bg-black/20 border-gray-100 dark:border-white/5 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-white dark:hover:bg-black/20 border-transparent hover:border-gray-100 dark:hover:border-white/5' }} transition-all border">
                                             <i class="fas {{ $child['icon'] }} w-5 text-center text-xs opacity-70"></i>
                                             {{ $child['label'] }}
                                         </a>
