@@ -209,7 +209,29 @@ const ScrollStack = ({
     updateCardTransforms();
   }, [updateCardTransforms]);
 
-  const setupLenis = useCallback(() => {
+  const nativeScrollRef = useRef(null);
+
+  const setupScrolling = useCallback(() => {
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
+
+    if (isMobile && useWindowScroll) {
+      // On mobile: use native scroll + rAF for buttery smooth touch scrolling
+      // Lenis fights with native touch momentum and causes jitter on phones
+      let ticking = false;
+      const onNativeScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateCardTransforms();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+      window.addEventListener('scroll', onNativeScroll, { passive: true });
+      nativeScrollRef.current = onNativeScroll;
+      return null; // no lenis instance
+    }
+
     if (useWindowScroll) {
       const lenis = new Lenis({
         duration: 1.2,
@@ -258,7 +280,7 @@ const ScrollStack = ({
       lenisRef.current = lenis;
       return lenis;
     }
-  }, [handleScroll, useWindowScroll]);
+  }, [handleScroll, updateCardTransforms, useWindowScroll]);
 
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
@@ -306,7 +328,7 @@ const ScrollStack = ({
       card.style.webkitPerspective = '1000px';
     });
 
-    setupLenis();
+    setupScrolling();
 
     updateCardTransforms();
 
@@ -316,6 +338,10 @@ const ScrollStack = ({
       }
       if (lenisRef.current) {
         lenisRef.current.destroy();
+      }
+      if (nativeScrollRef.current) {
+        window.removeEventListener('scroll', nativeScrollRef.current);
+        nativeScrollRef.current = null;
       }
       stackCompletedRef.current = false;
       cardsRef.current = [];
@@ -334,7 +360,7 @@ const ScrollStack = ({
     blurAmount,
     useWindowScroll,
     onStackComplete,
-    setupLenis,
+    setupScrolling,
     updateCardTransforms
   ]);
 

@@ -45,33 +45,25 @@
             @foreach($categoryLabels as $key => $label)
                 @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
                     <button @click="tab='{{ $key }}'" type="button"
-                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border dark:border-gray-700'"
-                        class="px-5 py-2 rounded-full text-sm font-semibold transition-all border border-transparent">
+                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg scale-105 ring-2 ring-yellow-400/50' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border dark:border-gray-700 hover:border-yellow-300 dark:hover:border-yellow-700'"
+                        class="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border border-transparent relative">
                         {{ $label }}
+                        <span x-show="tab === '{{ $key }}'" x-transition.opacity.duration.300ms
+                              class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-yellow-400 shadow-sm"></span>
                     </button>
                 @endif
             @endforeach
         </div>
 
         <div class="glass-card dark:bg-[#111] dark:border-[#333] rounded-3xl p-6 mb-12 border border-white/60 shadow-xl">
-            <div class="flex flex-col md:flex-row items-center gap-6">
-                <div class="w-full md:w-1/2">
+            <div class="flex flex-col items-center">
+                <div class="w-full">
                     <label class="text-xs font-semibold text-gray-700 dark:text-gray-400 uppercase tracking-[0.3em]">Rentang Harga</label>
                     <select x-model="price" class="mt-2 w-full border border-gray-200 dark:border-gray-800 rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1A1A1A] focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 shadow-sm">
                         <option value="all">Semua harga</option>
                         <option value="low">Di bawah Rp 20 juta</option>
                         <option value="mid">Rp 20 - 40 juta</option>
                         <option value="high">Di atas Rp 40 juta</option>
-                    </select>
-                </div>
-                <div class="w-full md:w-1/2">
-                    <label class="text-xs font-semibold text-gray-700 dark:text-gray-400 uppercase tracking-[0.3em]">Kapasitas Tamu</label>
-                    <select x-model="guests" class="mt-2 w-full border border-gray-200 dark:border-gray-800 rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1A1A1A] focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 shadow-sm">
-                        <option value="all">Semua kapasitas</option>
-                        <option value="small">Hingga 200 tamu</option>
-                        <option value="medium">201 - 500 tamu</option>
-                        <option value="large">Di atas 500 tamu</option>
-                        <option value="service">Layanan tanpa batas tamu (Rias, dll)</option>
                     </select>
                 </div>
             </div>
@@ -388,7 +380,6 @@ function packageExplorer(initialTab) {
     return {
         tab: initialTab,
         price: 'all',
-        guests: 'all',
         bookingModal: false,
         detailModal: false,
         detailMedia: [],
@@ -401,20 +392,13 @@ function packageExplorer(initialTab) {
         minDate: '{{ now()->addDay()->toDateString() }}',
         matches(pkg) {
             const price = Number(pkg.price ?? 0);
-            const guests = pkg.guests === null ? null : Number(pkg.guests);
 
             const priceOk = this.price === 'all'
                 || (this.price === 'low' && price < 20000000)
                 || (this.price === 'mid' && price >= 20000000 && price <= 40000000)
                 || (this.price === 'high' && price > 40000000);
 
-            const guestsOk = this.guests === 'all'
-                || (this.guests === 'service' && guests === null)
-                || (this.guests === 'small' && guests !== null && guests <= 200)
-                || (this.guests === 'medium' && guests !== null && guests >= 201 && guests <= 500)
-                || (this.guests === 'large' && guests !== null && guests > 500);
-
-            return priceOk && guestsOk;
+            return priceOk;
         },
         openBookingModal(pkg) {
             this.selectedPackage = pkg;
