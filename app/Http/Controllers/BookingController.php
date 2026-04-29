@@ -114,11 +114,15 @@ class BookingController extends Controller
         $eventDate = $validated['event_date'];
         $package = Package::findOrFail($validated['package_id']);
         $isIndividual = $package->isIndividualService();
-        $dpAmount = $package->price * 0.30;
+        
+        // Use effective_price to account for any active promos/discounts
+        $packagePrice = $package->effective_price;
+        $dpAmount = $package->dp_amount;
+        
         $groomName = $isIndividual ? $validated['client_name'] : $validated['groom_name'];
         $brideName = $isIndividual ? ($validated['client_label'] ?? 'Personal Service') : $validated['bride_name'];
 
-        $booking = DB::transaction(function () use ($validated, $eventDate, $request, $package, $isIndividual, $groomName, $brideName, $dpAmount) {
+        $booking = DB::transaction(function () use ($validated, $eventDate, $request, $package, $isIndividual, $groomName, $brideName, $packagePrice, $dpAmount) {
             // CRITICAL: Lock records for this date to prevent Race Conditions (Atomic Booking)
             Booking::whereDate('event_date', $eventDate)->lockForUpdate()->get();
 
@@ -160,7 +164,7 @@ class BookingController extends Controller
                 'estimated_guests' => $validated['estimated_guests'] ?? null,
                 'notes' => strip_tags($validated['notes'] ?? null),
                 'consultation_preference' => strip_tags($validated['consultation_preference'] ?? null),
-                'package_price' => $package->price,
+                'package_price' => $packagePrice,
                 'dp_amount' => $dpAmount,
             ]);
 
