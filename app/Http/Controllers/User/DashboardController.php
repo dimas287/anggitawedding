@@ -239,10 +239,9 @@ class DashboardController extends Controller
             return back()->with('error', 'Booking ini sudah memiliki pembayaran sehingga tidak bisa dibatalkan mandiri.');
         }
 
-        $booking->update([
-            'status' => 'cancelled',
-            'payment_status' => 'unpaid',
-        ]);
+        $booking->status = 'cancelled';
+        $booking->payment_status = 'unpaid';
+        $booking->save();
 
         Payment::where('booking_id', $booking->id)->where('status', 'pending')->delete();
 
