@@ -66,7 +66,7 @@
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "Anggita Wedding Organizer",
+      "name": "Anggita Wedding Organizer - Wedding Organizer Surabaya",
       "image": "{{ asset('images/logo.png') }}",
       "@id": "{{ url('/') }}",
       "url": "{{ url('/') }}",

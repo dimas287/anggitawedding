@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Anggita Wedding Organizer – Wujudkan Pernikahan Impian Anda')
+@section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer')
 @section('meta_description', 'Anggita Wedding Organizer Surabaya mewujudkan pernikahan impian Anda. Layanan lengkap mulai dari dekorasi, rias pengantin, dokumentasi, hingga undangan digital premium.')
 
 @push('head')
@@ -203,6 +203,7 @@
                 {{ $heroCopy['badge'] ?? 'Elegance in Every Detail' }}
             </div>
             <h1 class="font-playfair text-5xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] tracking-tight drop-shadow-md mb-6 relative">
+                <span class="sr-only">Wedding Organizer Surabaya Terbaik</span>
                 <span class="hero-headline-fallback block" x-data="{ hide: false }" x-init="hide = true" x-show="!hide">
                     Wujudkan Pernikahan <br><span class="italic text-white/90">Impian</span>
                 </span>
