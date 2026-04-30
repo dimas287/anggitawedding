@@ -22,10 +22,14 @@
     </div>
 
     {{-- Main Button --}}
-    <a href="{{ $whatsappLink }}" target="_blank" class="w-16 h-16 rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_rgba(37,211,102,0.4)] flex items-center justify-center text-3xl hover:scale-110 hover:shadow-[0_15px_40px_rgba(37,211,102,0.6)] active:scale-95 transition-all duration-300 pointer-events-auto relative overflow-hidden">
+    <a href="{{ $whatsappLink }}" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Hubungi Anggita Wedding via WhatsApp"
+       class="w-16 h-16 rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_rgba(37,211,102,0.4)] flex items-center justify-center text-3xl hover:scale-110 hover:shadow-[0_15px_40px_rgba(37,211,102,0.6)] active:scale-95 transition-all duration-300 pointer-events-auto relative overflow-hidden">
         {{-- Shine effect --}}
         <div class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent"></div>
-        <i class="fab fa-whatsapp relative z-10"></i>
+        <i class="fab fa-whatsapp relative z-10" aria-hidden="true"></i>
     </a>
 </div>
 

@@ -95,10 +95,21 @@
     }
     </script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Preconnect to font origins BEFORE vite to reduce latency --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {{-- Preload Google Fonts stylesheet to avoid render-blocking --}}
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Force font-display:swap on FontAwesome to prevent render-blocking --}}
+    <style>
+        @font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Pro'; font-display: swap; }
+    </style>
     <style>
 
 
@@ -836,8 +847,8 @@
             class="back-to-top" 
             id="backToTop" 
             onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-            aria-label="Back to Top">
-        <i class="fas fa-arrow-up"></i>
+            aria-label="Kembali ke atas">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     @include('components.whatsapp-float')

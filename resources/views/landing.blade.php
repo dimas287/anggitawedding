@@ -180,7 +180,19 @@
         ];
     })->values();
     $maintenanceMode = (bool) \App\Models\SiteSetting::getValue('invitation_maintenance_mode', false);
+    $firstHeroSlide = $heroSlides->first();
 @endphp
+
+@push('head')
+{{-- Preload the first hero image/video for LCP --}}
+@if($firstHeroSlide)
+    @if($firstHeroSlide->media_type === 'image')
+        <link rel="preload" as="image" href="{{ $firstHeroSlide->resolved_media_url }}" fetchpriority="high">
+    @elseif($firstHeroSlide->media_type === 'video')
+        <link rel="preload" as="video" href="{{ $firstHeroSlide->resolved_media_url }}">
+    @endif
+@endif
+@endpush
 
 @section('content')
 {{-- HERO --}}
@@ -188,10 +200,10 @@
     <template x-for="(slide, index) in slides" :key="slide.id">
         <div class="absolute inset-0 transition-opacity duration-[1200ms]" :class="current === index ? 'opacity-100' : 'opacity-0'">
             <template x-if="slide.type === 'video'">
-                <video :src="slide.src" autoplay muted loop playsinline preload="metadata" class="w-full h-full object-cover"></video>
+                <video :src="slide.src" autoplay muted loop playsinline :preload="index === 0 ? 'auto' : 'metadata'" class="w-full h-full object-cover"></video>
             </template>
             <template x-if="slide.type === 'image'">
-                <div class="w-full h-full bg-cover bg-center" :style="`background-image:url(${slide.src});`"></div>
+                <img :src="slide.src" :alt="slide.title || 'Anggita Wedding'" class="w-full h-full object-cover" :fetchpriority="index === 0 ? 'high' : 'low'" :loading="index === 0 ? 'eager' : 'lazy'">
             </template>
             <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/70 transition-opacity duration-700"></div>
         </div>
