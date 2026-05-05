@@ -134,6 +134,11 @@ class LandingController extends Controller
         return view('faq');
     }
 
+    public function privacyPolicy()
+    {
+        return view('privacy-policy');
+    }
+
     public function digitalInvitations()
     {
         $templates = InvitationTemplate::where('is_active', true)

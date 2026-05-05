@@ -101,6 +101,7 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'ind
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
 Route::get('/faq', [LandingController::class, 'faq'])->name('faq');
+Route::get('/kebijakan-privasi', [LandingController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::get('/undangan-digital', [LandingController::class, 'digitalInvitations'])->middleware('invitation.maintenance')->name('digital-invitations');

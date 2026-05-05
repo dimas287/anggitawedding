@@ -711,8 +711,15 @@
             </div>
         </div>
         <div class="border-t border-white/5 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-            <p>© {{ date('Y') }} Anggita Wedding Organizer. All rights reserved.</p>
-            <p class="mt-2 md:mt-0">Made with <span class="text-red-400">♥</span> for beautiful weddings</p>
+            <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                <p>© {{ date('Y') }} Anggita Wedding Organizer. All rights reserved.</p>
+                <div class="hidden md:block w-px h-3 bg-white/10"></div>
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('privacy-policy') }}" class="hover:text-gold transition-colors">Kebijakan Privasi</a>
+                    <a href="{{ route('faq') }}" class="hover:text-gold transition-colors">FAQ</a>
+                </div>
+            </div>
+            <p class="mt-4 md:mt-0">Made with <span class="text-red-400">♥</span> for beautiful weddings</p>
         </div>
     </div>
 </footer>
