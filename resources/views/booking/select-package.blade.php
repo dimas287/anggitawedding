@@ -129,12 +129,24 @@
                                     @endif
                                     <ul class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 max-h-56 overflow-y-auto pr-1">
                                         @foreach($section['items'] as $item)
-                                        <li class="flex items-start gap-2">
-                                            <span class="w-4.5 h-4.5 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <i class="fas fa-check text-yellow-600 text-[9px]"></i>
-                                            </span>
-                                            <span class="break-words">{{ $item }}</span>
-                                        </li>
+                                            @php
+                                                $trimmedItem = trim($item);
+                                                $isSubheading = str_starts_with($trimmedItem, '##');
+                                                $cleanItem = $isSubheading ? trim(preg_replace('/^##\s*/', '', $trimmedItem)) : $item;
+                                            @endphp
+
+                                            @if($isSubheading)
+                                                <li class="pt-3 pb-1 first:pt-0">
+                                                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500">{{ $cleanItem }}</span>
+                                                </li>
+                                            @else
+                                                <li class="flex items-start gap-2">
+                                                    <span class="w-4.5 h-4.5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[9px]"></i>
+                                                    </span>
+                                                    <span class="break-words">{{ $item }}</span>
+                                                </li>
+                                            @endif
                                         @endforeach
                                     </ul>
                                 </div>

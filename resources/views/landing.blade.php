@@ -679,9 +679,15 @@
                                             @endif
                                             <ul class="space-y-1.5 text-[12px] text-gray-700 dark:text-gray-300 leading-tight">
                                                 @foreach($section['items'] as $item)
-                                                    @if(str_starts_with(trim($item), '##'))
-                                                        <li class="pt-2 first:pt-0">
-                                                            <p class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ ltrim(trim($item), '# ') }}</p>
+                                                    @php
+                                                        $trimmedItem = trim($item);
+                                                        $isSubheading = str_starts_with($trimmedItem, '##');
+                                                        $cleanItem = $isSubheading ? trim(preg_replace('/^##\s*/', '', $trimmedItem)) : $item;
+                                                    @endphp
+
+                                                    @if($isSubheading)
+                                                        <li class="pt-3 pb-1 first:pt-0">
+                                                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500 border-b border-gray-100 dark:border-gray-700/50 pb-1 mb-0.5">{{ $cleanItem }}</p>
                                                         </li>
                                                     @else
                                                         <li class="flex items-start gap-2">
