@@ -107,5 +107,22 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('footerInfo', $footer);
         });
+        View::composer('layouts.app', function ($view) {
+            if (\Illuminate\Support\Facades\Auth::check()) {
+                $packages = \App\Models\Package::where('is_active', true)
+                    ->with('mediaItems')
+                    ->withCount(['bookings as popular_score' => function ($q) {
+                        $q->whereIn('status', ['pending','dp_paid','in_progress','completed']);
+                    }])
+                    ->orderBy('sort_order')
+                    ->get();
+                
+                $view->with([
+                    'packages' => $packages,
+                    'packagesByCategory' => $packages->groupBy('category'),
+                    'categoryLabels' => \App\Models\Package::CATEGORY_LABELS,
+                ]);
+            }
+        });
     }
 }
