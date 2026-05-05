@@ -3,6 +3,21 @@ Allow: /
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /payment/
+Disallow: /anggita-access
+Disallow: /anggita-register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /email/
+Disallow: /checkout/
+Disallow: /undangan-maintenance
+Disallow: /storage/framework/
+Disallow: /storage/logs/
+Disallow: /vendor/
+
+# SEO Improvements
+# Allow bots to crawl CSS and JS for better rendering
+Allow: /build/assets/*.css
+Allow: /build/assets/*.js
 
 # Sitemap
 Sitemap: https://anggitaweddingsby.com/sitemap.xml
