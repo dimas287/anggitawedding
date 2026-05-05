@@ -16,6 +16,7 @@
         adminName: @js($adminName),
         csrf: '{{ csrf_token() }}'
     })"
+    @toggle-chat.window="toggle()"
     class="fixed bottom-6 right-6 z-[9999] space-y-3">
     <div x-show="open" x-cloak x-transition.origin.bottom.right class="w-[330px] max-w-[90vw] rounded-3xl shadow-2xl border border-white/40 overflow-hidden"
          style="background: radial-gradient(circle at 0% 0%, #ffd8b5 0%, #f9bde8 45%, #c5bcff 100%);">

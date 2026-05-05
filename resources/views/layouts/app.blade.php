@@ -219,40 +219,61 @@
 
         /* ── MAGIC BOTTOM NAV ── */
         .bottom-nav {
-            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 28px); max-width: 380px; height: 60px;
-            background: linear-gradient(135deg, rgba(124,92,191,.9) 0%, rgba(180,110,220,.9) 50%, rgba(201,168,76,.9) 100%);
-            backdrop-filter: blur(20px) saturate(200%);
-            border-radius: 30px;
-            border: 1px solid rgba(255,255,255,.2);
-            box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15);
-            display: flex; align-items: center; justify-content: space-around;
-            padding: 0 6px; z-index: 100;
+            position: fixed;
+            bottom: 14px; left: 50%;
+            transform: translateX(-50%);
+            /* Fit exactly 4 items */
+            width: auto;
+            min-width: 260px;
+            max-width: calc(100vw - 32px);
+            height: 58px;
+            background: linear-gradient(135deg, rgba(100,70,180,.92) 0%, rgba(160,90,210,.92) 50%, rgba(185,140,50,.92) 100%);
+            backdrop-filter: blur(24px) saturate(200%);
+            border-radius: 29px;
+            border: 1px solid rgba(255,255,255,.22);
+            box-shadow: 0 10px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0 8px;
+            z-index: 200;
         }
         @media (min-width: 1024px) { .bottom-nav { display: none; } }
 
         .bn-item {
             display: flex; flex-direction: column; align-items: center;
-            justify-content: center; width: 56px; height: 56px;
-            border-radius: 50%; cursor: pointer; text-decoration: none;
-            color: rgba(255,255,255,.65); position: relative;
-            transition: transform .35s cubic-bezier(.34,1.56,.64,1), color .2s;
+            justify-content: center;
+            width: 58px; height: 54px;
+            border-radius: 50%;
+            cursor: pointer; text-decoration: none; border: none; background: none;
+            color: rgba(255,255,255,.6); position: relative;
+            transition: transform .38s cubic-bezier(.34,1.56,.64,1), color .2s;
+            flex-shrink: 0;
         }
-        .bn-item i { font-size: 19px; transition: font-size .3s cubic-bezier(.34,1.56,.64,1); }
+        .bn-item i { font-size: 18px; transition: font-size .3s cubic-bezier(.34,1.56,.64,1); }
         .bn-label {
-            font-size: 9px; font-weight: 700; letter-spacing: .03em;
-            position: absolute; bottom: -16px; white-space: nowrap;
+            font-size: 9px; font-weight: 700; letter-spacing: .04em;
+            position: absolute; bottom: -15px; white-space: nowrap;
             color: rgba(255,255,255,.9); opacity: 0;
-            transform: translateY(4px); transition: all .25s;
+            transform: translateY(5px); transition: all .25s ease;
         }
         .bn-item.active {
             background: rgba(255,255,255,.95);
             color: var(--purple);
-            transform: translateY(-16px);
-            box-shadow: 0 8px 24px rgba(0,0,0,.3), 0 0 0 5px rgba(255,255,255,.12);
+            transform: translateY(-14px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.3), 0 0 0 5px rgba(255,255,255,.14);
         }
-        .bn-item.active i { font-size: 21px; }
+        .bn-item.active i { font-size: 20px; }
         .bn-item.active .bn-label { opacity: 1; transform: translateY(0); }
+        .bn-item.chat-active {
+            background: rgba(255,255,255,.95);
+            color: var(--purple);
+            transform: translateY(-14px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.3), 0 0 0 5px rgba(255,255,255,.14);
+        }
+        .bn-item.chat-active i { font-size: 20px; }
+        .bn-item.chat-active .bn-label { opacity: 1; transform: translateY(0); }
 
         /* ── THEME TOGGLE ── */
         .theme-toggle {
@@ -443,31 +464,46 @@
         <i class="fas fa-house"></i>
         <span class="bn-label">Home</span>
     </a>
-    <a href="{{ $firstBooking ? route('user.booking.show', $firstBooking->id) : '#' }}"
+
+    <a href="{{ $firstBooking ? route('user.booking.show', $firstBooking->id) : route('booking.start') }}"
        class="bn-item {{ request()->routeIs('user.booking.show') ? 'active' : '' }}">
         <i class="fas fa-calendar-heart"></i>
         <span class="bn-label">Booking</span>
     </a>
-    <a href="{{ route('consultation.form') }}"
-       class="bn-item">
-        <i class="fas fa-comments"></i>
-        <span class="bn-label">Konsultasi</span>
-    </a>
+
+    {{-- Chat button — triggers the chat widget via custom event --}}
+    <button type="button" id="bn-chat-btn"
+            class="bn-item"
+            onclick="window.dispatchEvent(new CustomEvent('toggle-chat'))">
+        <i class="fas fa-comment-dots"></i>
+        <span class="bn-label">Chat</span>
+    </button>
+
     <a href="{{ route('user.profile') }}"
        class="bn-item {{ request()->routeIs('user.profile') ? 'active' : '' }}">
         <i class="fas fa-user"></i>
         <span class="bn-label">Profil</span>
-    </a>
-    <a href="{{ route('landing') }}"
-       class="bn-item">
-        <i class="fas fa-globe"></i>
-        <span class="bn-label">Website</span>
     </a>
 </nav>
 
 @include('components.global-loader')
 @include('components.auth-status-modal')
 @include('components.lazyload-script')
+
+{{-- Chat widget: floating button hidden on mobile, panel still accessible via bottom nav --}}
+<style>
+    /* Hide only the floating trigger button on mobile, keep the chat panel */
+    @media (max-width: 1023px) {
+        [x-data*="chatWidgetUser"] > button:last-child {
+            display: none !important;
+        }
+        /* Keep chat panel accessible but anchored to screen edge */
+        [x-data*="chatWidgetUser"] {
+            bottom: 80px !important;
+            right: 12px !important;
+        }
+    }
+</style>
 @include('components.chat-widget-user')
 
 @stack('scripts')
