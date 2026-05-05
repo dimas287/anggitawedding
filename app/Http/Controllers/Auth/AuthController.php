@@ -83,6 +83,9 @@ class AuthController extends Controller
             'phone' => 'nullable|string|max:20',
             'address' => 'required|string|min:5|max:255',
             'password' => 'required|string|min:8|confirmed',
+            'terms' => 'accepted',
+        ], [
+            'terms.accepted' => 'Anda harus menyetujui kebijakan privasi kami untuk melanjutkan.',
         ]);
 
         $user = User::create([

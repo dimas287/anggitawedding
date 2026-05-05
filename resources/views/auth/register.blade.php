@@ -135,6 +135,20 @@
                                class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                                placeholder="Ulangi password">
                     </div>
+
+                    {{-- Privacy Policy Checkbox --}}
+                    <div class="flex items-start gap-3 py-2">
+                        <div class="flex items-center h-5">
+                            <input id="terms" name="terms" type="checkbox" required
+                                   class="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500 cursor-pointer">
+                        </div>
+                        <div class="text-[11px] leading-relaxed">
+                            <label for="terms" class="text-gray-500 dark:text-gray-400 cursor-pointer">
+                                Saya menyetujui <a href="{{ route('privacy-policy') }}" target="_blank" class="text-amber-600 font-semibold hover:underline">Kebijakan Privasi</a> Anggita Wedding Organizer dan berkomitmen untuk memberikan data yang akurat demi kelancaran perencanaan pernikahan.
+                            </label>
+                        </div>
+                    </div>
+
                     <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#F7C977] via-[#F39BC0] to-[#8F82FF] text-white font-semibold text-sm tracking-wide shadow-lg shadow-[#f9c16c]/40 hover:translate-y-0.5 transition-transform mb-6">
                         <i class="fas fa-user-plus mr-2"></i> Buat Akun
                     </button>
