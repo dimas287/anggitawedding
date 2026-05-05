@@ -218,12 +218,12 @@
         <div class="empty-title">Belum Ada Booking</div>
         <p class="empty-desc">Ayo mulai rencanakan hari istimewa Anda bersama Anggita Wedding Organizer</p>
         <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
-            <a href="{{ route('booking.start') }}" class="cta-primary">
+            <button type="button" onclick="openSheet('paket')" class="cta-primary" style="width:100%;">
                 <i class="fas fa-calendar-check"></i> Pesan Paket Sekarang
-            </a>
-            <a href="{{ route('consultation.form') }}" class="cta-secondary">
+            </button>
+            <button type="button" onclick="openSheet('konsultasi')" class="cta-secondary" style="width:100%;">
                 <i class="fas fa-comments"></i> Konsultasi Gratis
-            </a>
+            </button>
         </div>
     </div>
 

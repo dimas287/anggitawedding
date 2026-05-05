@@ -25,7 +25,22 @@ class DashboardController extends Controller
             ->get();
         $consultations = Consultation::where('user_id', $user->id)->latest()->take(5)->get();
         $latestBooking = $bookings->first();
-        return view('user.dashboard', compact('user', 'bookings', 'consultations', 'latestBooking'));
+
+        // For embedded package sheet
+        $packages = Package::where('is_active', true)
+            ->with('mediaItems')
+            ->withCount(['bookings as popular_score' => function ($q) {
+                $q->whereIn('status', ['pending','dp_paid','in_progress','completed']);
+            }])
+            ->orderBy('sort_order')
+            ->get();
+        $packagesByCategory = $packages->groupBy('category');
+        $categoryLabels = Package::CATEGORY_LABELS;
+
+        return view('user.dashboard', compact(
+            'user', 'bookings', 'consultations', 'latestBooking',
+            'packages', 'packagesByCategory', 'categoryLabels'
+        ));
     }
 
     public function bookingShow(Booking $booking)
