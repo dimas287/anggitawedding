@@ -94,6 +94,13 @@
         .font-playfair { font-family: 'Playfair Display', serif; }
         [x-cloak] { display: none !important; }
 
+        .gold-gradient { background: linear-gradient(135deg, #C9A84C, #A78B40); color: #fff; }
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #C9A84C, #A78B40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         /* ── LAYOUT SHELL ── */
         .app-shell { display: flex; height: 100vh; overflow: hidden; }
 
@@ -579,14 +586,21 @@
     {{-- ─── MAIN AREA ─── --}}
     <div class="main-area">
         <header class="topbar">
-            <a href="{{ route('landing') }}" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
-                @if($brandLogo)
-                    <img src="{{ $brandLogo }}" alt="{{ $brandName }}" style="height:28px; object-fit:contain;">
-                @else
-                    <i class="fas fa-rings-wedding" style="color:var(--gold); font-size:18px;"></i>
-                    <span style="font-family:'Playfair Display', serif; font-weight:700; font-size:16px; color:var(--text-1);">{{ $brandName }}</span>
+            <div style="display:flex; align-items:center; gap:12px;">
+                @if(!request()->routeIs('user.dashboard') && !request()->routeIs('landing') && !request()->routeIs('select-service') && !request()->routeIs('login') && !request()->routeIs('register'))
+                    <a href="javascript:history.back()" class="icon-btn" style="width: 32px; height: 32px; font-size: 14px;" title="Kembali">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
                 @endif
-            </a>
+                <a href="{{ route('landing') }}" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+                    @if($brandLogo)
+                        <img src="{{ $brandLogo }}" alt="{{ $brandName }}" style="height:28px; object-fit:contain;">
+                    @else
+                        <i class="fas fa-rings-wedding" style="color:var(--gold); font-size:18px;"></i>
+                        <span style="font-family:'Playfair Display', serif; font-weight:700; font-size:16px; color:var(--text-1);">{{ $brandName }}</span>
+                    @endif
+                </a>
+            </div>
             <div style="display:flex;align-items:center;gap:8px;">
                 {{-- Theme toggle (mobile) --}}
                 <button @click="toggleTheme()" class="icon-btn lg:hidden">
@@ -615,7 +629,7 @@
 {{-- ─── MAGIC BOTTOM NAV (mobile only, 5 items) ─── --}}
 <nav class="bottom-nav" id="bottom-nav">
     <a href="{{ route('user.dashboard') }}"
-       class="bn-item {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+       class="bn-item {{ request()->routeIs('user.dashboard') || request()->routeIs('user.booking.show') || request()->routeIs('payment.checkout') || request()->routeIs('select-service') ? 'active' : '' }}">
         <i class="fas fa-house"></i>
         <span class="bn-label">Home</span>
     </a>

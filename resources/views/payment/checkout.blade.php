@@ -35,11 +35,11 @@
         </div>
 
         <div class="bg-white dark:bg-[#111111] rounded-2xl shadow-sm overflow-hidden mb-6 border border-transparent dark:border-white/10">
-            <div class="gold-gradient p-5 text-white dark:!text-gray-900">
+            <div class="gold-gradient p-5 text-white">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-yellow-100 text-xs font-medium uppercase tracking-wider">Booking Code</p>
-                        <p class="font-bold text-xl">{{ $booking->booking_code }}</p>
+                        <p class="font-bold text-xl text-white">{{ $booking->booking_code }}</p>
                     </div>
                     <div class="text-right">
                         @if(!($isInvitationOnly ?? false))
@@ -84,7 +84,7 @@
             <p class="text-xs text-gray-400 dark:text-gray-500 text-center mb-4">Didukung oleh Midtrans – Platform pembayaran terpercaya Indonesia</p>
 
             <button id="pay-button" onclick="payNow()"
-                    class="w-full gold-gradient text-white dark:!text-gray-900 font-bold py-4 rounded-xl text-sm hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                    class="w-full gold-gradient text-white font-bold py-4 rounded-xl text-sm hover:shadow-lg transition-all flex items-center justify-center gap-2">
                 <i class="fas fa-lock"></i>
                 {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}
                 – Rp {{ number_format($payAmount ?? $booking->dp_amount, 0, ',', '.') }}

@@ -16,7 +16,7 @@
 @endphp
 
 @section('content')
-<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-[#0f0f11]"
+<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-gray-50 dark:bg-[#0f0f11]"
      x-data="packageSelectPage({
         initialTab: @js($initialTab),
         initialDate: @js($date),
@@ -33,19 +33,19 @@
                 <div class="flex items-center gap-2 text-xs font-semibold text-gray-500">
                     <div class="w-8 h-8 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
                     <div class="w-8 h-px bg-white/20"></div>
-                    <div class="w-8 h-8 rounded-full border border-white/20 bg-[#1a1a1a] flex items-center justify-center">2</div>
+                    <div class="w-8 h-8 rounded-full border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">2</div>
                     <div class="w-8 h-px bg-white/20"></div>
-                    <div class="w-8 h-8 rounded-full border border-white/20 bg-[#1a1a1a] flex items-center justify-center">3</div>
+                    <div class="w-8 h-8 rounded-full border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">3</div>
                 </div>
             </div>
-            <h1 class="font-playfair text-3xl font-bold text-white mt-3">Pilih Paket<br>Wedding</h1>
-            <p class="text-gray-400 mt-3 text-sm">Tanggal acara:
+            <h1 class="font-playfair text-3xl font-bold text-gray-900 dark:text-white">Pilih Paket<br>Wedding</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-3 text-sm">Tanggal acara:
                 <strong class="text-yellow-500" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>
             </p>
             <p class="text-gray-500 text-xs mt-1">Paket menyesuaikan gaya perayaan Anda.</p>
         </div>
 
-        <div class="bg-[#151515] rounded-[24px] border border-white/5 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
+        <div class="bg-white dark:bg-[#151515] rounded-[24px] border border-gray-200 dark:border-white/5 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
             <div class="flex flex-col gap-6">
                 <div class="space-y-4">
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Ganti Tanggal</label>
@@ -53,17 +53,17 @@
                         <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
                                data-flatpickr
                                :data-min-date="minDate"
-                               class="w-full bg-[#202020] border-none rounded-xl px-4 py-3.5 text-sm text-white focus:ring-1 focus:ring-white/20 transition-all placeholder-gray-500" />
+                               class="w-full bg-white dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-white/20 transition-all placeholder-gray-500" />
                         
                         <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
-                                class="w-full bg-[#1a1a1a] px-4 py-3.5 rounded-xl text-sm font-semibold border border-white/5 text-gray-300 hover:bg-[#222] transition disabled:opacity-50">
+                                class="w-full bg-gray-50 dark:bg-[#1a1a1a] px-4 py-3.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-white/5 text-gray-600 dark:text-gray-300 transition disabled:opacity-50">
                             <span x-show="!loading">Cek Tanggal</span>
                             <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </div>
                 
-                <div class="bg-[#1a1a1a] rounded-[20px] p-5 mt-2">
+                <div class="bg-gray-50 dark:bg-[#1a1a1a] rounded-[20px] p-5 mt-2">
                     <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mb-3">Status Ketersediaan</p>
                     <div class="flex flex-col gap-3">
                         <div class="inline-flex items-center self-start px-4 py-2 rounded-full text-xs font-semibold" :class="statusBadgeClass()" x-text="statusLabel"></div>
@@ -77,7 +77,7 @@
             @foreach($categoryLabels as $key => $label)
                 @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
                     <button @click="tab='{{ $key }}'" type="button"
-                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-[#151515] text-gray-300 border-white/5 hover:bg-[#1a1a1a]'"
+                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-[#151515] text-gray-300 border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:bg-[#1a1a1a]'"
                         class="px-5 py-3 rounded-2xl text-sm font-semibold transition-all border w-full text-center">
                         {{ $label }}
                     </button>

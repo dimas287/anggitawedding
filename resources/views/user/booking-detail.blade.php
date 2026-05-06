@@ -58,17 +58,17 @@
         $ps = $payStatusColors[$booking->payment_status] ?? 'gray';
         $payStatusLabel = ['unpaid'=>'Belum Dibayar','paid_full'=>'Lunas','partially_paid'=>'Sebagian'];
         @endphp
-        <div class="bg-white rounded-xl p-4 border-l-4 border-{{ $ps }}-400 shadow-sm">
-            <p class="text-xs text-gray-500">Status Pembayaran</p>
-            <p class="font-bold text-gray-800">{{ $payStatusLabel[$booking->payment_status] ?? ucfirst($booking->payment_status) }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Status Pembayaran</p>
+            <p class="font-bold text-gray-800 dark:text-white">{{ $payStatusLabel[$booking->payment_status] ?? ucfirst($booking->payment_status) }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-purple-400 shadow-sm">
-            <p class="text-xs text-gray-500">Harga Undangan</p>
-            <p class="font-bold text-gray-800">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Harga Undangan</p>
+            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-green-400 shadow-sm">
-            <p class="text-xs text-gray-500">Total Dibayar</p>
-            <p class="font-bold text-gray-800">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Total Dibayar</p>
+            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
         </div>
     </div>
     @else
@@ -77,35 +77,35 @@
         $statusColors = ['pending'=>'yellow','dp_paid'=>'blue','in_progress'=>'indigo','completed'=>'green','cancelled'=>'red'];
         $sc = $statusColors[$booking->status] ?? 'gray';
         @endphp
-        <div class="bg-white rounded-xl p-4 border-l-4 border-{{ $sc }}-400 shadow-sm">
-            <p class="text-xs text-gray-500">Status Booking</p>
-            <p class="font-bold text-gray-800">{{ $booking->status_label }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Status Booking</p>
+            <p class="font-bold text-gray-800 dark:text-white">{{ $booking->status_label }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-yellow-400 shadow-sm">
-            <p class="text-xs text-gray-500">Tanggal Acara</p>
-            <p class="font-bold text-gray-800">{{ $booking->event_date->isoFormat('D MMM Y') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Tanggal Acara</p>
+            <p class="font-bold text-gray-800 dark:text-white">{{ $booking->event_date->isoFormat('D MMM Y') }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-amber-400 shadow-sm">
-            <p class="text-xs text-gray-500">Biaya Tambahan</p>
-            <p class="font-bold text-gray-800">Rp {{ number_format($extraTotal, 0, ',', '.') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Biaya Tambahan</p>
+            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($extraTotal, 0, ',', '.') }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-green-400 shadow-sm">
-            <p class="text-xs text-gray-500">Total Dibayar</p>
-            <p class="font-bold text-gray-800">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Total Dibayar</p>
+            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
         </div>
-        <div class="bg-white rounded-xl p-4 border-l-4 border-purple-400 shadow-sm">
-            <p class="text-xs text-gray-500">Sisa Tagihan</p>
-            <p class="font-bold text-gray-800">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
+        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
+            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Sisa Tagihan</p>
+            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
         </div>
     </div>
     @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-5">
-            <div class="bg-gradient-to-r from-white to-purple-50 rounded-2xl p-5 border border-purple-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <p class="text-xs uppercase text-purple-500 tracking-[0.2em]">Nama Pasangan</p>
-                    <p class="text-2xl font-playfair font-bold text-gray-900 mt-1">{{ $booking->couple_short_display }}</p>
+            <div class="bg-white dark:bg-white/5 rounded-3xl p-6 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-[10px] uppercase text-gold tracking-[0.2em] font-bold mb-2">Nama Pasangan</p>
+                    <p class="text-3xl font-playfair font-bold text-gray-900 dark:text-white">{{ $booking->couple_short_display }}</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                     <div class="bg-white rounded-xl shadow-sm p-3 border border-gray-100">
