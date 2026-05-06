@@ -279,22 +279,22 @@
                         <form action="{{ route('user.booking.fitting.store', $booking->id) }}" method="POST" class="space-y-3">
                             @csrf
                             <div>
-                                <label class="text-xs text-gray-500">Tanggal & Waktu</label>
-                                <input type="datetime-local" name="scheduled_at" required class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400">
+                                <label class="text-xs text-gray-500 dark:text-gray-400">Tanggal & Waktu</label>
+                                <input type="datetime-local" name="scheduled_at" required class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400">
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="text-xs text-gray-500">Lokasi</label>
-                                    <input type="text" name="location" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400" placeholder="Studio / Rumah / Toko">
+                                    <label class="text-xs text-gray-500 dark:text-gray-400">Lokasi</label>
+                                    <input type="text" name="location" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400" placeholder="Studio / Rumah / Toko">
                                 </div>
                                 <div>
-                                    <label class="text-xs text-gray-500">Fokus</label>
-                                    <input type="text" name="focus" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400" placeholder="Gaun Akad, Kebaya, dll">
+                                    <label class="text-xs text-gray-500 dark:text-gray-400">Fokus</label>
+                                    <input type="text" name="focus" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400" placeholder="Gaun Akad, Kebaya, dll">
                                 </div>
                             </div>
                             <div>
-                                <label class="text-xs text-gray-500">Catatan</label>
-                                <textarea name="notes" rows="3" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400" placeholder="Ukuran, reminder, dsb"></textarea>
+                                <label class="text-xs text-gray-500 dark:text-gray-400">Catatan</label>
+                                <textarea name="notes" rows="3" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400" placeholder="Ukuran, reminder, dsb"></textarea>
                             </div>
                             <div class="flex justify-end gap-2 pt-2">
                                 <button type="button" class="px-4 py-2 text-xs font-semibold text-gray-500" @click="fittingModal = false">Batal</button>
@@ -362,20 +362,20 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="text-xs font-semibold text-gray-600">Metode</label>
-                                <select name="method" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm">
-                                    <option value="transfer">Transfer</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="other">Lainnya</option>
+                                <select name="method" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                                    <option value="transfer" class="dark:bg-[#1a1a1a]">Transfer</option>
+                                    <option value="cash" class="dark:bg-[#1a1a1a]">Cash</option>
+                                    <option value="other" class="dark:bg-[#1a1a1a]">Lainnya</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-semibold text-gray-600">Nominal</label>
-                                <input type="number" min="1000" name="amount" value="{{ $isInvitationOnly ? (int) $booking->package_price : (int) $booking->dp_amount }}" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm" {{ $isInvitationOnly ? 'readonly' : '' }} />
+                                <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Nominal</label>
+                                <input type="number" min="1000" name="amount" value="{{ $isInvitationOnly ? (int) $booking->package_price : (int) $booking->dp_amount }}" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400" {{ $isInvitationOnly ? 'readonly' : '' }} />
                             </div>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold text-gray-600">Catatan (opsional)</label>
-                            <input type="text" name="notes" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-2 text-sm" placeholder="Contoh: Transfer BCA a.n. ..." />
+                            <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Catatan (opsional)</label>
+                            <input type="text" name="notes" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Contoh: Transfer BCA a.n. ..." />
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-600">Bukti Transfer</label>
@@ -413,13 +413,13 @@
 
                 <form action="{{ route('user.document.store', $booking->id) }}" method="POST" enctype="multipart/form-data" class="border-2 border-dashed border-gray-200 rounded-xl p-4">
                     @csrf
-                    <p class="text-xs font-semibold text-gray-500 mb-3">Upload Dokumen</p>
+                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">Upload Dokumen</p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <input type="text" name="name" placeholder="Nama dokumen" required class="border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-yellow-400">
-                        <select name="category" class="border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-yellow-400">
-                            <option value="photo">Foto</option>
-                            <option value="contract">Kontrak</option>
-                            <option value="other">Lainnya</option>
+                        <input type="text" name="name" placeholder="Nama dokumen" required class="border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-lg px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-yellow-400">
+                        <select name="category" class="border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-lg px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-yellow-400">
+                            <option value="photo" class="dark:bg-[#1a1a1a]">Foto</option>
+                            <option value="contract" class="dark:bg-[#1a1a1a]">Kontrak</option>
+                            <option value="other" class="dark:bg-[#1a1a1a]">Lainnya</option>
                         </select>
                         <input type="file" name="file" required class="text-xs text-gray-600 dark:text-gray-400 file:cursor-pointer file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all">
                     </div>
@@ -442,9 +442,9 @@
                         </div>
                         <input type="hidden" name="rating" :value="rating">
                     </div>
-                    <input type="text" name="title" placeholder="Judul ulasan (opsional)" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <input type="text" name="title" placeholder="Judul ulasan (opsional)" class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
                     <textarea name="review" rows="4" placeholder="Ceritakan pengalaman Anda bersama Anggita WO..." required
-                              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"></textarea>
+                              class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"></textarea>
                     <button type="submit" class="gold-gradient text-white font-semibold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg transition-all">
                         <i class="fas fa-paper-plane mr-2"></i> Kirim Ulasan
                     </button>
