@@ -629,11 +629,11 @@
 {{-- ─── MAGIC BOTTOM NAV (mobile only, 5 items) ─── --}}
 <nav class="bottom-nav" id="bottom-nav">
     <a href="{{ route('user.dashboard') }}"
-       class="bn-item {{ request()->routeIs('user.dashboard') || request()->routeIs('user.booking.show') || request()->routeIs('payment.checkout') || request()->routeIs('payment.success') || request()->routeIs('select-service') ? 'active' : '' }}">
+       class="bn-item {{ request()->routeIs('user.dashboard') || request()->routeIs('user.booking.show') || request()->routeIs('payment.checkout') || request()->routeIs('payment.success') || request()->routeIs('select-service') || request()->routeIs('booking.select-package') || request()->routeIs('booking.form') || request()->routeIs('invitation-order.start') ? 'active' : '' }}">
         <i class="fas fa-house"></i>
         <span class="bn-label">Home</span>
     </a>
-    <a href="{{ route('booking.start') }}" class="bn-item {{ request()->routeIs('booking.*') ? 'active' : '' }}">
+    <a href="{{ route('booking.start') }}" class="bn-item {{ request()->routeIs('booking.*') && !request()->routeIs('booking.select-package') && !request()->routeIs('booking.form') ? 'active' : '' }}">
         <i class="fas fa-gem"></i>
         <span class="bn-label">Paket</span>
     </a>

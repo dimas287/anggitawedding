@@ -1,143 +1,167 @@
 @php
     $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
     $isApp = $layout === 'layouts.app';
+    $isInvitationOnly = $isInvitationOnly ?? false;
 @endphp
+
 @extends($layout)
+
 @section('title', $paymentTitle ?? 'Pembayaran')
 
 @section('content')
-<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-24' }} pb-16 bg-gray-50 dark:bg-[#0A0A0A] {{ $isApp ? 'rounded-[24px]' : '' }}">
-    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-8">
-            @if($isInvitationOnly ?? false)
+<div class="{{ $isApp ? 'py-8' : 'min-h-screen pt-28 pb-16' }} dark:bg-[#0A0A0A]">
+    <div class="max-w-xl mx-auto px-4">
+        {{-- Header Section --}}
+        <div class="text-center mb-10">
             <div class="flex items-center justify-center mb-6">
-                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
-                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">2</div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-2xl bg-green-500 text-white flex items-center justify-center shadow-lg font-bold">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="w-12 h-px bg-green-500"></div>
+                    <div class="w-10 h-10 rounded-2xl bg-green-500 text-white flex items-center justify-center shadow-lg font-bold">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="w-12 h-px bg-green-500"></div>
+                    <div class="w-10 h-10 rounded-2xl gold-gradient text-white flex items-center justify-center shadow-lg font-bold">3</div>
                 </div>
             </div>
-            @else
-            <div class="flex items-center justify-center mb-6">
-                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
-                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
-                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">3</div>
-                </div>
-            </div>
-            @endif
-            <h1 class="font-playfair text-3xl font-bold text-gray-800 dark:text-white">{{ $paymentTitle ?? 'Pembayaran' }}</h1>
-            <p class="text-gray-500 dark:text-gray-400 mt-1">
-                {{ ($isInvitationOnly ?? false) ? 'Selesaikan pembayaran undangan digital agar Anda bisa publish undangan.' : 'Amankan tanggal pernikahan Anda dengan membayar DP' }}
+            
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:text-gray-900 dark:hover:text-white transition-all mb-4">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+            
+            <h1 class="font-playfair text-4xl font-bold text-gray-900 dark:text-white">{{ $paymentTitle ?? 'Pembayaran' }}</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+                {{ $isInvitationOnly ? 'Selesaikan pembayaran undangan digital Anda.' : 'Satu langkah terakhir untuk mengamankan tanggal spesial Anda.' }}
             </p>
         </div>
 
-        <div class="bg-white dark:bg-[#111111] rounded-2xl shadow-sm overflow-hidden mb-6 border border-transparent dark:border-white/10">
-            <div class="gold-gradient p-5 text-white">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-yellow-100 text-xs font-medium uppercase tracking-wider">Booking Code</p>
-                        <p class="font-bold text-xl text-white">{{ $booking->booking_code }}</p>
+        {{-- Booking Summary Card (Premium Style) --}}
+        <div class="bg-white dark:bg-white/5 rounded-[40px] border border-gray-100 dark:border-white/10 shadow-2xl overflow-hidden mb-8 relative">
+            {{-- Decorative Accent --}}
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600"></div>
+            
+            <div class="p-8 pb-4">
+                <div class="flex flex-col items-center text-center mb-8">
+                    <span class="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-600 dark:text-yellow-500 mb-2">Booking Code</span>
+                    <div class="px-6 py-3 rounded-2xl bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 shadow-inner">
+                        <span class="font-playfair text-2xl font-bold text-gray-900 dark:text-white tracking-widest">{{ $booking->booking_code }}</span>
                     </div>
-                    <div class="text-right">
-                        @if(!($isInvitationOnly ?? false))
-                        <p class="text-yellow-100 text-xs">Tanggal Acara</p>
-                        <p class="font-semibold">{{ $booking->event_date->isoFormat('D MMMM Y') }}</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 mb-8">
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Pesan Atas Nama</p>
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $booking->groom_name }} & {{ $booking->bride_name }}</p>
+                    </div>
+                    <div class="space-y-1 text-right">
+                        @if(!$isInvitationOnly)
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Tanggal Acara</p>
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $booking->event_date->isoFormat('D MMMM Y') }}</p>
                         @else
-                        <p class="text-yellow-100 text-xs">Jenis Order</p>
-                        <p class="font-semibold">Undangan Digital</p>
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Jenis Order</p>
+                        <p class="text-sm font-bold text-gray-900 dark:text-white">Undangan Digital</p>
                         @endif
                     </div>
                 </div>
-            </div>
-            <div class="p-6 space-y-3 text-sm">
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Pengantin</span><span class="font-medium text-gray-900 dark:text-white">{{ $booking->groom_name }} & {{ $booking->bride_name }}</span></div>
-                @if(!($isInvitationOnly ?? false))
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Paket</span><span class="font-medium text-gray-900 dark:text-white">{{ $booking->package->name }}</span></div>
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Venue</span><span class="font-medium text-gray-900 dark:text-white">{{ $booking->venue }}</span></div>
-                @else
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Template</span><span class="font-medium text-gray-900 dark:text-white">{{ optional($booking->invitation->template ?? null)->name ?? 'Belum dipilih' }}</span></div>
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">Kuota Tamu</span><span class="font-medium text-gray-900 dark:text-white">Tidak terbatas</span></div>
-                @endif
-                <hr class="dark:border-white/10">
-                <div class="flex justify-between"><span class="text-gray-500 dark:text-gray-400">{{ ($isInvitationOnly ?? false) ? 'Harga Undangan' : 'Harga Paket' }}</span><span class="text-gray-900 dark:text-white">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</span></div>
-                <div class="flex justify-between font-bold text-lg text-yellow-600 dark:text-yellow-500">
-                    <span>{{ ($isInvitationOnly ?? false) ? 'Total Pembayaran' : 'DP yang Dibayar (30%)' }}</span>
-                    <span>Rp {{ number_format($payAmount ?? $booking->dp_amount, 0, ',', '.') }}</span>
+
+                <div class="space-y-4 border-t border-gray-100 dark:border-white/5 pt-6">
+                    @if(!$isInvitationOnly)
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">Paket Layanan</span>
+                        <span class="font-bold text-gray-900 dark:text-white">{{ $booking->package->name }}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">Venue</span>
+                        <span class="font-bold text-gray-900 dark:text-white">{{ $booking->venue }}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">Total Harga Paket</span>
+                        <span class="font-bold text-gray-900 dark:text-white">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</span>
+                    </div>
+                    @else
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">Template</span>
+                        <span class="font-bold text-gray-900 dark:text-white">{{ optional($booking->invitation->template ?? null)->name ?? 'Premium Template' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">Total Harga</span>
+                        <span class="font-bold text-gray-900 dark:text-white">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</span>
+                    </div>
+                    @endif
+                    
+                    <div class="p-5 rounded-3xl bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-800/30 mt-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-yellow-700 dark:text-yellow-500 uppercase tracking-widest">
+                                {{ $isInvitationOnly ? 'Total Bayar' : 'DP yang Dibayar (30%)' }}
+                            </span>
+                            <span class="text-xl font-black text-yellow-800 dark:text-yellow-400">
+                                Rp {{ number_format($payAmount ?? $booking->dp_amount, 0, ',', '.') }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                @if(!($isInvitationOnly ?? false))
-                    <div class="flex justify-between text-gray-400 dark:text-gray-500 text-xs"><span>Sisa Pelunasan</span><span>Rp {{ number_format($booking->package_price - $booking->dp_amount, 0, ',', '.') }}</span></div>
-                @endif
+            </div>
+
+            {{-- Payment Methods --}}
+            <div class="p-8 pt-4">
+                <div class="bg-gray-50 dark:bg-black/10 rounded-[32px] p-6 border border-gray-100 dark:border-white/5">
+                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fas fa-credit-card text-yellow-600"></i> Pilih Pembayaran
+                    </h4>
+                    
+                    <div class="grid grid-cols-3 gap-3 mb-6">
+                        <div class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10">
+                            <i class="fas fa-university text-blue-500"></i>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-400">Transfer</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10">
+                            <i class="fas fa-wallet text-green-500"></i>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-400">E-Wallet</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10">
+                            <i class="fas fa-bolt text-purple-500"></i>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-400">QRIS</span>
+                        </div>
+                    </div>
+
+                    <button id="pay-button" onclick="payNow()"
+                            class="w-full gold-gradient text-white font-bold py-5 rounded-2xl text-sm hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="fas fa-lock"></i>
+                        <span>{{ $isInvitationOnly ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}</span>
+                    </button>
+                    
+                    <p class="text-[10px] text-gray-400 dark:text-gray-500 text-center mt-4">
+                        <i class="fas fa-lock mr-1"></i> Pembayaran Aman via Midtrans
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="bg-white dark:bg-[#111111] rounded-2xl shadow-sm p-6 mb-6 border border-transparent dark:border-white/10">
-            <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Metode Pembayaran</h3>
-
-            <div class="grid grid-cols-3 gap-2 text-xs text-center text-gray-500 dark:text-gray-400 mb-4">
-                <div class="border dark:border-white/10 rounded-xl p-2 bg-gray-50/50 dark:bg-white/5"><i class="fas fa-university block text-blue-500 mb-1"></i>Transfer Bank</div>
-                <div class="border dark:border-white/10 rounded-xl p-2 bg-gray-50/50 dark:bg-white/5"><i class="fas fa-wallet block text-green-500 mb-1"></i>E-Wallet</div>
-                <div class="border dark:border-white/10 rounded-xl p-2 bg-gray-50/50 dark:bg-white/5"><i class="fas fa-credit-card block text-purple-500 mb-1"></i>Kartu Kredit</div>
-            </div>
-            <p class="text-xs text-gray-400 dark:text-gray-500 text-center mb-4">Didukung oleh Midtrans – Platform pembayaran terpercaya Indonesia</p>
-
-            <button id="pay-button" onclick="payNow()"
-                    class="w-full gold-gradient text-white font-bold py-4 rounded-xl text-sm hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                <i class="fas fa-lock"></i>
-                {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}
-                – Rp {{ number_format($payAmount ?? $booking->dp_amount, 0, ',', '.') }}
+        {{-- Manual Upload (Optional) --}}
+        <div x-data="{ open: false }" class="bg-white dark:bg-white/5 rounded-[32px] border border-gray-100 dark:border-white/10 p-6 shadow-xl">
+            <button @click="open = !open" class="w-full flex items-center justify-between text-left">
+                <div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Metode Manual?</h4>
+                    <p class="text-[10px] text-gray-500 dark:text-gray-400">Upload bukti transfer secara manual jika Snap gagal.</p>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
             </button>
-
-            <div class="mt-6 border-t dark:border-white/10 pt-5">
-                <h4 class="font-semibold text-gray-800 dark:text-white text-sm mb-2">Atau upload bukti transfer (manual)</h4>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Unggah bukti pembayaran, lalu tunggu admin memverifikasi. Setelah terverifikasi, Anda bisa publish undangan.</p>
-                <form action="{{ route('payment.manual', $booking->id) }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+            
+            <div x-show="open" x-collapse x-cloak class="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
+                <form action="{{ route('payment.manual', $booking->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                     @csrf
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Metode</label>
-                        <select name="method" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all">
-                            <option value="transfer" class="dark:bg-[#111111]">Transfer</option>
-                            <option value="cash" class="dark:bg-[#111111]">Cash</option>
-                            <option value="other" class="dark:bg-[#111111]">Lainnya</option>
-                        </select>
-                        @error('method')
-                            <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                        @enderror
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Unggah Bukti Transfer</label>
+                        <input type="file" name="proof_attachment" required
+                               class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:uppercase file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-white/5 dark:file:text-yellow-500 transition-all" />
                     </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Nominal</label>
-                        <input type="number" min="1000" name="amount" value="{{ old('amount', $payAmount ?? $booking->dp_amount) }}" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all" {{ ($isInvitationOnly ?? false) ? 'readonly' : '' }} />
-                        @error('amount')
-                            <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Catatan (opsional)</label>
-                        <input type="text" name="notes" value="{{ old('notes') }}" class="mt-1 w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all" placeholder="Contoh: Transfer BCA a.n. ..." />
-                        @error('notes')
-                            <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Bukti Transfer</label>
-                        <input type="file" name="proof_attachment" accept="image/*,application/pdf" class="mt-1 w-full text-xs text-gray-600 dark:text-gray-400 file:cursor-pointer file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all" required />
-                        <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1">Format JPG/PNG/WEBP/PDF • maks 5MB</p>
-                        @error('proof_attachment')
-                            <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <button type="submit" class="w-full border-2 border-yellow-400 dark:border-yellow-500 text-yellow-700 dark:text-yellow-400 font-semibold py-3 rounded-xl text-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/10 transition-all">
-                        <i class="fas fa-upload mr-2"></i> Upload Bukti Pembayaran
+                    <button type="submit" class="w-full py-4 rounded-2xl border-2 border-yellow-400 dark:border-yellow-500 text-yellow-600 dark:text-yellow-500 font-bold text-sm hover:bg-yellow-400 hover:text-white dark:hover:bg-yellow-500 dark:hover:text-gray-900 transition-all">
+                        Upload Bukti Manual
                     </button>
                 </form>
             </div>
-        </div>
-
-        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 rounded-xl p-4 text-sm text-green-700 dark:text-green-400 text-center">
-            <i class="fas fa-shield-alt mr-1"></i> Pembayaran 100% aman dan terenkripsi melalui Midtrans
         </div>
     </div>
 </div>
@@ -150,35 +174,45 @@
 <script>
 async function payNow() {
     const btn = document.getElementById('pay-button');
+    const originalContent = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
 
     try {
         const res = await fetch('{{ route("payment.process", $booking->id) }}', {
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
+            headers: { 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
         });
         const data = await res.json();
+        
         if (data.snap_token) {
             window.snap.pay(data.snap_token, {
-                onSuccess: () => { window.location.href = '{{ route("payment.success", $booking->id) }}'; },
-                onPending: () => { window.location.href = '{{ route("payment.success", $booking->id) }}'; },
+                onSuccess: (result) => { window.location.href = '{{ route("payment.success", $booking->id) }}?order_id=' + result.order_id; },
+                onPending: (result) => { window.location.href = '{{ route("payment.success", $booking->id) }}?order_id=' + result.order_id; },
                 onError: () => {
-                    window.AnggitaStatusModal?.show({ type: 'error', message: 'Pembayaran gagal. Silakan coba lagi.' });
+                    alert('Pembayaran gagal. Silakan coba lagi.');
                     btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock mr-2"></i> {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}';
+                    btn.innerHTML = originalContent;
                 },
-                onClose: () => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-lock mr-2"></i> {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}'; }
+                onClose: () => { 
+                    btn.disabled = false; 
+                    btn.innerHTML = originalContent; 
+                }
             });
         } else {
-            window.AnggitaStatusModal?.show({ type: 'error', message: data.error || 'Gagal memproses pembayaran' });
+            alert(data.error || 'Gagal memproses pembayaran. Token tidak valid.');
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-lock mr-2"></i> {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}';
+            btn.innerHTML = originalContent;
         }
     } catch(e) {
-        window.AnggitaStatusModal?.show({ type: 'error', message: 'Terjadi kesalahan. Silakan coba lagi.' });
+        console.error(e);
+        alert('Terjadi kesalahan teknis. Silakan coba lagi.');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-lock mr-2"></i> {{ ($isInvitationOnly ?? false) ? 'Bayar Undangan Sekarang' : 'Bayar DP Sekarang' }}';
+        btn.innerHTML = originalContent;
     }
 }
 </script>

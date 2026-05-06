@@ -2,167 +2,168 @@
     $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
     $isApp = $layout === 'layouts.app';
 @endphp
+
 @extends($layout)
+
 @section('title', 'Checkout Undangan Digital')
 
 @section('content')
-<div class="{{ $isApp ? 'pt-8' : 'pt-28' }} bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.18),_transparent_55%),linear-gradient(135deg,_#16001f_0%,_#3a0f55_40%,_#6a1b8c_75%,_#f5f1ff_100%)] text-white {{ $isApp ? 'rounded-[24px]' : '' }}">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 {{ $isApp ? 'mt-8' : '' }}">
-        <div class="flex flex-col lg:flex-row gap-12 items-start">
-            <div class="flex-1">
-                <span class="text-yellow-200 text-[11px] font-semibold uppercase tracking-[0.6em]">Checkout</span>
-                <h1 class="font-playfair text-4xl md:text-6xl font-semibold mt-4 leading-tight">Undangan Digital Saja</h1>
-                <p class="text-white/80 mt-4 text-base md:text-lg leading-relaxed max-w-xl">Pilih template, buat undangan <span class="font-semibold text-white">draft</span> di dashboard, lalu lengkapi data & upload file. Anda baru bisa <span class="font-semibold text-white">Publish</span> setelah pembayaran selesai.</p>
+<div class="{{ $isApp ? 'py-8' : 'min-h-screen pt-28 pb-16' }} dark:bg-[#0A0A0A]">
+    <div class="max-w-6xl mx-auto px-4">
+        {{-- Header Section --}}
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 mb-6 shadow-xl shadow-yellow-400/10">
+                <i class="fas fa-envelope-open-text text-2xl"></i>
+            </div>
+            
+            <a href="{{ route('booking.start') }}" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:text-gray-900 dark:hover:text-white transition-all mb-4">
+                <i class="fas fa-arrow-left"></i> Kembali Pilih Layanan
+            </a>
+            
+            <h1 class="font-playfair text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Undangan Digital Saja</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-4 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+                Pilih template favorit Anda, buat draft, dan lengkapi data undangan. Publish undangan Anda setelah pembayaran dikonfirmasi.
+            </p>
+        </div>
 
-                <div class="mt-8 bg-white/10 border border-white/15 rounded-3xl p-6 backdrop-blur">
-                    <h3 class="font-semibold text-white text-sm tracking-wide uppercase">Alur singkat</h3>
-                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-white/85">
-                        <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-4 border border-white/10">
-                            <div class="text-yellow-200 text-[10px] font-semibold tracking-[0.3em] uppercase">Step 1</div>
-                            <div class="font-semibold mt-2">Checkout</div>
-                            <div class="text-white/70 text-xs mt-1">Buat undangan draft</div>
+        <div class="flex flex-col lg:flex-row gap-10 items-start">
+            {{-- Left Side: Info --}}
+            <div class="flex-1 space-y-8 order-2 lg:order-1">
+                <div class="bg-white dark:bg-white/5 rounded-[40px] border border-gray-100 dark:border-white/10 shadow-2xl p-8">
+                    <h3 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-4 bg-yellow-400 rounded-full"></span> Alur Pemesanan
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center font-bold text-sm shadow-sm">1</div>
+                            <div class="font-bold text-sm text-gray-900 dark:text-white">Pilih & Checkout</div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Pilih template dan buat draft undangan digital Anda.</p>
                         </div>
-                        <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-4 border border-white/10">
-                            <div class="text-yellow-200 text-[10px] font-semibold tracking-[0.3em] uppercase">Step 2</div>
-                            <div class="font-semibold mt-2">Isi Data</div>
-                            <div class="text-white/70 text-xs mt-1">Teks, foto, video, musik</div>
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center font-bold text-sm shadow-sm">2</div>
+                            <div class="font-bold text-sm text-gray-900 dark:text-white">Lengkapi Data</div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Isi nama, tanggal, lokasi, hingga upload foto & video.</p>
                         </div>
-                        <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-4 border border-white/10">
-                            <div class="text-yellow-200 text-[10px] font-semibold tracking-[0.3em] uppercase">Step 3</div>
-                            <div class="font-semibold mt-2">Bayar & Publish</div>
-                            <div class="text-white/70 text-xs mt-1">Midtrans / manual verifikasi</div>
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center font-bold text-sm shadow-sm">3</div>
+                            <div class="font-bold text-sm text-gray-900 dark:text-white">Bayar & Publish</div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Selesaikan pembayaran untuk mempublikasikan undangan.</p>
                         </div>
+                    </div>
+                </div>
+
+                {{-- Template Catalog Preview --}}
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-playfair text-2xl font-bold text-gray-900 dark:text-white">Pilih Template</h3>
+                        <a href="{{ route('digital-invitations') }}" class="text-xs font-bold text-yellow-600 dark:text-yellow-500 uppercase tracking-widest hover:underline">Semua Katalog <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        @foreach($templates->take(4) as $template)
+                        <div class="bg-white dark:bg-white/5 rounded-[32px] border border-gray-100 dark:border-white/10 overflow-hidden shadow-xl group">
+                            <div class="aspect-[4/3] bg-gray-100 dark:bg-black/20 relative overflow-hidden">
+                                @if($template->image)
+                                    <img src="{{ asset('storage/'.$template->image) }}" alt="{{ $template->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                        <i class="fas fa-image text-4xl"></i>
+                                    </div>
+                                @endif
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                    <a href="{{ $template->demo_url ?? '#' }}" target="_blank" class="w-full py-2.5 rounded-xl bg-white text-gray-900 font-bold text-xs text-center shadow-lg">Preview Template</a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start gap-2 mb-4">
+                                    <h4 class="font-bold text-gray-900 dark:text-white">{{ $template->name }}</h4>
+                                    <span class="text-sm font-black text-yellow-600 dark:text-yellow-500">Rp {{ number_format($template->effective_price, 0, ',', '.') }}</span>
+                                </div>
+                                <a href="{{ route('invitation-order.start', ['template' => $template->id]) }}" 
+                                   class="block w-full py-3 rounded-2xl {{ (string)$selectedTemplateId === (string)$template->id ? 'gold-gradient text-white shadow-xl shadow-yellow-500/20' : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-white/10' }} text-center text-xs font-bold transition-all">
+                                    {{ (string)$selectedTemplateId === (string)$template->id ? 'Terpilih' : 'Pilih Template Ini' }}
+                                </a>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
-            <div class="w-full lg:w-[420px]">
-                <div class="bg-white rounded-[28px] border border-white/40 shadow-[0_30px_80px_rgba(16,0,24,0.35)] overflow-hidden text-gray-900">
-                    <div class="p-6 border-b border-gray-100 text-center">
-                        <div class="flex items-center justify-center mb-6">
-                            <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
-                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
-                                <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
-                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">2</div>
-                            </div>
+            {{-- Right Side: Form --}}
+            <div class="w-full lg:w-[400px] order-1 lg:order-2 sticky top-24">
+                <div class="bg-white dark:bg-white/5 rounded-[40px] border border-gray-100 dark:border-white/10 shadow-2xl overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600"></div>
+                    
+                    <div class="p-8 border-b border-gray-50 dark:border-white/5 text-center">
+                        <div class="flex items-center justify-center gap-4 mb-6">
+                            <div class="w-10 h-10 rounded-2xl gold-gradient text-white flex items-center justify-center shadow-lg font-bold">1</div>
+                            <div class="w-12 h-px bg-gray-200 dark:bg-white/10"></div>
+                            <div class="w-10 h-10 rounded-2xl border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-gray-400 flex items-center justify-center font-bold">2</div>
                         </div>
-                        <h2 class="font-semibold text-lg">Ringkasan Checkout</h2>
-                        <p class="text-gray-500 text-sm mt-1">Pilih template, lalu klik Checkout.</p>
+                        <h2 class="font-playfair text-2xl font-bold text-gray-900 dark:text-white">Ringkasan Checkout</h2>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Lengkapi data awal untuk draft undangan.</p>
                     </div>
 
-                    <form method="POST" action="{{ route('invitation-order.checkout') }}" class="p-6 space-y-4">
+                    <form method="POST" action="{{ route('invitation-order.checkout') }}" class="p-8 space-y-6">
                         @csrf
-
-                        <div>
-                            <label class="text-xs font-semibold text-gray-700 uppercase tracking-[0.2em]">Template Undangan</label>
-                            <select name="template_id" class="mt-2 w-full rounded-2xl border-gray-200 focus:border-yellow-400 focus:ring-yellow-400 bg-gray-50/60">
-                                <option value="">-- Pilih template --</option>
-                                @foreach($templates as $template)
-                                    <option value="{{ $template->id }}" @selected((string)old('template_id', $selectedTemplateId) === (string)$template->id)>
-                                        {{ $template->name }}
-                                        @if($template->effective_price)
-                                            - Rp {{ number_format($template->effective_price, 0, ',', '.') }}
-                                        @endif
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('template_id')
-                                <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-[0.2em]">Nama Pria</label>
-                                <input type="text" name="groom_name" value="{{ old('groom_name') }}" class="mt-2 w-full rounded-2xl border-gray-200 focus:border-yellow-400 focus:ring-yellow-400 bg-gray-50/60" placeholder="Contoh: Andi" />
-                                @error('groom_name')
-                                    <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                                @enderror
+                        
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Template Undangan <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <i class="fas fa-palette absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                <select name="template_id" required
+                                        class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl pl-12 pr-5 py-4 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-400/20 transition-all appearance-none">
+                                    <option value="" class="dark:bg-[#151515]">-- Pilih Template --</option>
+                                    @foreach($templates as $template)
+                                        <option value="{{ $template->id }}" class="dark:bg-[#151515]" @selected((string)old('template_id', $selectedTemplateId) === (string)$template->id)>
+                                            {{ $template->name }} (Rp {{ number_format($template->effective_price, 0, ',', '.') }})
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div>
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-[0.2em]">Nama Wanita</label>
-                                <input type="text" name="bride_name" value="{{ old('bride_name') }}" class="mt-2 w-full rounded-2xl border-gray-200 focus:border-yellow-400 focus:ring-yellow-400 bg-gray-50/60" placeholder="Contoh: Sari" />
-                                @error('bride_name')
-                                    <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @error('template_id')<p class="text-[10px] text-red-500 mt-1 ml-1">{{ $message }}</p>@enderror
                         </div>
 
-                        <div class="pt-2">
-                            <button type="submit" class="w-full bg-gray-900 text-white font-semibold py-4 rounded-2xl text-sm hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-bag-shopping"></i> Checkout & Buat Draft
-                            </button>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Nama Pria <span class="text-red-500">*</span></label>
+                            <input type="text" name="groom_name" value="{{ old('groom_name') }}" required
+                                   class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                                   placeholder="Contoh: Dimas">
+                            @error('groom_name')<p class="text-[10px] text-red-500 mt-1 ml-1">{{ $message }}</p>@enderror
                         </div>
 
-                        <p class="text-[11px] text-gray-400 leading-relaxed">
-                            Dengan melanjutkan, Anda akan diarahkan ke dashboard untuk melengkapi undangan. Status publish akan terkunci sampai pembayaran selesai.
-                        </p>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Nama Wanita <span class="text-red-500">*</span></label>
+                            <input type="text" name="bride_name" value="{{ old('bride_name') }}" required
+                                   class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                                   placeholder="Contoh: Anggita">
+                            @error('bride_name')<p class="text-[10px] text-red-500 mt-1 ml-1">{{ $message }}</p>@enderror
+                        </div>
+
+                        <button type="submit" class="w-full gold-gradient text-white font-bold py-5 rounded-2xl text-sm hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-yellow-500/20">
+                            Checkout & Buat Draft <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+
+                        @guest
+                        <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/30 rounded-2xl p-4 text-center">
+                            <p class="text-[10px] text-blue-700 dark:text-blue-400 leading-relaxed">
+                                <i class="fas fa-info-circle mr-1"></i> Anda akan diminta login/register untuk menyimpan draft ke dashboard.
+                            </p>
+                        </div>
+                        @else
+                        <div class="bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-800/30 rounded-2xl p-4 text-center">
+                            <p class="text-[10px] text-green-700 dark:text-green-400 leading-relaxed">
+                                <i class="fas fa-check-circle mr-1"></i> Draft akan disimpan di dashboard Anda.
+                            </p>
+                        </div>
+                        @endguest
                     </form>
                 </div>
-
-                <div class="mt-4 bg-white/10 border border-white/20 rounded-3xl p-5 text-white/85 text-xs">
-                    <div class="font-semibold text-white">Sudah punya akun?</div>
-                    <div class="mt-1">Jika belum login, Anda akan diminta login terlebih dulu.</div>
-                </div>
             </div>
         </div>
     </div>
 </div>
-
-<div class="bg-white py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            <h3 class="font-playfair text-2xl md:text-3xl font-bold text-gray-900">Lihat Semua Template</h3>
-            <a href="{{ route('digital-invitations') }}" class="text-sm font-semibold text-yellow-700 hover:text-yellow-800">Kembali ke katalog</a>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            @foreach($templates as $template)
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <div class="h-40 bg-gray-100">
-                    @if($template->image)
-                        <img src="{{ asset('storage/'.$template->image) }}" alt="{{ $template->name }}" class="w-full h-full object-cover" />
-                    @else
-                        <div class="w-full h-full flex items-center justify-center text-gray-400">
-                            <i class="fas fa-image"></i>
-                        </div>
-                    @endif
-                </div>
-                <div class="p-5">
-                    <div class="flex items-start justify-between gap-3">
-                        <div>
-                            <h4 class="font-semibold text-gray-900">{{ $template->name }}</h4>
-                            @if($template->promo_label && $template->has_active_promo)
-                                <div class="text-xs text-purple-700 font-semibold mt-1">{{ $template->promo_label }}</div>
-                            @endif
-                        </div>
-                        <div class="text-right">
-                            @if($template->effective_price)
-                                <div class="font-bold text-yellow-700">Rp {{ number_format($template->effective_price, 0, ',', '.') }}</div>
-                                @if($template->has_active_promo)
-                                    <div class="text-[11px] text-gray-400 line-through">Rp {{ number_format($template->price, 0, ',', '.') }}</div>
-                                @endif
-                            @else
-                                <div class="text-[11px] text-gray-400">Harga belum diatur</div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="mt-4 grid grid-cols-2 gap-3">
-                        @php $demoUrl = $template->demo_url; @endphp
-                        <a href="{{ $demoUrl ?? '#' }}" target="{{ $demoUrl ? '_blank' : '_self' }}"
-                           class="text-sm font-semibold px-4 py-2 rounded-full border {{ $demoUrl ? 'border-gray-200 text-gray-700 hover:border-yellow-400 hover:text-yellow-600' : 'border-dashed border-gray-300 text-gray-400 cursor-not-allowed' }} transition-colors flex items-center justify-center gap-2"
-                           {{ $demoUrl ? '' : 'aria-disabled=true' }}>
-                            <i class="fas fa-eye"></i> Preview
-                        </a>
-                        <a href="{{ route('invitation-order.start', ['template' => $template->id]) }}" class="text-sm font-semibold px-4 py-2 rounded-full gold-gradient text-white shadow hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                            <i class="fas fa-check"></i> Pilih
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
+@endsection
 @endsection

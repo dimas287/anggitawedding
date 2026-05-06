@@ -7,176 +7,191 @@
     $invitationTemplate = optional($booking->invitation)->template;
     $canUserCancel = $booking->status === 'pending' && (int) $booking->total_paid <= 0;
 @endphp
+
 @section('title', $isInvitationOnly ? 'Pesanan Undangan Digital' : $booking->couple_short_display)
-@section('page-title', $isInvitationOnly ? 'Pesanan Undangan Digital' : $booking->couple_short_display)
 
 @section('content')
-<div class="space-y-6">
-
-    {{-- Banner CTA khusus undangan digital belum bayar --}}
-    @if($isInvitationOnly && $booking->payment_status === 'unpaid' && $booking->status !== 'cancelled')
-    <div class="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="space-y-10 py-4">
+    {{-- Header Section --}}
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 px-2">
         <div>
-            <h2 class="font-bold text-yellow-800 text-base flex items-center gap-2">
-                <i class="fas fa-envelope-open-text"></i> Selesaikan Pembayaran Undangan Digital
-            </h2>
-            <p class="text-sm text-yellow-700 mt-1">Lakukan pembayaran untuk mulai menyesuaikan undangan digital Anda.</p>
-            @if($invitationTemplate)
-            <p class="text-xs text-yellow-600 mt-1">Template: <span class="font-semibold">{{ $invitationTemplate->name }}</span></p>
-            @endif
-        </div>
-        <div class="flex flex-col gap-2">
-            <a href="{{ route('payment.checkout', $booking->id) }}"
-               class="shrink-0 gold-gradient text-white font-semibold px-6 py-3 rounded-xl text-sm inline-flex items-center gap-2 hover:shadow-lg transition-all">
-                <i class="fas fa-credit-card"></i> {{ $booking->payments->where('status', 'pending')->isNotEmpty() ? 'Lanjutkan Pembayaran' : 'Bayar Sekarang' }}
-                <span class="font-bold">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</span>
+            <a href="{{ route('user.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:text-gray-900 dark:hover:text-white transition-all mb-4">
+                <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
             </a>
-            @if($booking->payments->where('status', 'pending')->isNotEmpty())
-                <a href="{{ route('payment.checkout', $booking->id) }}?reset=1" class="text-xs text-center text-yellow-600 hover:text-yellow-700 font-medium py-1 border-b border-dashed border-yellow-200 inline-block mx-auto">
-                    <i class="fas fa-sync-alt mr-1"></i> Ganti metode pembayaran?
+            <h1 class="font-playfair text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                {{ $isInvitationOnly ? 'Detail Undangan Digital' : 'Detail Wedding Booking' }}
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">
+                Booking ID: <span class="font-bold text-gray-900 dark:text-white">{{ $booking->booking_code }}</span> • 
+                {{ $booking->created_at->isoFormat('D MMMM Y') }}
+            </p>
+        </div>
+        
+        <div class="flex gap-3">
+            @if($isInvitationOnly && $booking->payment_status === 'unpaid' && $booking->status !== 'cancelled')
+                <a href="{{ route('payment.checkout', $booking->id) }}"
+                   class="gold-gradient text-white font-bold px-6 py-3.5 rounded-2xl text-xs flex items-center gap-2 shadow-xl shadow-yellow-500/20 hover:scale-[1.02] transition-all">
+                    <i class="fas fa-credit-card"></i> Bayar Sekarang
                 </a>
             @endif
+        </div>
+    </div>
+
+    {{-- Urgent Notification --}}
+    @if($isInvitationOnly && $booking->payment_status === 'unpaid' && $booking->status !== 'cancelled')
+    <div class="bg-white dark:bg-white/5 rounded-[32px] border border-yellow-200 dark:border-yellow-900/30 p-6 shadow-2xl relative overflow-hidden group">
+        <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform duration-700">
+            <i class="fas fa-envelope-open-text text-8xl text-yellow-600"></i>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div class="w-16 h-16 rounded-3xl bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center text-2xl shadow-inner">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-bold text-gray-900 dark:text-white text-lg">Selesaikan Pembayaran Anda</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Pembayaran diperlukan untuk mulai mengisi data dan mempublikasikan undangan digital Anda.</p>
+            </div>
+            <a href="{{ route('payment.checkout', $booking->id) }}" class="px-8 py-4 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold text-sm hover:shadow-xl transition-all">
+                Lanjut ke Pembayaran
+            </a>
         </div>
     </div>
     @endif
 
     @if($booking->status === 'cancelled')
-    <div class="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 flex items-start gap-3">
-        <i class="fas fa-ban mt-1"></i>
+    <div class="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-[32px] p-6 flex items-center gap-4 text-red-700 dark:text-red-400">
+        <div class="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-xl">
+            <i class="fas fa-ban"></i>
+        </div>
         <div>
-            <p class="font-semibold text-sm">Booking Telah Dibatalkan</p>
-            <p class="text-xs">Anda bisa melakukan booking baru kapan saja melalui halaman paket. Hubungi admin bila membutuhkan bantuan lanjutan.</p>
+            <p class="font-bold">Booking Dibatalkan</p>
+            <p class="text-xs opacity-80 mt-0.5">Silakan hubungi admin jika ini adalah kesalahan.</p>
         </div>
     </div>
     @endif
 
-    {{-- Header Status --}}
-    @if($isInvitationOnly)
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    {{-- Main Status Grid --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @php
-        $payStatusColors = ['unpaid'=>'red','paid_full'=>'green','partially_paid'=>'yellow'];
-        $ps = $payStatusColors[$booking->payment_status] ?? 'gray';
-        $payStatusLabel = ['unpaid'=>'Belum Dibayar','paid_full'=>'Lunas','partially_paid'=>'Sebagian'];
+            $statusColors = [
+                'pending' => ['bg'=>'bg-amber-50 dark:bg-amber-900/10', 'text'=>'text-amber-600 dark:text-amber-500', 'icon'=>'fa-clock'],
+                'dp_paid' => ['bg'=>'bg-blue-50 dark:bg-blue-900/10', 'text'=>'text-blue-600 dark:text-blue-500', 'icon'=>'fa-check-circle'],
+                'in_progress' => ['bg'=>'bg-purple-50 dark:bg-purple-900/10', 'text'=>'text-purple-600 dark:text-purple-500', 'icon'=>'fa-spinner'],
+                'completed' => ['bg'=>'bg-green-50 dark:bg-green-900/10', 'text'=>'text-green-600 dark:text-green-500', 'icon'=>'fa-crown'],
+                'cancelled' => ['bg'=>'bg-red-50 dark:bg-red-900/10', 'text'=>'text-red-600 dark:text-red-500', 'icon'=>'fa-times-circle'],
+            ];
+            $s = $statusColors[$booking->status] ?? ['bg'=>'bg-gray-50', 'text'=>'text-gray-600', 'icon'=>'fa-info-circle'];
         @endphp
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Status Pembayaran</p>
-            <p class="font-bold text-gray-800 dark:text-white">{{ $payStatusLabel[$booking->payment_status] ?? ucfirst($booking->payment_status) }}</p>
+
+        <div class="bg-white dark:bg-white/5 rounded-[32px] p-6 border border-gray-100 dark:border-white/10 shadow-xl flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-2xl {{ $s['bg'] }} {{ $s['text'] }} flex items-center justify-center text-xl mb-4 shadow-inner">
+                <i class="fas {{ $s['icon'] }}"></i>
+            </div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Status Booking</p>
+            <p class="font-bold text-gray-900 dark:text-white">{{ $booking->status_label }}</p>
         </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Harga Undangan</p>
-            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->package_price, 0, ',', '.') }}</p>
+
+        <div class="bg-white dark:bg-white/5 rounded-[32px] p-6 border border-gray-100 dark:border-white/10 shadow-xl flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-500 flex items-center justify-center text-xl mb-4 shadow-inner">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tanggal Acara</p>
+            <p class="font-bold text-gray-900 dark:text-white">{{ $booking->event_date->isoFormat('D MMM Y') }}</p>
         </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Total Dibayar</p>
-            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
+
+        <div class="bg-white dark:bg-white/5 rounded-[32px] p-6 border border-gray-100 dark:border-white/10 shadow-xl flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/10 text-yellow-600 dark:text-yellow-500 flex items-center justify-center text-xl mb-4 shadow-inner">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Tagihan</p>
+            <p class="font-bold text-gray-900 dark:text-white">Rp {{ number_format($grandTotal, 0, ',', '.') }}</p>
+        </div>
+
+        <div class="bg-white dark:bg-white/5 rounded-[32px] p-6 border border-gray-100 dark:border-white/10 shadow-xl flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-500 flex items-center justify-center text-xl mb-4 shadow-inner">
+                <i class="fas fa-check-double"></i>
+            </div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Sudah Dibayar</p>
+            <p class="font-bold text-gray-900 dark:text-white text-lg">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
         </div>
     </div>
-    @else
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        @php
-        $statusColors = ['pending'=>'yellow','dp_paid'=>'blue','in_progress'=>'indigo','completed'=>'green','cancelled'=>'red'];
-        $sc = $statusColors[$booking->status] ?? 'gray';
-        @endphp
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Status Booking</p>
-            <p class="font-bold text-gray-800 dark:text-white">{{ $booking->status_label }}</p>
-        </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Tanggal Acara</p>
-            <p class="font-bold text-gray-800 dark:text-white">{{ $booking->event_date->isoFormat('D MMM Y') }}</p>
-        </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Biaya Tambahan</p>
-            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($extraTotal, 0, ',', '.') }}</p>
-        </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Total Dibayar</p>
-            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</p>
-        </div>
-        <div class="bg-white dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col items-center text-center justify-center">
-            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Sisa Tagihan</p>
-            <p class="font-bold text-gray-800 dark:text-white">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
-        </div>
-    </div>
-    @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-5">
-            <div class="bg-white dark:bg-white/5 rounded-3xl p-6 border border-gray-100 dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden">
+            {{-- Names Section --}}
+            <div class="bg-white dark:bg-white/5 rounded-[32px] p-8 border border-gray-100 dark:border-white/10 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-8 relative overflow-hidden group">
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-yellow-400/5 rounded-full blur-3xl group-hover:bg-yellow-400/10 transition-colors duration-700"></div>
+                
                 <div class="relative z-10">
-                    <p class="text-[10px] uppercase text-gold tracking-[0.2em] font-bold mb-2">Nama Pasangan</p>
-                    <p class="text-3xl font-playfair font-bold text-gray-900 dark:text-white">{{ $booking->couple_short_display }}</p>
+                    <p class="text-[10px] font-bold text-yellow-600 dark:text-yellow-500 uppercase tracking-[0.3em] mb-3 flex items-center gap-2">
+                        <span class="w-1 h-3 bg-yellow-400 rounded-full"></span> Nama Pasangan
+                    </p>
+                    <h2 class="text-4xl font-playfair font-bold text-gray-900 dark:text-white">{{ $booking->couple_short_display }}</h2>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-white dark:bg-white/5 rounded-xl shadow-sm p-3 border border-gray-100 dark:border-white/10">
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Nama Lengkap Pria</p>
-                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $booking->groom_name }}</p>
-                        <p class="text-xs text-gray-400 dark:text-gray-500">Panggilan: {{ $booking->groom_short_name ?: '-' }}</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm relative z-10">
+                    <div class="bg-gray-50 dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 transition-all hover:border-yellow-400/30">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Mempelai Pria</p>
+                        <p class="font-bold text-gray-900 dark:text-white">{{ $booking->groom_name }}</p>
+                        <p class="text-xs text-gray-500 mt-1 italic">"{{ $booking->groom_short_name ?: '-' }}"</p>
                     </div>
-                    <div class="bg-white dark:bg-white/5 rounded-xl shadow-sm p-3 border border-gray-100 dark:border-white/10">
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Nama Lengkap Wanita</p>
-                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $booking->bride_name }}</p>
-                        <p class="text-xs text-gray-400 dark:text-gray-500">Panggilan: {{ $booking->bride_short_name ?: '-' }}</p>
+                    <div class="bg-gray-50 dark:bg-white/5 rounded-2xl p-4 border border-gray-100 dark:border-white/10 transition-all hover:border-yellow-400/30">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Mempelai Wanita</p>
+                        <p class="font-bold text-gray-900 dark:text-white">{{ $booking->bride_name }}</p>
+                        <p class="text-xs text-gray-500 mt-1 italic">"{{ $booking->bride_short_name ?: '-' }}"</p>
                     </div>
                 </div>
             </div>
 
             {{-- Booking Info --}}
-            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-white/10">
-                @if($isInvitationOnly)
-                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2"><i class="fas fa-envelope-open-text text-purple-500"></i> Detail Pesanan Undangan</h3>
-                    @php
-                        $infoRows = [
-                            'Kode Pesanan'          => $booking->booking_code,
-                            'Nama Pasangan'         => $booking->couple_short_display,
-                            'Nama Lengkap Pria'     => $booking->groom_name,
-                            'Nama Lengkap Wanita'   => $booking->bride_name,
-                            'Nama Panggilan Pria'   => $booking->groom_short_name ?: '-',
-                            'Nama Panggilan Wanita' => $booking->bride_short_name ?: '-',
-                            'Template'              => $invitationTemplate ? $invitationTemplate->name : '-',
-                            'Harga'                 => 'Rp ' . number_format($booking->package_price, 0, ',', '.'),
-                            'Tanggal Pesan'         => $booking->created_at->isoFormat('dddd, D MMMM Y'),
-                            'Alamat Venue'          => $booking->venue_address ?: '-',
-                            'No. HP'                => $booking->phone,
-                            'Email'                 => $booking->email ?? $booking->user->email,
-                        ];
-                    @endphp
-                @else
-                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2"><i class="fas fa-info-circle text-yellow-500"></i> Informasi Booking</h3>
-                    @php
-                        $infoRows = [
-                            'Kode Booking'            => $booking->booking_code,
-                            'Nama Pasangan'           => $booking->couple_short_display,
-                            'Nama Lengkap Pengantin Pria'   => $booking->groom_name,
-                            'Nama Lengkap Pengantin Wanita' => $booking->bride_name,
-                            'Nama Panggilan Pengantin Pria' => $booking->groom_short_name ?: '-',
-                            'Nama Panggilan Pengantin Wanita' => $booking->bride_short_name ?: '-',
-                            'Paket'                   => $booking->package->name,
-                            'Tanggal Acara'           => $booking->event_date->isoFormat('dddd, D MMMM Y'),
-                            'Venue'                   => $booking->venue ?? '-',
-                            'Alamat Venue'            => $booking->venue_address ?: '-',
-                            'No. HP'                  => $booking->phone,
-                            'Email'                   => $booking->email ?? $booking->user->email,
-                        ];
-                    @endphp
-                @endif
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div class="bg-white dark:bg-white/5 rounded-[32px] p-8 border border-gray-100 dark:border-white/10 shadow-xl">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 flex items-center justify-center shadow-sm">
+                        <i class="fas {{ $isInvitationOnly ? 'fa-envelope-open-text' : 'fa-info-circle' }}"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white">{{ $isInvitationOnly ? 'Detail Pesanan Undangan' : 'Informasi Booking' }}</h3>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Ringkasan Data Pemesanan</p>
+                    </div>
+                </div>
+
+                @php
+                    $infoRows = $isInvitationOnly ? [
+                        'Kode Pesanan'          => $booking->booking_code,
+                        'Template'              => $invitationTemplate ? $invitationTemplate->name : '-',
+                        'Harga'                 => 'Rp ' . number_format($booking->package_price, 0, ',', '.'),
+                        'Tanggal Pesan'         => $booking->created_at->isoFormat('dddd, D MMMM Y'),
+                        'No. HP'                => $booking->phone,
+                        'Email'                 => $booking->email ?? $booking->user->email,
+                    ] : [
+                        'Kode Booking'          => $booking->booking_code,
+                        'Paket'                 => $booking->package->name,
+                        'Tanggal Acara'         => $booking->event_date->isoFormat('dddd, D MMMM Y'),
+                        'Venue'                 => $booking->venue ?? '-',
+                        'No. HP'                => $booking->phone,
+                        'Email'                 => $booking->email ?? $booking->user->email,
+                    ];
+                @endphp
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                     @foreach($infoRows as $label => $value)
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                            <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">{{ $label }}</span>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100 mt-0.5 sm:mt-0">{{ $value }}</p>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $label }}</span>
+                            <p class="font-bold text-gray-900 dark:text-white text-sm">{{ $value }}</p>
                         </div>
-                        @if($label === 'Email' && $booking->client_notes)
-                            <div class="md:col-span-2 flex flex-col sm:flex-row gap-2 pt-1">
-                                <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">Catatan Admin</span>
-                                <p class="text-gray-800 dark:text-gray-200 whitespace-pre-line">{{ $booking->client_notes }}</p>
-                            </div>
-                        @endif
                     @endforeach
-                    @if($booking->notes)
-                        <div class="md:col-span-2 flex flex-col sm:flex-row gap-2 pt-1">
-                            <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">Catatan Booking</span>
-                            <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $booking->notes }}</p>
+                    
+                    @if($booking->venue_address)
+                        <div class="md:col-span-2 flex flex-col gap-1 pt-2 border-t border-gray-50 dark:border-white/5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Alamat Venue</span>
+                            <p class="text-gray-900 dark:text-white text-sm italic">"{{ $booking->venue_address }}"</p>
+                        </div>
+                    @endif
+
+                    @if($booking->client_notes)
+                        <div class="md:col-span-2 flex flex-col gap-1 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-2xl border border-yellow-100 dark:border-yellow-900/20 mt-2">
+                            <span class="text-[10px] font-bold text-yellow-600 dark:text-yellow-500 uppercase tracking-widest">Catatan Admin</span>
+                            <p class="text-yellow-800 dark:text-yellow-200 text-sm italic">{{ $booking->client_notes }}</p>
                         </div>
                     @endif
                 </div>
