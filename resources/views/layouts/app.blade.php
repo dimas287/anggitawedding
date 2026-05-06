@@ -629,7 +629,7 @@
 {{-- ─── MAGIC BOTTOM NAV (mobile only, 5 items) ─── --}}
 <nav class="bottom-nav" id="bottom-nav">
     <a href="{{ route('user.dashboard') }}"
-       class="bn-item {{ request()->routeIs('user.dashboard') || request()->routeIs('user.booking.show') || request()->routeIs('payment.checkout') || request()->routeIs('select-service') ? 'active' : '' }}">
+       class="bn-item {{ request()->routeIs('user.dashboard') || request()->routeIs('user.booking.show') || request()->routeIs('payment.checkout') || request()->routeIs('payment.success') || request()->routeIs('select-service') ? 'active' : '' }}">
         <i class="fas fa-house"></i>
         <span class="bn-label">Home</span>
     </a>
