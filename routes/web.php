@@ -102,11 +102,15 @@ Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
 Route::get('/faq', [LandingController::class, 'faq'])->name('faq');
 Route::get('/kebijakan-privasi', [LandingController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('/syarat-ketentuan', [LandingController::class, 'termsConditions'])->name('terms-conditions');
+Route::get('/kebijakan-cookie', [LandingController::class, 'cookiePolicy'])->name('cookie-policy');
+Route::post('/catalog/download', [LandingController::class, 'downloadCatalog'])->name('catalog.download');
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::get('/undangan-digital', [LandingController::class, 'digitalInvitations'])->middleware('invitation.maintenance')->name('digital-invitations');
 Route::view('/undangan-maintenance', 'invitation-maintenance')->name('invitation.maintenance');
 Route::view('/mulai-booking', 'select-service')->name('booking.start');
+Route::get('/paket/{package}/download', [LandingController::class, 'downloadPackageCatalog'])->name('packages.download');
 Route::get('/checkout/undangan-digital', [InvitationOrderController::class, 'start'])->middleware('invitation.maintenance')->name('invitation-order.start');
 
 // Date availability check (AJAX)

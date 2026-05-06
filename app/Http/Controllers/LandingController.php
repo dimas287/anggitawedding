@@ -11,8 +11,13 @@ use App\Models\HeroSlide;
 use App\Models\DreamHighlightCard;
 use App\Models\SiteSetting;
 use App\Models\Post;
+use App\Models\CatalogLead;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class LandingController extends Controller
 {
@@ -79,6 +84,13 @@ class LandingController extends Controller
 
         $posts = Post::published()->latest()->take(6)->get();
 
+        $portfolioImages = PortfolioImage::with('mediaItems')
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->take(8)
+            ->get();
+
         $processDefaults = [
             'eyebrow' => 'The Process',
             'heading' => 'Harmoni Pelayanan',
@@ -113,7 +125,8 @@ class LandingController extends Controller
             'dreamSection',
             'processSection',
             'posts',
-            'highlightCards'
+            'highlightCards',
+            'portfolioImages'
         ));
     }
 
@@ -137,6 +150,16 @@ class LandingController extends Controller
     public function privacyPolicy()
     {
         return view('privacy-policy');
+    }
+
+    public function termsConditions()
+    {
+        return view('terms-conditions');
+    }
+
+    public function cookiePolicy()
+    {
+        return view('cookie-policy');
     }
 
     public function digitalInvitations()
@@ -187,5 +210,51 @@ class LandingController extends Controller
             }])
             ->orderBy('sort_order')
             ->get();
+    }
+
+    public function downloadCatalog(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        CatalogLead::create([
+            'email' => $request->email,
+            'ip_address' => $request->ip(),
+            'catalog_version' => '2024.1'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Katalog telah berhasil diproses. Silakan klik tombol di bawah untuk mengunduh.',
+            'download_url' => asset('storage/catalogs/anggita-wedding-catalog-2024.pdf')
+        ]);
+    }
+
+    public function downloadPackageCatalog(Package $package)
+    {
+        // Capture lead
+        CatalogLead::create([
+            'email' => auth()->user()?->email ?? 'guest@anonymous.com',
+            'ip_address' => request()->ip(),
+            'catalog_version' => $package->name . '-per-card'
+        ]);
+
+        // If specific catalog file is uploaded, return it
+        if ($package->catalog_path && Storage::disk('public')->exists($package->catalog_path)) {
+            $extension = pathinfo($package->catalog_path, PATHINFO_EXTENSION);
+            $filename = 'katalog-' . Str::slug($package->name) . '.' . $extension;
+            return Storage::disk('public')->download($package->catalog_path, $filename);
+        }
+
+        // Fallback to generated poster PDF
+        $pdf = Pdf::loadView('pdf.package-poster', compact('package'))
+            ->setPaper([0, 0, 540, 960], 'portrait')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', true)
+            ->setOption('defaultFont', 'DejaVu Sans');
+
+        $filename = 'katalog-' . Str::slug($package->name) . '.pdf';
+        return $pdf->download($filename);
     }
 }

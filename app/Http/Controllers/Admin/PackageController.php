@@ -175,6 +175,7 @@ class PackageController extends Controller
             'promo_description' => 'nullable|string|max:255',
             'promo_discount_percent' => 'nullable|numeric|min:0|max:100',
             'promo_expires_at' => 'nullable|date|after:today',
+            'catalog_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ], [
             'slug.unique' => 'Slug sudah digunakan. Silakan gunakan slug lain.',
             'is_active.boolean' => 'Status aktif tidak valid.',
@@ -229,6 +230,15 @@ class PackageController extends Controller
 
             $path = $request->file('image_file')->store('packages', 'public');
             $package->update(['image' => $path]);
+        }
+
+        if ($request->hasFile('catalog_file')) {
+            if ($package->catalog_path) {
+                Storage::disk('public')->delete($package->catalog_path);
+            }
+
+            $path = $request->file('catalog_file')->store('package-catalogs', 'public');
+            $package->update(['catalog_path' => $path]);
         }
 
         if ($request->hasFile('media_uploads')) {

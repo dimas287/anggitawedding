@@ -46,7 +46,19 @@
         <loc>{{ route('privacy-policy') }}</loc>
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>{{ route('terms-conditions') }}</loc>
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>{{ route('cookie-policy') }}</loc>
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.2</priority>
     </url>
 
     @foreach ($posts as $post)

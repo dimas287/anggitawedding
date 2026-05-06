@@ -280,6 +280,24 @@
                     </div>
                 </div>
 
+                <div class="p-4 border rounded-2xl bg-gray-50/50">
+                    <label class="text-xs font-semibold text-gray-600 mb-2 block">Katalog Paket (PDF/JPG)</label>
+                    <div class="flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1">
+                            <input type="file" name="catalog_file" accept=".pdf,.jpg,.jpeg,.png"
+                                   class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300">
+                            <p class="text-[10px] text-gray-400 mt-1">File ini akan muncul sebagai tombol download di landing page. Format: PDF, JPG, PNG. Max 5MB.</p>
+                        </div>
+                        <template x-if="form.catalog_path">
+                            <div class="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                <i class="fas fa-file-pdf text-red-500"></i>
+                                <span class="text-[10px] text-gray-600 font-medium">Katalog Tersedia</span>
+                                <a :href="'{{ Storage::url('') }}'.replace(/\/$/, '') + '/' + form.catalog_path" target="_blank" class="text-blue-500 hover:underline text-[10px] ml-1">Lihat</a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
                 <template x-if="form.id">
                     <div class="mt-4 border rounded-2xl p-4 bg-gray-50/60">
                         <div class="flex items-center justify-between mb-3">
@@ -409,6 +427,7 @@ function packageForm() {
                 promo_discount_percent: '',
                 promo_expires_at: '',
                 media_items: [],
+                catalog_path: '',
                 _refreshKey: Date.now(),
             }, defaults);
         },
@@ -442,6 +461,7 @@ function packageForm() {
                 promo_discount_percent: pkg.promo_discount_percent ?? '',
                 promo_expires_at: pkg.promo_expires_at ?? '',
                 media_items: pkg.media_items ?? [],
+                catalog_path: pkg.catalog_path ?? '',
                 _refreshKey: Date.now(),
             });
             this.isOpen = true;

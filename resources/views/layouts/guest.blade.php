@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Anggita Wedding Organizer')</title>
-    <meta name="description" content="@yield('meta_description', 'Wedding organizer Surabaya dengan layanan dekorasi, rias, dokumentasi, dan undangan digital. Konsultasi gratis bersama Anggita Wedding Organizer.')">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <meta name="description" content="@yield('meta_description', 'Wedding Organizer Surabaya terbaik. Layanan dekorasi, rias pengantin, dokumentasi, dan undangan digital Surabaya premium. Wujudkan pernikahan impian Anda bersama Anggita WO.')">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <link rel="canonical" href="{{ url()->current() }}">
     <script>
@@ -716,6 +719,8 @@
                 <div class="hidden md:block w-px h-3 bg-white/10"></div>
                 <div class="flex items-center gap-4">
                     <a href="{{ route('privacy-policy') }}" class="hover:text-gold transition-colors">Kebijakan Privasi</a>
+                    <a href="{{ route('terms-conditions') }}" class="hover:text-gold transition-colors">Syarat & Ketentuan</a>
+                    <a href="{{ route('cookie-policy') }}" class="hover:text-gold transition-colors">Kebijakan Cookie</a>
                     <a href="{{ route('faq') }}" class="hover:text-gold transition-colors">FAQ</a>
                 </div>
             </div>

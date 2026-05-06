@@ -631,6 +631,14 @@
                             })->values()->toArray();
                         @endphp
                         <div class="bg-[#FAF9F6] dark:bg-[#111111] rounded-xl hover:shadow-xl dark:hover:shadow-black/30 transition-all overflow-hidden relative border border-gray-100/50 dark:border-white/10" data-reveal data-reveal-direction="{{ $cardDirections[$loop->index % count($cardDirections)] }}" style="--reveal-delay: {{ $loop->index * 0.08 }}s;">
+                                {{-- NEW: Download Button per Package Card --}}
+                                <a href="{{ route('packages.download', $package) }}" 
+                                   class="absolute top-4 right-4 z-40 w-10 h-10 bg-white/90 dark:bg-black/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-700 dark:text-yellow-500 shadow-xl hover:scale-110 hover:bg-yellow-600 hover:text-white transition-all duration-300 group/dl"
+                                   title="Unduh Katalog {{ $package->name }}"
+                                   download>
+                                    <i class="fas fa-download text-sm group-hover/dl:animate-bounce"></i>
+                                </a>
+                            
                             @if($isPopular)
                                 <div class="bg-gray-900 text-white text-center py-2 text-[10px] font-medium uppercase tracking-[0.2em]">
                                     Signature Choice
@@ -1066,6 +1074,52 @@
     </div>
 </section>
 
+{{-- INSTAGRAM FEED --}}
+<section class="py-24 bg-white dark:bg-[#0A0A0A] overflow-hidden" data-reveal data-reveal-direction="up">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">Social Muse</span>
+            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white leading-tight">Momen di Instagram</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-4 text-sm font-light">Ikuti kisah romansa terbaru kami di <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="text-yellow-600 font-semibold hover:underline">@anggitaweddingsby</a></p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @php
+                $igMockImages = $portfolioImages->take(8);
+                $fallbackImages = [
+                    'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
+                    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800',
+                    'https://images.unsplash.com/photo-1465495910483-34c1b47c051a?w=800',
+                    'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800',
+                    'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800',
+                    'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800',
+                    'https://images.unsplash.com/photo-1522673607200-1648832cee98?w=800',
+                    'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800'
+                ];
+            @endphp
+            @for($i = 0; $i < 8; $i++)
+                @php
+                    $img = $igMockImages[$i] ?? null;
+                    $url = $img ? ($img->mediaItems->first()?->url ?? Storage::url($img->image_path)) : $fallbackImages[$i];
+                @endphp
+                <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="group relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800" data-reveal data-reveal-direction="zoom" style="--reveal-delay: {{ $i * 0.05 }}s;">
+                    <img src="{{ $url }}" alt="Instagram Moment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fab fa-instagram text-white text-3xl"></i>
+                    </div>
+                </a>
+            @endfor
+        </div>
+        
+        <div class="mt-12 text-center" data-reveal data-reveal-direction="up">
+            <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="inline-flex items-center gap-3 px-8 py-3 rounded-full border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-semibold text-xs tracking-widest uppercase hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                <i class="fab fa-instagram text-lg"></i>
+                Follow @anggitaweddingsby
+            </a>
+        </div>
+    </div>
+</section>
+
 @push('scripts')
 <script>
 function dateChecker() {
@@ -1085,6 +1139,7 @@ function dateChecker() {
         }
     };
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const revealEls = document.querySelectorAll('[data-reveal]');

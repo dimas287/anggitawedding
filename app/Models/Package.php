@@ -23,6 +23,7 @@ class Package extends Model
     protected $fillable = [
         'name', 'slug', 'tier', 'category', 'price', 'description',
         'features', 'includes_digital_invitation', 'max_guests', 'duration', 'image',
+        'catalog_path',
         'promo_label', 'promo_description', 'promo_discount_percent', 'promo_expires_at',
         'is_active', 'sort_order',
     ];
