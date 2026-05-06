@@ -30,31 +30,31 @@
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Nama Lengkap <span class="text-red-500">*</span></label>
                         <input type="text" name="name" value="{{ old('name', auth()->user()?->name) }}" required
-                               class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500"
+                               class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                                placeholder="Dimas Aditya Wiranata">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">No. WhatsApp <span class="text-red-500">*</span></label>
                         <input type="tel" name="phone" value="{{ old('phone', auth()->user()?->phone) }}" required
-                               class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500"
+                               class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                                placeholder="085648907544">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Email <span class="text-red-500">*</span></label>
                         <input type="email" name="email" value="{{ old('email', auth()->user()?->email) }}" required
-                               class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500"
+                               class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                                placeholder="dimasaw728@gmail.com">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Tanggal Konsultasi <span class="text-red-500">*</span></label>
                         <input type="text" name="preferred_date" value="{{ old('preferred_date', $date) }}" required
                                data-flatpickr data-min-date="{{ date('Y-m-d') }}" placeholder="Pilih tanggal"
-                               class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500">
+                               class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Jam Konsultasi <span class="text-red-500">*</span></label>
                         <select name="preferred_time" required
-                                class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all">
+                                class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all">
                             <option value="" class="bg-[#111]">Pilih jam...</option>
                             @foreach(['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'] as $t)
                             <option value="{{ $t }}" class="bg-[#111]" {{ old('preferred_time') === $t ? 'selected' : '' }}>{{ $t }} WIB</option>
@@ -64,7 +64,7 @@
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Jenis Konsultasi <span class="text-red-500">*</span></label>
                         <select name="consultation_type" required
-                                class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all">
+                                class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all">
                             <option value="offline" class="bg-[#111]" {{ old('consultation_type') === 'offline' ? 'selected' : '' }}>Offline (Kunjungi Kantor)</option>
                             <option value="online" class="bg-[#111]" {{ old('consultation_type') === 'online' ? 'selected' : '' }}>Online (Video Call/Meet)</option>
                         </select>
@@ -73,12 +73,12 @@
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Rencana Tanggal Pernikahan</label>
                         <input type="text" name="event_date" value="{{ old('event_date') }}"
                                data-flatpickr data-min-date="{{ date('Y-m-d', strtotime('+1 month')) }}" placeholder="Pilih tanggal"
-                               class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500">
+                               class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Ceritakan Impian Pernikahan Anda</label>
                         <textarea name="message" rows="3"
-                                  class="w-full bg-gray-50 dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-500 resize-none"
+                                  class="w-full bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-1 focus:ring-gray-300 dark:focus:ring-white/20 transition-all placeholder-gray-400 dark:placeholder-gray-500 resize-none"
                                   placeholder="Tema yang diinginkan, estimasi tamu, budget...">{{ old('message') }}</textarea>
                     </div>
                 </div>
