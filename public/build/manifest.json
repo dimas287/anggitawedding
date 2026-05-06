@@ -31,7 +31,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CDUE9MPI.css",
+    "file": "assets/app-DSA7Ng80.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -120,7 +120,7 @@
     ]
   },
   "resources/js/portfolio-gallery.jsx": {
-    "file": "assets/portfolio-gallery-BbZDr70n.js",
+    "file": "assets/portfolio-gallery-BrGnh6MX.js",
     "name": "portfolio-gallery",
     "src": "resources/js/portfolio-gallery.jsx",
     "isEntry": true,
