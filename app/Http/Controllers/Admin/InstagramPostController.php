@@ -35,7 +35,7 @@ class InstagramPostController extends Controller
 
         InstagramPost::create($data);
 
-        return redirect()->route('instagram-posts.index')->with('success', 'Postingan Instagram berhasil ditambahkan.');
+        return redirect()->route('admin.instagram-posts.index')->with('success', 'Postingan Instagram berhasil ditambahkan.');
     }
 
     public function update(Request $request, InstagramPost $instagramPost)
@@ -59,7 +59,7 @@ class InstagramPostController extends Controller
 
         $instagramPost->update($data);
 
-        return redirect()->route('instagram-posts.index')->with('success', 'Postingan Instagram berhasil diperbarui.');
+        return redirect()->route('admin.instagram-posts.index')->with('success', 'Postingan Instagram berhasil diperbarui.');
     }
 
     public function destroy(InstagramPost $instagramPost)
@@ -69,7 +69,7 @@ class InstagramPostController extends Controller
         }
         $instagramPost->delete();
 
-        return redirect()->route('instagram-posts.index')->with('success', 'Postingan Instagram berhasil dihapus.');
+        return redirect()->route('admin.instagram-posts.index')->with('success', 'Postingan Instagram berhasil dihapus.');
     }
 
     /**

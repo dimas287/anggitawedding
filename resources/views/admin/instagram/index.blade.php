@@ -31,7 +31,7 @@
                     <button @click='openEdit(@json($post))' class="w-10 h-10 rounded-full bg-white text-gray-800 flex items-center justify-center hover:bg-yellow-500 hover:text-white transition-all">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <form action="{{ route('instagram-posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Hapus postingan ini?')">
+                    <form action="{{ route('admin.instagram-posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Hapus postingan ini?')">
                         @csrf
                         @method('DELETE')
                         <button class="w-10 h-10 rounded-full bg-white text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all">
@@ -73,7 +73,7 @@
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
             <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-middle bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form :action="editMode ? '{{ route('instagram-posts.index') }}/' + form.id : '{{ route('instagram-posts.store') }}'" method="POST" enctype="multipart/form-data">
+                <form :action="editMode ? '{{ route('admin.instagram-posts.index') }}/' + form.id : '{{ route('admin.instagram-posts.store') }}'" method="POST" enctype="multipart/form-data">
                     @csrf
                     <template x-if="editMode">
                         <input type="hidden" name="_method" value="PUT">
@@ -191,7 +191,7 @@ function instagramManager() {
             }
             this.loading = true;
             try {
-                const response = await fetch('{{ route("instagram-posts.fetch") }}', {
+                const response = await fetch('{{ route("admin.instagram-posts.fetch") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
