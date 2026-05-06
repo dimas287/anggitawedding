@@ -278,7 +278,11 @@
                 btn.disabled = true;
                 btn.classList.add('opacity-60', 'cursor-not-allowed');
                 if (btn.tagName === 'BUTTON') {
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Memproses...';
+                    if (btn.classList.contains('icon-btn')) {
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Memproses...';
+                    }
                 } else {
                     btn.value = 'Memproses...';
                 }
