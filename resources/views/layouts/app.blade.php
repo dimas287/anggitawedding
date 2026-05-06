@@ -524,6 +524,10 @@
                 <div class="nav-icon"><i class="fas fa-house"></i></div>
                 <span>Dashboard</span>
             </a>
+            <a href="{{ route('booking.start') }}" class="nav-link {{ request()->routeIs('booking.*') ? 'active' : '' }}">
+                <div class="nav-icon"><i class="fas fa-gem"></i></div>
+                <span>Paket Wedding</span>
+            </a>
 
             @if($userBookings->isNotEmpty())
                 <div class="sb-section" style="margin-top: 8px;">Booking Saya</div>
@@ -609,6 +613,13 @@
                 <a href="{{ route('landing') }}" class="icon-btn" title="Kembali ke Website">
                     <i class="fas fa-globe"></i>
                 </a>
+                {{-- Logout (mobile) --}}
+                <form action="{{ route('logout') }}" method="POST" class="lg:hidden">
+                    @csrf
+                    <button type="submit" class="icon-btn" style="color: #ef4444;" title="Keluar">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                    </button>
+                </form>
                 {{-- Avatar topbar --}}
                 @if($avatarUrl)
                     <img src="{{ $avatarUrl }}" alt="" class="top-avatar"
