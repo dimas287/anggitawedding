@@ -532,10 +532,10 @@
                 <div class="nav-icon"><i class="fas fa-user-circle"></i></div>
                 <span>Profil Saya</span>
             </a>
-            <button type="button" onclick="openSheet('konsultasi')" class="nav-link" style="width: 100%; border: none; background: transparent; text-align: left;">
+            <a href="{{ route('consultation.form') }}" class="nav-link {{ request()->routeIs('consultation.form') ? 'active' : '' }}">
                 <div class="nav-icon"><i class="fas fa-comments"></i></div>
                 <span>Konsultasi</span>
-            </button>
+            </a>
             <a href="{{ route('landing') }}" class="nav-link">
                 <div class="nav-icon"><i class="fas fa-globe"></i></div>
                 <span>Lihat Website</span>
@@ -577,9 +577,9 @@
                 <button @click="toggleTheme()" class="icon-btn lg:hidden">
                     <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
                 </button>
-                <button type="button" onclick="openSheet('konsultasi')" class="icon-btn" title="Konsultasi">
+                <a href="{{ route('consultation.form') }}" class="icon-btn" title="Konsultasi">
                     <i class="fas fa-headset"></i>
-                </button>
+                </a>
                 {{-- Avatar topbar --}}
                 @if($avatarUrl)
                     <img src="{{ $avatarUrl }}" alt="" class="top-avatar"
@@ -604,16 +604,14 @@
         <i class="fas fa-house"></i>
         <span class="bn-label">Home</span>
     </a>
-    <button type="button" class="bn-item" id="bn-paket"
-            onclick="openSheet('paket')">
+    <a href="{{ route('booking.start') }}" class="bn-item {{ request()->routeIs('booking.*') ? 'active' : '' }}">
         <i class="fas fa-gem"></i>
         <span class="bn-label">Paket</span>
-    </button>
-    <button type="button" class="bn-item" id="bn-konsultasi"
-            onclick="openSheet('konsultasi')">
+    </a>
+    <a href="{{ route('consultation.form') }}" class="bn-item {{ request()->routeIs('consultation.form') ? 'active' : '' }}">
         <i class="fas fa-headset"></i>
         <span class="bn-label">Konsultasi</span>
-    </button>
+    </a>
     <button type="button" class="bn-item" id="bn-chat-btn"
             onclick="window.dispatchEvent(new CustomEvent('toggle-chat'))">
         <i class="fas fa-comment-dots"></i>
@@ -626,257 +624,6 @@
     </a>
 </nav>
 
-{{-- ─── SHEET OVERLAY ─── --}}
-<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
-
-{{-- ─── SHEET: KONSULTASI ─── --}}
-<div class="bottom-sheet" id="sheet-konsultasi">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-        <div>
-            <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;">Jadwalkan</p>
-            <div class="sheet-title">Konsultasi Gratis</div>
-        </div>
-        <button class="sheet-close" onclick="closeSheet()"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="sheet-body">
-        @if(session('consultation_success'))
-        <div style="padding:14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;color:#4ade80;font-size:13px;margin-bottom:16px;">
-            <i class="fas fa-check-circle mr-2"></i>{{ session('consultation_success') }}
-        </div>
-        @endif
-
-        <form action="{{ route('consultation.store') }}" method="POST">
-            @csrf
-            <div class="sf-row">
-                <div class="sf-group">
-                    <label class="sf-label">Nama Lengkap</label>
-                    <input type="text" name="name" class="sf-input" required
-                           value="{{ old('name', auth()->user()->name) }}" placeholder="Nama Anda">
-                </div>
-                <div class="sf-group">
-                    <label class="sf-label">WhatsApp</label>
-                    <input type="tel" name="phone" class="sf-input" required
-                           value="{{ old('phone', auth()->user()->phone) }}" placeholder="08xx">
-                </div>
-            </div>
-            <div class="sf-group">
-                <label class="sf-label">Email</label>
-                <input type="email" name="email" class="sf-input" required
-                       value="{{ old('email', auth()->user()->email) }}" placeholder="email@domain.com">
-            </div>
-            <div class="sf-row">
-                <div class="sf-group">
-                    <label class="sf-label">Tanggal Konsultasi</label>
-                    <input type="date" name="preferred_date" class="sf-input" required
-                           min="{{ date('Y-m-d') }}" value="{{ old('preferred_date') }}">
-                </div>
-                <div class="sf-group">
-                    <label class="sf-label">Jam</label>
-                    <select name="preferred_time" class="sf-input" required>
-                        <option value="">Pilih jam</option>
-                        @foreach(['09:00','10:00','11:00','13:00','14:00','15:00','16:00'] as $t)
-                        <option value="{{ $t }}" {{ old('preferred_time') == $t ? 'selected' : '' }}>{{ $t }} WIB</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="sf-group">
-                <label class="sf-label">Tanggal Acara (opsional)</label>
-                <input type="date" name="event_date" class="sf-input"
-                       min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('event_date') }}">
-            </div>
-            <div class="sf-group">
-                <label class="sf-label">Tipe Konsultasi</label>
-                <div class="sf-radio-group">
-                    <label class="sf-radio">
-                        <input type="radio" name="consultation_type" value="online" {{ old('consultation_type','online') == 'online' ? 'checked' : '' }}>
-                        <i class="fas fa-video" style="margin-right:5px;"></i> Online
-                    </label>
-                    <label class="sf-radio">
-                        <input type="radio" name="consultation_type" value="offline" {{ old('consultation_type') == 'offline' ? 'checked' : '' }}>
-                        <i class="fas fa-store" style="margin-right:5px;"></i> Offline
-                    </label>
-                </div>
-            </div>
-            <div class="sf-group">
-                <label class="sf-label">Pesan / Pertanyaan (opsional)</label>
-                <textarea name="message" class="sf-input" rows="3"
-                          placeholder="Ceritakan rencana pernikahan Anda...">{{ old('message') }}</textarea>
-            </div>
-            <button type="submit" class="sf-submit">
-                <i class="fas fa-paper-plane" style="margin-right:6px;"></i> Kirim Permintaan Konsultasi
-            </button>
-        </form>
-    </div>
-</div>
-
-{{-- ─── SHEET: PAKET & BOOKING ─── --}}
-<div class="bottom-sheet" id="sheet-paket"
-     x-data="paketSheet()"
-     @open-paket-sheet.window="openPaketSheet()">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-        <div>
-            <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;">Mulai Perjalanan</p>
-            <div class="sheet-title" x-text="stepTitle"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-            <button x-show="step > 1" @click="step--" class="sheet-close" style="color:var(--gold);">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <button class="sheet-close" onclick="closeSheet()"><i class="fas fa-times"></i></button>
-        </div>
-    </div>
-
-    <div class="sheet-body">
-        {{-- Step indicator --}}
-        <div class="step-bar">
-            <div class="step-dot" :class="step >= 1 ? (step > 1 ? 'done' : 'active') : ''">
-                <i x-show="step > 1" class="fas fa-check" style="font-size:9px;"></i>
-                <span x-show="step <= 1">1</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step-dot" :class="step >= 2 ? (step > 2 ? 'done' : 'active') : ''">
-                <i x-show="step > 2" class="fas fa-check" style="font-size:9px;"></i>
-                <span x-show="step <= 2">2</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step-dot" :class="step >= 3 ? 'active' : ''">3</div>
-        </div>
-
-        {{-- Step 1: Tanggal --}}
-        <div x-show="step === 1">
-            <p style="font-size:13px;color:var(--text-2);margin-bottom:20px;">
-                Pilih tanggal akad / resepsi Anda. Kami akan cek ketersediaan hari tersebut.
-            </p>
-            <div class="sf-group">
-                <label class="sf-label">Tanggal Acara</label>
-                <input type="date" x-model="eventDate" class="sf-input"
-                       :min="minDate" @change="checkDate()">
-            </div>
-            <div x-show="dateStatus" x-cloak style="margin-bottom:16px;">
-                <div style="padding:12px 14px;border-radius:10px;font-size:13px;"
-                     :style="dateStatus === 'available' ? 'background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#4ade80;' :
-                             dateStatus === 'limited' ? 'background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:#d97706;' :
-                             'background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#f87171;'">
-                    <i class="fas" :class="dateStatus === 'available' ? 'fa-check-circle' : dateStatus === 'limited' ? 'fa-exclamation-circle' : 'fa-times-circle'" style="margin-right:6px;"></i>
-                    <span x-text="dateMessage"></span>
-                </div>
-            </div>
-            <button class="sf-submit" :disabled="!eventDate || dateStatus === 'full'"
-                    @click="step = 2" style="opacity:1;" :style="(!eventDate || dateStatus === 'full') ? 'opacity:.5;cursor:not-allowed;' : ''">
-                Lanjut Pilih Paket <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-            </button>
-        </div>
-
-        {{-- Step 2: Pilih Paket --}}
-        <div x-show="step === 2" x-cloak>
-            <div class="pkg-tabs">
-                @foreach($categoryLabels as $catKey => $catLabel)
-                    @if(isset($packagesByCategory[$catKey]) && $packagesByCategory[$catKey]->isNotEmpty())
-                    <button class="pkg-tab" :class="pkgTab === '{{ $catKey }}' ? 'active' : ''"
-                            @click="pkgTab = '{{ $catKey }}'">{{ $catLabel }}</button>
-                    @endif
-                @endforeach
-            </div>
-
-            @foreach($packagesByCategory as $cat => $pkgList)
-            <div x-show="pkgTab === '{{ $cat }}'">
-                @foreach($pkgList as $pkg)
-                <div class="pkg-card" :class="selectedPackageId === {{ $pkg->id }} ? 'selected' : ''"
-                     @click="selectPackage({{ $pkg->id }}, @js($pkg->name), {{ $pkg->effective_price }})">
-                    <div class="pkg-card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-                        <div style="flex:1;min-width:0;">
-                            <div class="pkg-card-name">{{ $pkg->name }}</div>
-                            <div class="pkg-card-price">Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}</div>
-                            @if($pkg->short_description)
-                            <div class="pkg-card-desc">{{ Str::limit($pkg->short_description, 80) }}</div>
-                            @endif
-                        </div>
-                        <div x-show="selectedPackageId === {{ $pkg->id }}" style="flex-shrink:0;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;">
-                                <i class="fas fa-check"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            @endforeach
-
-            <button class="sf-submit" :disabled="!selectedPackageId" @click="step = 3"
-                    :style="!selectedPackageId ? 'opacity:.5;cursor:not-allowed;' : ''">
-                Lanjut Isi Data <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-            </button>
-        </div>
-
-        {{-- Step 3: Form Booking --}}
-        <div x-show="step === 3" x-cloak>
-            <div style="padding:12px 14px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:10px;margin-bottom:18px;font-size:13px;color:var(--gold);">
-                <i class="fas fa-gem" style="margin-right:6px;"></i>
-                <span x-text="selectedPackageName"></span> —
-                Rp <span x-text="selectedPackagePrice.toLocaleString('id-ID')"></span>
-            </div>
-            <form action="{{ route('booking.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="package_id" :value="selectedPackageId">
-                <input type="hidden" name="event_date" :value="eventDate">
-
-                <div class="sf-row">
-                    <div class="sf-group">
-                        <label class="sf-label">Nama Mempelai Pria</label>
-                        <input type="text" name="groom_name" class="sf-input" required placeholder="Nama lengkap">
-                    </div>
-                    <div class="sf-group">
-                        <label class="sf-label">Panggilan Pria</label>
-                        <input type="text" name="groom_short_name" class="sf-input" required placeholder="Mis: Budi">
-                    </div>
-                </div>
-                <div class="sf-row">
-                    <div class="sf-group">
-                        <label class="sf-label">Nama Mempelai Wanita</label>
-                        <input type="text" name="bride_name" class="sf-input" required placeholder="Nama lengkap">
-                    </div>
-                    <div class="sf-group">
-                        <label class="sf-label">Panggilan Wanita</label>
-                        <input type="text" name="bride_short_name" class="sf-input" required placeholder="Mis: Sari">
-                    </div>
-                </div>
-                <div class="sf-group">
-                    <label class="sf-label">Venue / Gedung</label>
-                    <input type="text" name="venue" class="sf-input" required placeholder="Nama gedung atau tempat">
-                </div>
-                <div class="sf-group">
-                    <label class="sf-label">Alamat Venue</label>
-                    <input type="text" name="venue_address" class="sf-input" placeholder="Alamat lengkap">
-                </div>
-                <div class="sf-row">
-                    <div class="sf-group">
-                        <label class="sf-label">No. WhatsApp</label>
-                        <input type="tel" name="phone" class="sf-input" required
-                               value="{{ auth()->user()->phone }}" placeholder="08xx">
-                    </div>
-                    <div class="sf-group">
-                        <label class="sf-label">Estimasi Tamu</label>
-                        <input type="number" name="estimated_guests" class="sf-input" min="10" placeholder="mis: 200">
-                    </div>
-                </div>
-                <div class="sf-group">
-                    <label class="sf-label">Catatan Tambahan</label>
-                    <textarea name="notes" class="sf-input" rows="2" placeholder="Permintaan khusus, tema warna, dll."></textarea>
-                </div>
-                <div style="padding:12px;background:var(--surface-2);border-radius:10px;font-size:12px;color:var(--text-3);margin-bottom:12px;border:1px solid var(--border);">
-                    <i class="fas fa-info-circle" style="color:var(--gold);margin-right:4px;"></i>
-                    Setelah submit, Anda akan diarahkan ke halaman pembayaran DP. DP minimum 30% dari total paket.
-                </div>
-                <button type="submit" class="sf-submit">
-                    <i class="fas fa-calendar-check" style="margin-right:6px;"></i> Buat Booking & Lanjut Bayar DP
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
 
 @include('components.global-loader')
 @include('components.auth-status-modal')
@@ -892,56 +639,6 @@
 
 @stack('scripts')
 <script>
-// ── Bottom Sheet System ──
-function openSheet(name) {
-    document.getElementById('sheet-overlay').classList.add('open');
-    document.getElementById('sheet-' + name).classList.add('open');
-    document.body.style.overflow = 'hidden';
-    // update active state on bn items
-    document.querySelectorAll('.bn-item').forEach(el => el.classList.remove('bn-sheet-active'));
-    const btn = document.getElementById('bn-' + name);
-    if (btn) btn.classList.add('active');
-}
-function closeSheet() {
-    document.getElementById('sheet-overlay').classList.remove('open');
-    document.querySelectorAll('.bottom-sheet').forEach(s => s.classList.remove('open'));
-    document.body.style.overflow = '';
-    document.querySelectorAll('#bn-paket, #bn-konsultasi').forEach(b => b.classList.remove('active'));
-}
-window.addEventListener('open-sheet', e => openSheet(e.detail));
-
-// ── Paket Sheet Alpine Component ──
-function paketSheet() {
-    return {
-        step: 1,
-        eventDate: '',
-        minDate: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-        dateStatus: null,
-        dateMessage: '',
-        pkgTab: '{{ $packagesByCategory->keys()->first() ?? "rumahan" }}',
-        selectedPackageId: null,
-        selectedPackageName: '',
-        selectedPackagePrice: 0,
-        get stepTitle() {
-            return ['Pilih Tanggal Acara', 'Pilih Paket', 'Data Booking'][this.step - 1];
-        },
-        openPaketSheet() { openSheet('paket'); },
-        selectPackage(id, name, price) {
-            this.selectedPackageId = id;
-            this.selectedPackageName = name;
-            this.selectedPackagePrice = price;
-        },
-        async checkDate() {
-            if (!this.eventDate) return;
-            try {
-                const res = await fetch(`{{ route('booking.check-date') }}?date=${this.eventDate}`);
-                const data = await res.json();
-                this.dateStatus = data.status;
-                this.dateMessage = data.message ?? (data.status === 'available' ? 'Tanggal tersedia!' : data.status === 'limited' ? 'Tersisa slot terbatas.' : 'Tanggal penuh, pilih lain.');
-            } catch { this.dateStatus = null; }
-        }
-    };
-}
 
 // ── AppShell ──
 function appShell() {

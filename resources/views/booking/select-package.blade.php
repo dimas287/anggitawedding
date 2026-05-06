@@ -1,4 +1,8 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', 'Pilih Paket Wedding')
 
 @push('head')
@@ -12,7 +16,7 @@
 @endphp
 
 @section('content')
-<div class="min-h-screen pt-28 pb-16 bg-transparent"
+<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-28' }} pb-16 bg-transparent"
      x-data="packageSelectPage({
         initialTab: @js($initialTab),
         initialDate: @js($date),
@@ -25,7 +29,15 @@
      x-init="init()">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
-            <span class="text-yellow-600 dark:text-yellow-500 text-xs font-semibold uppercase tracking-[0.4em]">Langkah 1</span>
+            <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
+                    <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">2</div>
+                    <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">3</div>
+                </div>
+            </div>
             <h1 class="font-playfair text-4xl font-bold text-gray-900 dark:text-white mt-3">Pilih Paket Wedding</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-2">Tanggal acara:
                 <strong class="text-yellow-600" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>

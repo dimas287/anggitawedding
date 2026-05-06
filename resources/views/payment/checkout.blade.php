@@ -1,10 +1,33 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', $paymentTitle ?? 'Pembayaran')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] pt-24 pb-16">
+<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-24' }} pb-16 bg-gray-50 dark:bg-[#0A0A0A] {{ $isApp ? 'rounded-[24px]' : '' }}">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
+            @if($isInvitationOnly ?? false)
+            <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
+                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">2</div>
+                </div>
+            </div>
+            @else
+            <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
+                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
+                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">3</div>
+                </div>
+            </div>
+            @endif
             <h1 class="font-playfair text-3xl font-bold text-gray-800 dark:text-white">{{ $paymentTitle ?? 'Pembayaran' }}</h1>
             <p class="text-gray-500 dark:text-gray-400 mt-1">
                 {{ ($isInvitationOnly ?? false) ? 'Selesaikan pembayaran undangan digital agar Anda bisa publish undangan.' : 'Amankan tanggal pernikahan Anda dengan membayar DP' }}

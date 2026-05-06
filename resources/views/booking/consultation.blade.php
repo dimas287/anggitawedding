@@ -1,9 +1,13 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', 'Booking Konsultasi Gratis')
 @section('meta_description', 'Jadwalkan konsultasi gratis dengan tim Anggita Wedding Organizer. Kami siap mendengarkan impian pernikahan Anda dan memberikan solusi terbaik.')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] pt-24 pb-16">
+<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-24' }} pb-16 bg-gray-50 dark:bg-[#0A0A0A] {{ $isApp ? 'rounded-[24px]' : '' }}">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full gold-gradient mb-4">

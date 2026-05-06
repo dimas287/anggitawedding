@@ -1,9 +1,13 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', 'Checkout Undangan Digital')
 
 @section('content')
-<div class="pt-28 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.18),_transparent_55%),linear-gradient(135deg,_#16001f_0%,_#3a0f55_40%,_#6a1b8c_75%,_#f5f1ff_100%)] text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+<div class="{{ $isApp ? 'pt-8' : 'pt-28' }} bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.18),_transparent_55%),linear-gradient(135deg,_#16001f_0%,_#3a0f55_40%,_#6a1b8c_75%,_#f5f1ff_100%)] text-white {{ $isApp ? 'rounded-[24px]' : '' }}">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 {{ $isApp ? 'mt-8' : '' }}">
         <div class="flex flex-col lg:flex-row gap-12 items-start">
             <div class="flex-1">
                 <span class="text-yellow-200 text-[11px] font-semibold uppercase tracking-[0.6em]">Checkout</span>
@@ -34,7 +38,14 @@
 
             <div class="w-full lg:w-[420px]">
                 <div class="bg-white rounded-[28px] border border-white/40 shadow-[0_30px_80px_rgba(16,0,24,0.35)] overflow-hidden text-gray-900">
-                    <div class="p-6 border-b border-gray-100">
+                    <div class="p-6 border-b border-gray-100 text-center">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
+                                <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">2</div>
+                            </div>
+                        </div>
                         <h2 class="font-semibold text-lg">Ringkasan Checkout</h2>
                         <p class="text-gray-500 text-sm mt-1">Pilih template, lalu klik Checkout.</p>
                     </div>

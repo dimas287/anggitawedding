@@ -1,9 +1,13 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', 'Pilih Layanan – Anggita WO')
 
 @section('content')
-<div class="pt-28 bg-gradient-to-b from-purple-900 via-purple-800 to-white text-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+<div class="{{ $isApp ? 'pt-8' : 'pt-28' }} bg-gradient-to-b from-purple-900 via-purple-800 to-white text-white" style="{{ $isApp ? 'border-radius:24px; overflow:hidden;' : '' }}">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 {{ $isApp ? 'mt-8' : '' }}">
         <div class="text-center max-w-3xl mx-auto">
             <span class="text-yellow-300 text-xs font-semibold uppercase tracking-[0.5em]">Mulai Booking</span>
             <h1 class="font-playfair text-4xl md:text-5xl font-bold mt-4 mb-4">Pilih Layanan</h1>

@@ -1,11 +1,24 @@
-@extends('layouts.guest')
+@php
+    $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
+    $isApp = $layout === 'layouts.app';
+@endphp
+@extends($layout)
 @section('title', 'Form Booking – ' . $package->name)
 
 @section('content')
-<div class="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] pt-24 pb-16">
+<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-24' }} pb-16 bg-gray-50 dark:bg-[#0A0A0A] {{ $isApp ? 'rounded-[24px]' : '' }}">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-8">
-            <a href="{{ route('booking.select-package') }}?date={{ $date }}" class="text-yellow-600 dark:text-yellow-500 hover:underline text-sm flex items-center gap-1 mb-4">
+        <div class="mb-8 text-center">
+            <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-50 dark:bg-green-900/30 text-green-500 border border-green-200 dark:border-green-800 flex items-center justify-center shadow-sm"><i class="fas fa-check"></i></div>
+                    <div class="w-12 sm:w-20 h-px bg-green-500"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">2</div>
+                    <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">3</div>
+                </div>
+            </div>
+            <a href="{{ route('booking.select-package') }}?date={{ $date }}" class="text-yellow-600 dark:text-yellow-500 hover:underline text-sm inline-flex items-center gap-1 mb-4">
                 <i class="fas fa-arrow-left text-xs"></i> Kembali pilih paket
             </a>
             <h1 class="font-playfair text-3xl font-bold text-gray-800 dark:text-white">
