@@ -7,7 +7,7 @@
 @section('meta_description', 'Jadwalkan konsultasi gratis dengan tim Anggita Wedding Organizer. Kami siap mendengarkan impian pernikahan Anda dan memberikan solusi terbaik.')
 
 @section('content')
-<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-24 pb-16 px-2' }} bg-gray-50 dark:bg-[#0f0f11]">
+<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-24 pb-16 px-2' }} bg-gray-50 dark:bg-[#0A0A0A]">
     <div class="max-w-md mx-auto px-2">
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center mb-4">
@@ -17,7 +17,7 @@
             <p class="text-gray-600 dark:text-gray-400 text-sm mt-3 px-2 leading-relaxed">Ceritakan impian pernikahan Anda. Kami siap membantu tanpa biaya apapun!</p>
         </div>
 
-        <div class="bg-white dark:bg-[#151515] rounded-[24px] shadow-xl p-6 md:p-8 border border-gray-200 dark:border-white/5">
+        <div class="bg-white dark:bg-[#111111] rounded-[24px] shadow-xl p-6 md:p-8 border border-gray-200 dark:border-white/5">
             @if(session('error'))<div class="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/40 rounded-xl text-red-600 dark:text-red-400 text-sm">{{ session('error') }}</div>@endif
             @if($errors->any())<div class="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/40 rounded-xl text-red-600 dark:text-red-400 text-sm"><ul>@foreach($errors->all() as $e)<li>• {{ $e }}</li>@endforeach</ul></div>@endif
 
@@ -97,9 +97,9 @@
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3 justify-center text-center text-xs">
-            <div class="bg-white dark:bg-[#151515] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-check-circle text-green-500"></i> Gratis</div>
-            <div class="bg-white dark:bg-[#151515] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-clock text-blue-500"></i> Cepat</div>
-            <div class="bg-white dark:bg-[#151515] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-shield-alt text-purple-500"></i> No Commit</div>
+            <div class="bg-white dark:bg-[#111111] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-check-circle text-green-500"></i> Gratis</div>
+            <div class="bg-white dark:bg-[#111111] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-clock text-blue-500"></i> Cepat</div>
+            <div class="bg-white dark:bg-[#111111] rounded-xl px-4 py-3 shadow-sm border border-gray-100 dark:border-white/5 flex items-center gap-2 text-gray-500 dark:text-gray-400"><i class="fas fa-shield-alt text-purple-500"></i> No Commit</div>
         </div>
     </div>
 </div>
