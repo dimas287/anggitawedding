@@ -108,23 +108,23 @@
                     <p class="text-3xl font-playfair font-bold text-gray-900 dark:text-white">{{ $booking->couple_short_display }}</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-white rounded-xl shadow-sm p-3 border border-gray-100">
-                        <p class="text-xs text-gray-500">Nama Lengkap Pria</p>
-                        <p class="font-semibold text-gray-800">{{ $booking->groom_name }}</p>
-                        <p class="text-xs text-gray-400">Panggilan: {{ $booking->groom_short_name ?: '-' }}</p>
+                    <div class="bg-white dark:bg-white/5 rounded-xl shadow-sm p-3 border border-gray-100 dark:border-white/10">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Nama Lengkap Pria</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $booking->groom_name }}</p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500">Panggilan: {{ $booking->groom_short_name ?: '-' }}</p>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm p-3 border border-gray-100">
-                        <p class="text-xs text-gray-500">Nama Lengkap Wanita</p>
-                        <p class="font-semibold text-gray-800">{{ $booking->bride_name }}</p>
-                        <p class="text-xs text-gray-400">Panggilan: {{ $booking->bride_short_name ?: '-' }}</p>
+                    <div class="bg-white dark:bg-white/5 rounded-xl shadow-sm p-3 border border-gray-100 dark:border-white/10">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Nama Lengkap Wanita</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $booking->bride_name }}</p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500">Panggilan: {{ $booking->bride_short_name ?: '-' }}</p>
                     </div>
                 </div>
             </div>
 
             {{-- Booking Info --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6">
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-white/10">
                 @if($isInvitationOnly)
-                    <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-envelope-open-text text-purple-500"></i> Detail Pesanan Undangan</h3>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2"><i class="fas fa-envelope-open-text text-purple-500"></i> Detail Pesanan Undangan</h3>
                     @php
                         $infoRows = [
                             'Kode Pesanan'          => $booking->booking_code,
@@ -142,7 +142,7 @@
                         ];
                     @endphp
                 @else
-                    <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-info-circle text-yellow-500"></i> Informasi Booking</h3>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2"><i class="fas fa-info-circle text-yellow-500"></i> Informasi Booking</h3>
                     @php
                         $infoRows = [
                             'Kode Booking'            => $booking->booking_code,
@@ -163,20 +163,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                     @foreach($infoRows as $label => $value)
                         <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                            <span class="text-gray-500 text-xs w-36 flex-shrink-0">{{ $label }}</span>
-                            <p class="font-semibold text-gray-800 mt-0.5 sm:mt-0">{{ $value }}</p>
+                            <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">{{ $label }}</span>
+                            <p class="font-semibold text-gray-800 dark:text-gray-100 mt-0.5 sm:mt-0">{{ $value }}</p>
                         </div>
                         @if($label === 'Email' && $booking->client_notes)
                             <div class="md:col-span-2 flex flex-col sm:flex-row gap-2 pt-1">
-                                <span class="text-gray-500 text-xs w-36 flex-shrink-0">Catatan Admin</span>
-                                <p class="text-gray-800 whitespace-pre-line">{{ $booking->client_notes }}</p>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">Catatan Admin</span>
+                                <p class="text-gray-800 dark:text-gray-200 whitespace-pre-line">{{ $booking->client_notes }}</p>
                             </div>
                         @endif
                     @endforeach
                     @if($booking->notes)
                         <div class="md:col-span-2 flex flex-col sm:flex-row gap-2 pt-1">
-                            <span class="text-gray-500 text-xs w-36 flex-shrink-0">Catatan Booking</span>
-                            <p class="text-gray-700 whitespace-pre-line">{{ $booking->notes }}</p>
+                            <span class="text-gray-500 dark:text-gray-400 text-xs w-36 flex-shrink-0">Catatan Booking</span>
+                            <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $booking->notes }}</p>
                         </div>
                     @endif
                 </div>
@@ -184,29 +184,29 @@
 
             {{-- Extra Charges: hanya tampil untuk paket wedding --}}
             @if(!$isInvitationOnly)
-            <div class="bg-white rounded-2xl shadow-sm p-6">
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-white/10">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold text-gray-800 flex items-center gap-2"><i class="fas fa-receipt text-amber-500"></i> Biaya Tambahan</h3>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2"><i class="fas fa-receipt text-amber-500"></i> Biaya Tambahan</h3>
                 </div>
                 @if($booking->extraCharges->isEmpty())
-                    <p class="text-gray-400 text-sm text-center py-4">Belum ada biaya tambahan.</p>
+                    <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-4">Belum ada biaya tambahan.</p>
                 @else
                     <div class="space-y-2">
                         @foreach($booking->extraCharges as $charge)
-                        <div class="p-3 rounded-xl border border-amber-100 bg-amber-50 flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-2">
+                        <div class="p-3 rounded-xl border border-amber-100 dark:border-amber-900/30 bg-amber-50 dark:bg-amber-900/10 flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-2">
                             <div>
-                                <p class="font-semibold text-gray-800">{{ $charge->title }}</p>
+                                <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $charge->title }}</p>
                                 @if($charge->notes)
-                                    <p class="text-xs text-gray-500">{{ $charge->notes }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $charge->notes }}</p>
                                 @endif
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-amber-700">Rp {{ number_format($charge->amount, 0, ',', '.') }}</p>
+                                <p class="font-bold text-amber-700 dark:text-amber-400">Rp {{ number_format($charge->amount, 0, ',', '.') }}</p>
                                 <span class="text-xs inline-flex px-2 py-0.5 rounded-full font-semibold {{ match($charge->status) {
-                                    'paid' => 'bg-green-100 text-green-700',
-                                    'billed' => 'bg-blue-100 text-blue-700',
-                                    'waived' => 'bg-gray-100 text-gray-500',
-                                    default => 'bg-amber-100 text-amber-700',
+                                    'paid' => 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400',
+                                    'billed' => 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
+                                    'waived' => 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400',
+                                    default => 'bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400',
                                 } }}">{{ ucfirst($charge->status) }}</span>
                             </div>
                         </div>
@@ -218,11 +218,11 @@
 
             @if(!$isInvitationOnly)
             {{-- Fitting Schedule --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 space-y-5" x-data="{ fittingModal:false }">
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 space-y-5 border border-gray-100 dark:border-white/10" x-data="{ fittingModal:false }">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h3 class="font-semibold text-gray-800 flex items-center gap-2"><i class="fas fa-ruler-combined text-indigo-500"></i> Jadwal Fitting</h3>
-                        <span class="text-xs text-gray-500">Pantau dan atur jadwal fitting busana Anda.</span>
+                        <h3 class="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2"><i class="fas fa-ruler-combined text-indigo-500"></i> Jadwal Fitting</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Pantau dan atur jadwal fitting busana Anda.</span>
                     </div>
                     <button type="button" @click="fittingModal = true"
                             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold gold-gradient text-white hover:shadow-lg">
@@ -309,8 +309,8 @@
             @endif
 
             {{-- Payments --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6">
-                <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-credit-card text-green-500"></i> Riwayat Pembayaran</h3>
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-white/10">
+                <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2"><i class="fas fa-credit-card text-green-500"></i> Riwayat Pembayaran</h3>
                 @if($booking->payments->isEmpty())
                 <div class="text-center py-6">
                     <p class="text-gray-400 text-sm mb-3">Belum ada pembayaran</p>
@@ -391,9 +391,9 @@
             </div>
 
             {{-- Documents --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6">
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-white/10">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold text-gray-800 flex items-center gap-2"><i class="fas fa-folder-open text-blue-500"></i> Dokumen</h3>
+                    <h3 class="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2"><i class="fas fa-folder-open text-blue-500"></i> Dokumen</h3>
                 </div>
                 @if($booking->documents->isEmpty())
                 <p class="text-gray-400 text-sm text-center py-4">Belum ada dokumen</p>
@@ -465,8 +465,8 @@
         <div class="space-y-5">
 
             {{-- Quick Actions --}}
-            <div class="bg-white rounded-2xl shadow-sm p-5" x-data="bookingActions({{ $booking->id }}, '{{ $booking->event_date->toDateString() }}')">
-                <h3 class="font-semibold text-gray-800 mb-4 text-sm">Aksi Cepat</h3>
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-5 border border-gray-100 dark:border-white/10" x-data="bookingActions({{ $booking->id }}, '{{ $booking->event_date->toDateString() }}')">
+                <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-4 text-sm">Aksi Cepat</h3>
                 <div class="space-y-2">
                     <a href="{{ route('user.chat.index', $booking->id) }}"
                        class="flex items-center gap-3 p-3 bg-blue-50 text-blue-700 rounded-xl text-sm font-medium hover:bg-blue-100 transition-colors">
@@ -536,7 +536,7 @@
                                 @foreach($availablePackages as $pkg)
                                 <label class="border rounded-2xl p-4 cursor-pointer hover:border-yellow-400 transition-colors flex flex-col gap-2" :class="selectedPackage == {{ $pkg->id }} ? 'border-yellow-400 bg-yellow-50' : ''">
                                     <input type="radio" name="package_id" class="hidden" value="{{ $pkg->id }}" @change="selectedPackage = {{ $pkg->id }}">
-                                    <span class="text-sm font-semibold text-gray-800">{{ $pkg->name }}</span>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ $pkg->name }}</span>
                                     <span class="text-xs text-gray-500">{{ $pkg->formattedEffectivePrice }}</span>
                                 </label>
                                 @endforeach
@@ -594,8 +594,8 @@
 
             {{-- Consultation --}}
             @if($booking->consultations->isNotEmpty())
-            <div class="bg-white rounded-2xl shadow-sm p-5">
-                <h3 class="font-semibold text-gray-800 mb-3 text-sm">Jadwal Konsultasi</h3>
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-5 border border-gray-100 dark:border-white/10">
+                <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-sm">Jadwal Konsultasi</h3>
                 @foreach($booking->consultations->take(3) as $c)
                 <div class="p-3 bg-gray-50 rounded-xl text-xs mb-2">
                     <p class="font-semibold text-gray-700">{{ $c->preferred_date->isoFormat('D MMM Y') }} – {{ $c->preferred_time }}</p>
@@ -607,8 +607,8 @@
 
             {{-- Vendors --}}
             @if($booking->vendors->isNotEmpty())
-            <div class="bg-white rounded-2xl shadow-sm p-5">
-                <h3 class="font-semibold text-gray-800 mb-3 text-sm">Vendor Terkonfirmasi</h3>
+            <div class="bg-white dark:bg-white/5 rounded-2xl shadow-sm p-5 border border-gray-100 dark:border-white/10">
+                <h3 class="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-sm">Vendor Terkonfirmasi</h3>
                 <div class="space-y-2">
                     @foreach($booking->vendors as $v)
                     <div class="flex items-center justify-between text-sm">
