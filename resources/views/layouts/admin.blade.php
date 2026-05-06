@@ -103,6 +103,7 @@
                     ['route' => 'admin.portfolio.index', 'icon' => 'fa-images', 'label' => 'Portofolio'],
                     ['route' => 'admin.invitation.templates', 'icon' => 'fa-envelope-open-text', 'label' => 'Template Undangan'],
                     ['route' => 'admin.posts.index', 'icon' => 'fa-newspaper', 'label' => 'Blog / Artikel'],
+                    ['route' => 'admin.faqs.index', 'icon' => 'fa-question-circle', 'label' => 'FAQ'],
                 ],
                 'Keuangan' => [
                     ['route' => 'admin.financial.index', 'icon' => 'fa-coins', 'label' => 'Laporan Keuangan'],

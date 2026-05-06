@@ -379,6 +379,9 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     Route::post('/portofolio/{portfolioImage}/media', [PortfolioMediaController::class, 'store'])->name('portfolio.media.store');
     Route::delete('/portofolio/{portfolioImage}/media/{media}', [PortfolioMediaController::class, 'destroy'])->name('portfolio.media.destroy');
 
+    // FAQ Management
+    Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class);
+
     // Portfolio Images
     Route::get('/portofolio', [\App\Http\Controllers\Admin\PortfolioImageController::class, 'index'])->name('portfolio.index');
     Route::post('/portofolio', [\App\Http\Controllers\Admin\PortfolioImageController::class, 'store'])->name('portfolio.store');
