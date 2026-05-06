@@ -323,50 +323,6 @@
             </div>
         </div>
 
-        {{-- Comparison Table --}}
-        <div class="bg-white dark:bg-[#111] rounded-3xl shadow-lg overflow-hidden mb-16 border border-transparent dark:border-white/10">
-            <div class="p-8 border-b dark:border-white/10 text-center">
-                <h2 class="font-playfair text-3xl font-bold text-gray-800 dark:text-white">Perbandingan Paket</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Tabel akan mengikuti kategori yang sedang Anda pilih.</p>
-            </div>
-            @foreach($packagesByCategory as $category => $list)
-            <div x-show="tab === '{{ $category }}'" x-cloak class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="bg-gray-50 dark:bg-white/5">
-                            <th class="text-left px-6 py-5 font-bold text-gray-600 dark:text-gray-300">Fitur</th>
-                            @foreach($list as $p)
-                            <th class="px-6 py-5 font-bold {{ $p->tier === 'gold' ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-600 dark:text-gray-300' }}">{{ $p->name }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $features = ['Dekorasi Pelaminan','Makeup Pengantin','Dokumentasi Foto','Videografi','Prewedding','MC Profesional','Musik Live','Koordinator Hari-H','Undangan Digital','Konsultasi','Catering','Souvenir','Wedding Car','Honeymoon'];
-                        @endphp
-                        @foreach($features as $feat)
-                        <tr class="border-t dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">{{ $feat }}</td>
-                            @foreach($list as $p)
-                            @php
-                                $items = collect($p->feature_items);
-                                $keyword = strtok($feat, ' ');
-                            @endphp
-                            <td class="px-6 py-3 text-center">
-                                @if($items->contains(function ($f) use ($keyword) { return stripos($f, $keyword) !== false; }))
-                                    <i class="fas fa-check-circle text-green-500 dark:text-green-400 text-lg"></i>
-                                @else
-                                    <i class="fas fa-times-circle text-gray-300 dark:text-gray-700 text-lg"></i>
-                                @endif
-                            </td>
-                            @endforeach
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @endforeach
-        </div>
 
         {{-- FAQ CTA --}}
         <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-10 text-center text-white">
