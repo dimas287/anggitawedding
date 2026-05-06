@@ -6,26 +6,30 @@
 @section('title', 'Pilih Layanan – Anggita WO')
 
 @section('content')
-<div class="{{ $isApp ? 'pt-8' : 'pt-28' }} bg-gradient-to-b from-purple-900 via-purple-800 to-white text-white" style="{{ $isApp ? 'border-radius:24px; overflow:hidden;' : '' }}">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 {{ $isApp ? 'mt-8' : '' }}">
-        <div class="text-center max-w-3xl mx-auto">
-            <span class="text-yellow-300 text-xs font-semibold uppercase tracking-[0.5em]">Mulai Booking</span>
-            <h1 class="font-playfair text-4xl md:text-5xl font-bold mt-4 mb-4">Pilih Layanan</h1>
-            <p class="text-white/80 text-base md:text-lg">Pilih alur yang sesuai kebutuhan Anda. Anda bisa booking paket wedding, atau order undangan digital saja.</p>
+<div class="{{ $isApp ? 'py-6 px-4' : 'pt-28 pb-16 px-4 min-h-screen bg-[#0f0f11]' }}">
+    <div class="max-w-md mx-auto bg-gradient-to-b from-[#5b21b6] to-[#7e22ce] rounded-[32px] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        
+        <div class="text-center relative z-10 pt-2">
+            <span class="text-yellow-400 text-[10px] font-bold uppercase tracking-[0.3em]">M U L A I &nbsp; B O O K I N G</span>
+            <h1 class="font-playfair text-4xl font-bold mt-3 mb-4 text-white">Pilih Layanan</h1>
+            <p class="text-white/90 text-sm leading-relaxed px-2">Pilih alur yang sesuai kebutuhan Anda. Anda bisa booking paket wedding, atau order undangan digital saja.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-            <a href="{{ route('booking.select-package') }}" class="group bg-white/15 backdrop-blur rounded-3xl p-7 border border-white/20 shadow-lg hover:shadow-2xl transition-all">
+        <div class="mt-8 space-y-5 relative z-10">
+            {{-- Wedding Organizer Card --}}
+            <a href="{{ route('booking.select-package') }}" class="block bg-white/10 backdrop-blur-md rounded-[24px] p-6 border border-white/20 shadow-lg hover:bg-white/15 transition-all">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.4em] text-yellow-200 font-semibold">Wedding Organizer</p>
-                        <h3 class="text-2xl font-bold mt-2">Booking Paket Wedding</h3>
-                        <p class="text-white/80 mt-3 text-sm leading-relaxed">Pilih paket WO (Silver/Gold/dll). Jika paket include undangan digital, undangan akan otomatis aktif di dashboard.</p>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-yellow-300 font-bold">Wedding Organizer</p>
+                        <h3 class="text-xl font-bold mt-1 text-white">Booking Paket Wedding</h3>
+                        <p class="text-white/80 mt-2 text-xs leading-relaxed">Pilih paket WO (Silver/Gold/dll). Jika paket include undangan digital, undangan akan otomatis aktif di dashboard.</p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl">💍</div>
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-sm shadow-inner ml-3 text-white">
+                        <i class="fas fa-ring"></i>
+                    </div>
                 </div>
-                <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">
-                    Mulai booking <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                <div class="mt-5 inline-flex items-center gap-2 text-xs font-bold text-white">
+                    Mulai booking <i class="fas fa-arrow-right"></i>
                 </div>
             </a>
 
@@ -34,36 +38,37 @@
             @endphp
 
             @if($maintenanceMode)
-            <div class="relative group bg-gray-50 rounded-3xl p-7 border border-gray-100 shadow-md text-gray-400 overflow-hidden">
-                <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center">
-                    <div class="bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full shadow-lg transform -rotate-12 border-2 border-white">
+            <div class="block bg-white rounded-[24px] p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                    <div class="bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg transform -rotate-6 border-2 border-white">
                         Sedang Maintenance
                     </div>
                 </div>
-                <div class="flex items-start justify-between opacity-50">
+                <div class="flex items-start justify-between opacity-40">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.4em] text-gray-400 font-semibold">Digital Invitation</p>
-                        <h3 class="text-2xl font-bold mt-2 text-gray-500">Undangan Digital Saja</h3>
-                        <p class="text-gray-400 mt-3 text-sm leading-relaxed">Fitur ini sementara tidak tersedia karena sedang dalam pemeliharaan sistem.</p>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">Digital Invitation</p>
+                        <h3 class="text-xl font-bold mt-1 text-gray-800">Undangan Digital Saja</h3>
+                        <p class="text-gray-500 mt-2 text-xs leading-relaxed">Pilih template, buat undangan draft di dashboard, lalu lengkapi data & file.</p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center text-2xl grayscale">💌</div>
-                </div>
-                <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gray-400">
-                    Sistem dalam perbaikan <i class="fas fa-tools ml-1 text-xs"></i>
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-sm ml-3 grayscale text-gray-400">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
             </div>
             @else
-            <a href="{{ route('invitation-order.start') }}" class="group bg-white rounded-3xl p-7 border border-gray-100 shadow-lg hover:shadow-2xl transition-all text-gray-900">
+            <a href="{{ route('invitation-order.start') }}" class="block bg-white rounded-[24px] p-6 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.4em] text-purple-600 font-semibold">Digital Invitation</p>
-                        <h3 class="text-2xl font-bold mt-2 text-gray-500">Undangan Digital Saja</h3>
-                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">Pilih template, buat undangan draft di dashboard, lalu lengkapi data & file. Publish hanya bisa setelah pembayaran selesai.</p>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">Digital Invitation</p>
+                        <h3 class="text-xl font-bold mt-1 text-gray-800">Undangan Digital Saja</h3>
+                        <p class="text-gray-500 mt-2 text-xs leading-relaxed">Pilih template, buat undangan draft di dashboard, lalu lengkapi data & file.</p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl">💌</div>
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-sm ml-3 text-gray-400">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
-                <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-purple-700">
-                    Checkout undangan <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                <div class="mt-5 inline-flex items-center gap-2 text-xs font-bold text-gray-400">
+                    Checkout undangan <i class="fas fa-arrow-right"></i>
                 </div>
             </a>
             @endif

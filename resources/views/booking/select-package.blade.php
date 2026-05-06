@@ -16,7 +16,7 @@
 @endphp
 
 @section('content')
-<div class="{{ $isApp ? 'pt-8' : 'min-h-screen pt-28' }} pb-16 bg-transparent"
+<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-[#0f0f11]"
      x-data="packageSelectPage({
         initialTab: @js($initialTab),
         initialDate: @js($date),
@@ -28,56 +28,57 @@
      })"
      x-init="init()">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10">
+        <div class="text-center mb-8">
             <div class="flex items-center justify-center mb-6">
-                <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-400">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
-                    <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">2</div>
-                    <div class="w-12 sm:w-20 h-px bg-gray-200 dark:bg-gray-700"></div>
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center">3</div>
+                <div class="flex items-center gap-2 text-xs font-semibold text-gray-500">
+                    <div class="w-8 h-8 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
+                    <div class="w-8 h-px bg-white/20"></div>
+                    <div class="w-8 h-8 rounded-full border border-white/20 bg-[#1a1a1a] flex items-center justify-center">2</div>
+                    <div class="w-8 h-px bg-white/20"></div>
+                    <div class="w-8 h-8 rounded-full border border-white/20 bg-[#1a1a1a] flex items-center justify-center">3</div>
                 </div>
             </div>
-            <h1 class="font-playfair text-4xl font-bold text-gray-900 dark:text-white mt-3">Pilih Paket Wedding</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">Tanggal acara:
-                <strong class="text-yellow-600" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>
+            <h1 class="font-playfair text-3xl font-bold text-white mt-3">Pilih Paket<br>Wedding</h1>
+            <p class="text-gray-400 mt-3 text-sm">Tanggal acara:
+                <strong class="text-yellow-500" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>
             </p>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Paket menyesuaikan gaya perayaan Anda.</p>
+            <p class="text-gray-500 text-xs mt-1">Paket menyesuaikan gaya perayaan Anda.</p>
         </div>
 
-        <div class="bg-white/90 dark:bg-[#111111]/90 rounded-3xl border border-gray-100 dark:border-white/10 shadow-lg dark:shadow-black/20 p-6 md:p-8 mb-12">
-            <div class="grid gap-6 lg:gap-10 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] items-start">
+        <div class="bg-[#151515] rounded-[24px] border border-white/5 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
+            <div class="flex flex-col gap-6">
                 <div class="space-y-4">
-                    <label class="text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 font-semibold">Ganti Tanggal</label>
+                    <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Ganti Tanggal</label>
                     <div class="flex flex-col gap-3">
                         <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
                                data-flatpickr
                                :data-min-date="minDate"
-                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:border-yellow-500 focus:ring-0" />
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
-                                    class="w-full sm:w-auto px-4 py-3 rounded-2xl text-sm font-semibold border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-600 dark:hover:text-yellow-500 transition disabled:opacity-50">
-                                <span x-show="!loading">Cek Tanggal</span>
-                                <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
-                            </button>
+                               class="w-full bg-[#202020] border-none rounded-xl px-4 py-3.5 text-sm text-white focus:ring-1 focus:ring-white/20 transition-all placeholder-gray-500" />
+                        
+                        <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
+                                class="w-full bg-[#1a1a1a] px-4 py-3.5 rounded-xl text-sm font-semibold border border-white/5 text-gray-300 hover:bg-[#222] transition disabled:opacity-50">
+                            <span x-show="!loading">Cek Tanggal</span>
+                            <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
+                        </button>
                     </div>
                 </div>
-                <div class="bg-gray-50 dark:bg-white/5 border border-dashed border-gray-200 dark:border-white/10 rounded-2xl p-5 h-full self-stretch flex flex-col justify-center">
-                    <p class="text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 font-semibold mb-3">Status Ketersediaan</p>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-                        <div class="px-4 py-2 rounded-full border text-xs font-semibold" :class="statusBadgeClass()" x-text="statusLabel"></div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400" x-text="statusMessage"></p>
+                
+                <div class="bg-[#1a1a1a] rounded-[20px] p-5 mt-2">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mb-3">Status Ketersediaan</p>
+                    <div class="flex flex-col gap-3">
+                        <div class="inline-flex items-center self-start px-4 py-2 rounded-full text-xs font-semibold" :class="statusBadgeClass()" x-text="statusLabel"></div>
+                        <p class="text-xs text-gray-400 leading-relaxed" x-text="statusMessage"></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-wrap gap-3 justify-center mb-10">
+        <div class="flex flex-col gap-3 justify-center mb-10 max-w-[200px] mx-auto">
             @foreach($categoryLabels as $key => $label)
                 @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
                     <button @click="tab='{{ $key }}'" type="button"
-                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-[#111111] text-gray-600 dark:text-gray-300 border dark:border-white/10'"
-                        class="px-5 py-2 rounded-full text-sm font-semibold transition-all border border-transparent">
+                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-[#151515] text-gray-300 border-white/5 hover:bg-[#1a1a1a]'"
+                        class="px-5 py-3 rounded-2xl text-sm font-semibold transition-all border w-full text-center">
                         {{ $label }}
                     </button>
                 @endif
