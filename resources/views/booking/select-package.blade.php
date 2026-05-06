@@ -2,19 +2,12 @@
     $layout = Auth::check() && !Auth::user()->isAdmin() ? 'layouts.app' : 'layouts.guest';
     $isApp = $layout === 'layouts.app';
 @endphp
-
 @extends($layout)
-
 @section('title', 'Pilih Paket Wedding')
 
 @push('head')
 <style>
     [x-cloak] { display: none !important; }
-    .gold-gradient-text {
-        background: linear-gradient(135deg, #C9A84C, #A78B40);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
 </style>
 @endpush
 
@@ -23,7 +16,7 @@
 @endphp
 
 @section('content')
-<div class="{{ $isApp ? 'py-6 px-4' : 'min-h-screen pt-28 pb-16' }} bg-gray-50 dark:bg-[#0A0A0A]"
+<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-gray-50 dark:bg-[#0f0f11]"
      x-data="packageSelectPage({
         initialTab: @js($initialTab),
         initialDate: @js($date),
@@ -34,161 +27,162 @@
         formUrl: '{{ route('booking.form') }}'
      })"
      x-init="init()">
-    
-    <div class="max-w-6xl mx-auto">
-        {{-- Progress Header --}}
-        <div class="text-center mb-10">
-            <div class="flex items-center justify-center gap-4 mb-8">
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-10 h-10 rounded-2xl gold-gradient text-white flex items-center justify-center shadow-lg shadow-yellow-500/20 font-bold">1</div>
-                    <span class="text-[9px] uppercase tracking-widest font-bold text-yellow-600 dark:text-yellow-500">Pilih Paket</span>
-                </div>
-                <div class="w-12 h-px bg-gray-200 dark:bg-white/10 mb-6"></div>
-                <div class="flex flex-col items-center gap-2 opacity-40">
-                    <div class="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 flex items-center justify-center font-bold">2</div>
-                    <span class="text-[9px] uppercase tracking-widest font-bold text-gray-500">Isi Data</span>
-                </div>
-                <div class="w-12 h-px bg-gray-200 dark:bg-white/10 mb-6"></div>
-                <div class="flex flex-col items-center gap-2 opacity-40">
-                    <div class="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 flex items-center justify-center font-bold">3</div>
-                    <span class="text-[9px] uppercase tracking-widest font-bold text-gray-500">Pembayaran</span>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center gap-2 text-xs font-semibold text-gray-500">
+                    <div class="w-8 h-8 rounded-full gold-gradient text-white flex items-center justify-center shadow-md">1</div>
+                    <div class="w-8 h-px bg-white/20"></div>
+                    <div class="w-8 h-8 rounded-full border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">2</div>
+                    <div class="w-8 h-px bg-white/20"></div>
+                    <div class="w-8 h-8 rounded-full border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">3</div>
                 </div>
             </div>
-            
-            <h1 class="font-playfair text-4xl font-bold text-gray-900 dark:text-white mb-4">Pilih Paket Wedding</h1>
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm">
-                <span class="text-gray-500 dark:text-gray-400">Tanggal Acara:</span>
-                <span class="font-bold text-yellow-600 dark:text-yellow-500" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</span>
+            <h1 class="font-playfair text-3xl font-bold text-gray-900 dark:text-white">Pilih Paket<br>Wedding</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-3 text-sm">Tanggal acara:
+                <strong class="text-yellow-500" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>
+            </p>
+            <p class="text-gray-500 text-xs mt-1">Paket menyesuaikan gaya perayaan Anda.</p>
+        </div>
+
+        <div class="bg-white dark:bg-[#151515] rounded-[24px] border border-gray-200 dark:border-white/5 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
+            <div class="flex flex-col gap-6">
+                <div class="space-y-4">
+                    <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Ganti Tanggal</label>
+                    <div class="flex flex-col gap-3">
+                        <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
+                               data-flatpickr
+                               :data-min-date="minDate"
+                               class="w-full bg-white dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-white/20 transition-all placeholder-gray-500" />
+                        
+                        <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
+                                class="w-full bg-gray-50 dark:bg-[#1a1a1a] px-4 py-3.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-white/5 text-gray-600 dark:text-gray-300 transition disabled:opacity-50">
+                            <span x-show="!loading">Cek Tanggal</span>
+                            <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-[#1a1a1a] rounded-[20px] p-5 mt-2">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mb-3">Status Ketersediaan</p>
+                    <div class="flex flex-col gap-3">
+                        <div class="inline-flex items-center self-start px-4 py-2 rounded-full text-xs font-semibold" :class="statusBadgeClass()" x-text="statusLabel"></div>
+                        <p class="text-xs text-gray-400 leading-relaxed" x-text="statusMessage"></p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {{-- Availability & Date Picker Section --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <div class="lg:col-span-1">
-                <div class="bg-white dark:bg-white/5 rounded-[32px] p-8 border border-gray-100 dark:border-white/10 shadow-sm sticky top-24">
-                    <div class="mb-8">
-                        <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4 block">Ganti Tanggal</label>
-                        <div class="space-y-3">
-                            <div class="relative">
-                                <i class="far fa-calendar absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
-                                       data-flatpickr :data-min-date="minDate"
-                                       class="w-full bg-gray-50 dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 text-gray-900 dark:text-white rounded-2xl pl-11 pr-4 py-4 text-sm focus:ring-2 focus:ring-yellow-500/20 transition-all outline-none" />
-                            </div>
-                            <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
-                                    class="w-full gold-gradient text-white font-bold py-4 rounded-2xl text-sm hover:shadow-lg transition-all disabled:opacity-50">
-                                <span x-show="!loading"><i class="fas fa-search mr-2"></i> Cek Ketersediaan</span>
-                                <span x-show="loading"><i class="fas fa-spinner fa-spin mr-2"></i> Mengecek...</span>
-                            </button>
-                        </div>
+        <div class="flex flex-col gap-3 justify-center mb-10 max-w-[200px] mx-auto">
+            @foreach($categoryLabels as $key => $label)
+                @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
+                    <button @click="tab='{{ $key }}'" type="button"
+                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-[#151515] text-gray-300 border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:bg-[#1a1a1a]'"
+                        class="px-5 py-3 rounded-2xl text-sm font-semibold transition-all border w-full text-center">
+                        {{ $label }}
+                    </button>
+                @endif
+            @endforeach
+        </div>
+
+        @foreach($packagesByCategory as $category => $list)
+        <div x-show="tab === '{{ $category }}'" x-cloak>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($list as $package)
+                @php
+                    $categoryPopularId = $popularPackageIdsByCategory[$category] ?? null;
+                    $isPopular = $categoryPopularId === $package->id;
+                @endphp
+                <div class="bg-white/90 dark:bg-[#111111]/90 backdrop-blur rounded-3xl shadow-lg hover:shadow-2xl dark:shadow-black/20 transition-all overflow-hidden flex flex-col relative border border-white/60 dark:border-white/10">
+                    @if($isPopular)
+                    <div class="gold-gradient text-white text-center py-2 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                        <i class="fas fa-star"></i> Paket Terfavorit
                     </div>
-
-                    <div class="p-6 rounded-2xl" :class="statusBadgeContainerClass()">
-                        <p class="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-60">Status Ketersediaan</p>
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="w-2 h-2 rounded-full animate-pulse" :class="statusDotClass()"></div>
-                            <span class="font-bold text-sm" x-text="statusLabel">Belum dicek</span>
-                        </div>
-                        <p class="text-xs opacity-70 leading-relaxed" x-text="statusMessage">Pilih tanggal untuk melihat ketersediaan jadwal kami.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2">
-                {{-- Category Tabs --}}
-                <div class="flex flex-wrap gap-2 mb-8 p-1.5 bg-gray-100 dark:bg-white/5 rounded-2xl w-fit">
-                    @foreach($categoryLabels as $key => $label)
-                        @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
-                            <button @click="tab='{{ $key }}'" type="button"
-                                :class="tab === '{{ $key }}' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white'"
-                                class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all">
-                                {{ $label }}
-                            </button>
-                        @endif
-                    @endforeach
-                </div>
-
-                {{-- Packages Grid --}}
-                @foreach($packagesByCategory as $category => $list)
-                <div x-show="tab === '{{ $category }}'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @foreach($list as $package)
-                        @php
-                            $categoryPopularId = $popularPackageIdsByCategory[$category] ?? null;
-                            $isPopular = $categoryPopularId === $package->id;
-                        @endphp
-                        <div class="group relative bg-white dark:bg-white/5 rounded-[32px] border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-xl hover:border-yellow-400/50 dark:hover:border-yellow-500/30 transition-all duration-300 flex flex-col overflow-hidden">
-                            @if($isPopular)
-                            <div class="absolute top-4 right-4 z-20">
-                                <div class="gold-gradient text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-lg">
-                                    <i class="fas fa-star text-[8px]"></i> Popular
-                                </div>
-                            </div>
+                    @endif
+                    <div class="p-7 flex-1 flex flex-col gap-5">
+                        <div class="text-center space-y-3">
+                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold uppercase bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">
+                                <i class="fas fa-map-marker-alt text-yellow-500"></i> {{ $package->category_label }}
+                            </span>
+                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase
+                                {{ $package->tier === 'silver' ? 'bg-gray-100 text-gray-600' : ($package->tier === 'gold' ? 'bg-yellow-100 text-yellow-700' : 'bg-purple-100 text-purple-700') }}">
+                                <i class="fas {{ $package->tier === 'gold' ? 'fa-crown' : ($package->tier === 'silver' ? 'fa-medal' : 'fa-gem') }}"></i> {{ ucfirst($package->tier ?? 'Premium') }}
+                            </span>
+                            @if($package->hasActivePromo())
+                                <span class="inline-flex items-center gap-2 px-4 py-1 rounded-full text-xs font-semibold uppercase bg-pink-50 text-pink-600">
+                                    <i class="fas fa-bolt"></i> {{ $package->promo_label ?? 'Promo Spesial' }}
+                                </span>
                             @endif
-
-                            <div class="p-8 flex-1 flex flex-col">
-                                <div class="mb-6">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <span class="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-[9px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ $package->category_label }}</span>
-                                        <span class="px-2.5 py-1 rounded-lg {{ $package->tier === 'gold' ? 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-500' : 'bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400' }} text-[9px] font-bold uppercase tracking-wider">
-                                            {{ $package->tier ?? 'Standard' }}
-                                        </span>
-                                    </div>
-                                    <h3 class="font-playfair text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $package->name }}</h3>
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-3xl font-bold text-yellow-600 dark:text-yellow-500">{{ $package->formattedEffectivePrice }}</span>
-                                        @if($package->hasActivePromo())
-                                            <span class="text-sm text-gray-400 line-through">{{ $package->formatted_price }}</span>
-                                        @endif
-                                    </div>
-                                    <p class="text-[11px] text-gray-400 mt-1">Minimal DP: Rp {{ number_format($package->dp_amount, 0, ',', '.') }}</p>
-                                </div>
-
-                                <div class="space-y-4 mb-8 flex-1">
-                                    @php $sections = $package->feature_sections; @endphp
-                                    @foreach(array_slice($sections, 0, 3) as $section)
-                                        <div class="space-y-2">
-                                            @if($section['title'])
-                                                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">{{ $section['title'] }}</p>
-                                            @endif
-                                            <ul class="space-y-2">
-                                                @foreach(array_slice($section['items'], 0, 4) as $item)
-                                                    @php $isSub = str_starts_with(trim($item), '##'); @endphp
-                                                    @if(!$isSub)
-                                                    <li class="flex items-start gap-3 text-xs text-gray-600 dark:text-gray-400">
-                                                        <i class="fas fa-check text-yellow-500 mt-0.5"></i>
-                                                        <span>{{ $item }}</span>
-                                                    </li>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                    @if(count($sections) > 0)
-                                        <button type="button" class="text-[10px] font-bold text-yellow-600 hover:underline">Lihat semua detail paket...</button>
-                                    @endif
-                                </div>
-
-                                <a href="{{ route('booking.form') }}?date={{ $date }}&package_id={{ $package->id }}"
-                                   :href="packageLink({{ $package->id }})"
-                                   class="block w-full text-center py-4 rounded-2xl font-bold text-sm bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:gold-gradient group-hover:text-white transition-all duration-300">
-                                    Pilih Paket Ini
-                                </a>
+                            <h3 class="font-playfair text-3xl font-bold text-gray-900 dark:text-white">{{ $package->name }}</h3>
+                            <div class="space-y-1">
+                                @if($package->hasActivePromo())
+                                    <div class="text-sm text-gray-400 line-through">{{ $package->formatted_price }}</div>
+                                    <div class="text-4xl font-bold text-yellow-600">{{ $package->formattedEffectivePrice }}</div>
+                                @else
+                                    <div class="text-4xl font-bold text-yellow-600">{{ $package->formatted_price }}</div>
+                                @endif
                             </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">DP: Rp {{ number_format($package->dp_amount, 0, ',', '.') }}</p>
                         </div>
-                    @endforeach
+                        <p class="text-sm text-gray-600 dark:text-gray-400 text-center">{{ $package->description }}</p>
+
+                        @if($package->has_digital_invitation)
+                        <div class="flex items-center justify-center gap-2 text-yellow-700 bg-yellow-50 border border-yellow-100 rounded-xl py-2 text-xs font-semibold shadow-sm">
+                            <i class="fas fa-envelope-open-text"></i>
+                            Termasuk Undangan Digital
+                        </div>
+                        @endif
+
+                        @php $sections = $package->feature_sections; @endphp
+                        <div class="grid grid-cols-1 gap-3 mb-6 flex-1">
+                            @forelse($sections as $section)
+                                <div class="rounded-2xl border border-gray-100 dark:border-white/10 bg-white/70 dark:bg-white/5 p-3 flex flex-col gap-2 min-h-[160px]">
+                                    @if($section['title'])
+                                        <p class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400 font-semibold">{{ $section['title'] }}</p>
+                                    @endif
+                                    <ul class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 max-h-56 overflow-y-auto pr-1">
+                                        @foreach($section['items'] as $item)
+                                            @php
+                                                $trimmedItem = trim($item);
+                                                $isSubheading = str_starts_with($trimmedItem, '##');
+                                                $cleanItem = $isSubheading ? trim(preg_replace('/^##\s*/', '', $trimmedItem)) : $item;
+                                            @endphp
+
+                                            @if($isSubheading)
+                                                <li class="pt-3 pb-1 first:pt-0">
+                                                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500">{{ $cleanItem }}</span>
+                                                </li>
+                                            @else
+                                                <li class="flex items-start gap-2">
+                                                    <span class="w-4.5 h-4.5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                        <i class="fas fa-check text-yellow-600 dark:text-yellow-500 text-[9px]"></i>
+                                                    </span>
+                                                    <span class="break-words">{{ $item }}</span>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @empty
+                                <div class="rounded-2xl border border-dashed border-gray-200 dark:border-white/10 p-4 text-center text-xs text-gray-400 dark:text-gray-500">
+                                    Belum ada fitur yang ditambahkan.
+                                </div>
+                            @endforelse
+                        </div>
+                        <a href="{{ route('booking.form') }}?date={{ $date }}&package_id={{ $package->id }}"
+                           :href="packageLink({{ $package->id }})"
+                           class="block w-full text-center py-3.5 rounded-2xl font-semibold text-sm transition-all gold-gradient text-white hover:shadow-2xl">
+                            <i class="fas fa-calendar-check mr-2"></i> Pilih Paket Ini
+                        </a>
+                    </div>
                 </div>
                 @endforeach
             </div>
         </div>
+        @endforeach
 
-        {{-- Footer/Back link --}}
-        <div class="text-center pb-8 border-t border-gray-100 dark:border-white/5 pt-8">
-            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                Belum yakin? <a href="{{ route('consultation.form') }}" class="text-yellow-600 dark:text-yellow-500 font-bold hover:underline">Konsultasi gratis</a> dengan tim kami.
-            </p>
-            <a href="{{ route('booking.start') }}" class="text-sm font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors flex items-center justify-center gap-2">
-                <i class="fas fa-arrow-left text-xs"></i> Kembali Pilih Layanan
-            </a>
+        <div class="text-center mt-10">
+            <p class="text-gray-500 dark:text-gray-400 text-sm">Belum yakin? <a href="{{ route('consultation.form') }}" class="text-yellow-600 dark:text-yellow-500 font-semibold hover:underline">Konsultasi gratis dulu</a> dengan tim kami.</p>
         </div>
     </div>
 
@@ -236,7 +230,7 @@ function packageSelectPage(config = {}) {
             return this.status.label || 'Tidak diketahui';
         },
         get statusMessage() {
-            if (!this.status) return 'Pilih tanggal untuk cek ketersediaan.';
+            if (!this.status) return 'Pilih tanggal dan tekan cek untuk melihat ketersediaan.';
             return this.status.message || '';
         },
         initPicker() {
@@ -251,22 +245,16 @@ function packageSelectPage(config = {}) {
                 }
             });
         },
-        statusBadgeContainerClass() {
-            if (!this.status) return 'bg-gray-50 dark:bg-white/5 text-gray-500';
+        statusBadgeClass() {
             switch (this.status?.status) {
-                case 'available': return 'bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900/30';
-                case 'tentative': return 'bg-yellow-50 dark:bg-yellow-900/10 text-yellow-700 dark:text-yellow-400 border border-yellow-100 dark:border-yellow-900/30';
-                case 'full': return 'bg-red-50 dark:bg-red-900/10 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900/30';
-                default: return 'bg-gray-50 dark:bg-white/5 text-gray-500';
-            }
-        },
-        statusDotClass() {
-            if (!this.status) return 'bg-gray-400';
-            switch (this.status?.status) {
-                case 'available': return 'bg-green-500';
-                case 'tentative': return 'bg-yellow-500';
-                case 'full': return 'bg-red-500';
-                default: return 'bg-gray-400';
+                case 'available':
+                    return 'bg-green-100 text-green-700 border-green-200';
+                case 'tentative':
+                    return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                case 'full':
+                    return 'bg-red-100 text-red-700 border-red-200';
+                default:
+                    return 'bg-gray-100 text-gray-600 border-gray-200';
             }
         },
         async checkDate() {
@@ -294,6 +282,11 @@ function packageSelectPage(config = {}) {
             } finally {
                 this.loading = false;
             }
+        },
+        applyDate() {
+            if (!this.selectedDate || !this.$refs.applyForm) return;
+            this.$refs.applyInput.value = this.selectedDate;
+            this.$refs.applyForm.submit();
         },
         packageLink(packageId) {
             const date = encodeURIComponent(this.selectedDate || this.initialDate || '');
