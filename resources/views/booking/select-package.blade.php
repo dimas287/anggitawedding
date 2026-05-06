@@ -27,27 +27,40 @@
      })"
      x-init="init()">
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Step Numbers --}}
+        <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center gap-3 text-xs font-bold">
+                <div class="w-10 h-10 rounded-full gold-gradient text-white flex items-center justify-center shadow-lg ring-4 ring-yellow-500/20">1</div>
+                <div class="w-12 h-px bg-gray-200 dark:bg-white/10"></div>
+                <div class="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-white/10 bg-white dark:bg-[#111111] text-gray-400 flex items-center justify-center">2</div>
+                <div class="w-12 h-px bg-gray-200 dark:bg-white/10"></div>
+                <div class="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-white/10 bg-white dark:bg-[#111111] text-gray-400 flex items-center justify-center">3</div>
+            </div>
+        </div>
+
         {{-- Header --}}
         <div class="text-center mb-16">
-            <span class="text-gray-400 dark:text-gray-500 text-[10px] font-bold uppercase tracking-[0.35em] mb-4 block">Reservation Step 1</span>
+            <span class="text-gray-400 dark:text-gray-500 text-[10px] font-bold uppercase tracking-[0.35em] mb-4 block">Reservation Phase</span>
             <h1 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white leading-tight">Pilih Paket Wedding</h1>
             <p class="text-gray-500 dark:text-gray-400 mt-4 text-sm max-w-md mx-auto leading-relaxed">
                 Tanggal acara: <strong class="text-yellow-600 dark:text-yellow-500" x-text="formattedDate">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM Y') }}</strong>
             </p>
         </div>
 
-        {{-- Date Checker (Landing Page Style) --}}
+        {{-- Date Checker --}}
         <div class="mb-16 max-w-xl mx-auto">
-            <div class="bg-gray-50 dark:bg-black/40 backdrop-blur-md border border-gray-200 dark:border-white/10 p-6 rounded-xl">
-                <p class="text-gray-400 dark:text-white/70 text-[10px] uppercase tracking-[0.25em] font-medium mb-4 text-center sm:text-left">Ganti Tanggal Acara</p>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
-                           data-flatpickr :data-min-date="minDate"
-                           class="flex-1 bg-white dark:bg-transparent border border-gray-200 dark:border-none dark:border-b dark:border-white/20 text-gray-900 dark:text-white rounded-lg sm:rounded-none px-4 sm:px-2 py-3 sm:py-2 text-sm placeholder-gray-400 dark:placeholder-white/40 focus:outline-none focus:border-yellow-500 dark:focus:border-white transition-colors" />
+            <div class="bg-gray-50 dark:bg-[#111111] border border-gray-200 dark:border-white/10 p-8 rounded-2xl shadow-xl dark:shadow-none">
+                <p class="text-gray-500 dark:text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold mb-6 text-center sm:text-left">Ganti Tanggal Acara</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-calendar-alt absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+                        <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
+                               data-flatpickr :data-min-date="minDate"
+                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl pl-11 pr-4 py-3.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition-all" />
+                    </div>
                     
                     <button @click="checkDate()" :disabled="!selectedDate || loading"
-                            class="bg-gray-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg sm:rounded-none text-[10px] font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-gray-200 transition-all disabled:opacity-50 shrink-0">
+                            class="bg-gray-900 dark:bg-yellow-600 text-white px-8 py-3.5 rounded-xl text-[11px] font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-yellow-700 transition-all shadow-lg disabled:opacity-50 shrink-0">
                         <span x-show="!loading">Cek Ketersediaan</span>
                         <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
                     </button>
