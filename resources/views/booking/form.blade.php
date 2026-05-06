@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <form action="{{ route('booking.store') }}" method="POST" class="bg-white dark:bg-[#151515] rounded-2xl shadow-sm dark:shadow-black/20 p-8 space-y-6 border border-transparent dark:border-white/10">
+        <form action="{{ route('booking.store') }}" method="POST" class="bg-white dark:bg-[#111111] rounded-2xl shadow-sm dark:shadow-black/20 p-8 space-y-6 border border-transparent dark:border-white/10">
             @csrf
             {{-- Honeypot Anti-Spam --}}
             <input type="text" name="hp_field" style="display:none !important" tabindex="-1" autocomplete="off">
