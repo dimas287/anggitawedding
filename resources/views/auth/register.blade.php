@@ -53,19 +53,19 @@
                     <div>
                         <label class="block text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Nama Lengkap</label>
                         <input type="text" name="name" value="{{ old('name') }}" required
-                               class="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                               class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                                placeholder="Nama lengkap Anda">
                     </div>
                     <div>
                         <label class="block text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Email</label>
                         <input type="email" name="email" value="{{ old('email') }}" required
-                               class="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                               class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                                placeholder="email@contoh.com">
                     </div>
                     <div>
                         <label class="block text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">No. WhatsApp</label>
                         <input type="tel" name="phone" value="{{ old('phone') }}"
-                               class="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                               class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                                placeholder="0812xxxxxxxx">
                     </div>
                     <div>
@@ -92,7 +92,7 @@
                         <label class="block text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Password</label>
                         <div class="relative">
                             <input x-model="value" :type="show ? 'text' : 'password'" name="password" required minlength="8"
-                                   class="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all pr-12"
+                                   class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all pr-12"
                                    placeholder="Minimal 8 karakter">
                             <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                 <i :class="show ? 'fa-eye-slash' : 'fa-eye'" class="fas text-sm"></i>
