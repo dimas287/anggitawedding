@@ -386,6 +386,10 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     // FAQ Management
     Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class);
 
+    // Instagram Posts
+    Route::resource('instagram-posts', \App\Http\Controllers\Admin\InstagramPostController::class);
+    Route::post('instagram-posts/fetch-metadata', [\App\Http\Controllers\Admin\InstagramPostController::class, 'fetchMetadata'])->name('instagram-posts.fetch');
+
     // Portfolio Images
     Route::get('/portofolio', [\App\Http\Controllers\Admin\PortfolioImageController::class, 'index'])->name('portfolio.index');
     Route::post('/portofolio', [\App\Http\Controllers\Admin\PortfolioImageController::class, 'store'])->name('portfolio.store');

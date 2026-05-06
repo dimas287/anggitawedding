@@ -698,7 +698,7 @@ export default function DomeGallery({
                        <video src={it.src} autoPlay muted loop playsInline />
                      )
                   ) : (
-                    <img src={it.src} draggable={false} alt={it.alt} />
+                    <img src={it.src} draggable={false} alt={it.alt} loading="lazy" decoding="async" />
                   )}
                 </div>
               </div>

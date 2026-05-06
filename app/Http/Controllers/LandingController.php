@@ -11,6 +11,7 @@ use App\Models\HeroSlide;
 use App\Models\DreamHighlightCard;
 use App\Models\SiteSetting;
 use App\Models\Post;
+use App\Models\InstagramPost;
 use App\Models\CatalogLead;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -111,6 +112,12 @@ class LandingController extends Controller
             ->orderBy('id')
             ->get();
 
+        $instagramPosts = InstagramPost::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();
+
         return view('landing', compact(
             'packages',
             'packagesByCategory',
@@ -126,7 +133,8 @@ class LandingController extends Controller
             'processSection',
             'posts',
             'highlightCards',
-            'portfolioImages'
+            'portfolioImages',
+            'instagramPosts'
         ));
     }
 

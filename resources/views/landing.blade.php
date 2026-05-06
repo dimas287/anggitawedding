@@ -1,8 +1,30 @@
 @extends('layouts.guest')
-@section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer')
-@section('meta_description', 'Anggita Wedding Organizer Surabaya mewujudkan pernikahan impian Anda. Layanan lengkap mulai dari dekorasi, rias pengantin, dokumentasi, hingga undangan digital premium.')
+@section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer Terbaik')
+@section('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi lengkap pernikahan impian di Surabaya & Sidoarjo. Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')
 
 @push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Wedding Organizer",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Anggita Wedding Organizer",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Surabaya",
+      "addressRegion": "Jawa Timur",
+      "addressCountry": "ID"
+    }
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Surabaya"
+  }
+}
+</script>
+
 <style>
     [x-cloak] {
         display: none !important;
@@ -215,9 +237,9 @@
                 {{ $heroCopy['badge'] ?? 'Elegance in Every Detail' }}
             </div>
             <h1 class="font-playfair text-5xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] tracking-tight drop-shadow-md mb-6 relative">
-                <span class="sr-only">Wedding Organizer Surabaya Terbaik</span>
+                <span class="sr-only">Anggita Wedding Organizer – Wedding Organizer Surabaya Terbaik & Terpercaya</span>
                 <span class="hero-headline-fallback block" x-data="{ hide: false }" x-init="hide = true" x-show="!hide">
-                    Wujudkan Pernikahan <br><span class="italic text-white/90">Impian</span>
+                    Wedding Organizer <br><span class="italic text-white/90">Surabaya</span>
                 </span>
             <span class="hero-typing block" x-data="heroHeadlineTypewriter({
                 lines: [
@@ -563,7 +585,7 @@
                             <template x-for="(item, index) in detailMedia" :key="item.id">
                                 <div x-show="detailIndex === index" x-transition.opacity.duration.500ms class="absolute inset-0">
                                     <template x-if="item.type === 'image'">
-                                        <img :src="item.url" class="w-full h-full object-cover" alt="">
+                                        <img :src="item.url" class="w-full h-full object-cover" :alt="detailPackage?.name || 'Package Detail'" loading="lazy" decoding="async">
                                     </template>
                                     <template x-if="item.type === 'video' && item.embed">
                                         <iframe :src="item.embed" class="w-full h-full" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
@@ -1085,7 +1107,6 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             @php
-                $igMockImages = $portfolioImages->take(8);
                 $fallbackImages = [
                     'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
                     'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800',
@@ -1096,19 +1117,35 @@
                     'https://images.unsplash.com/photo-1522673607200-1648832cee98?w=800',
                     'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800'
                 ];
+                $displayPosts = $instagramPosts->count() > 0 ? $instagramPosts : collect([]);
             @endphp
-            @for($i = 0; $i < 8; $i++)
-                @php
-                    $img = $igMockImages[$i] ?? null;
-                    $url = $img ? ($img->mediaItems->first()?->url ?? Storage::url($img->image_path)) : $fallbackImages[$i];
-                @endphp
-                <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="group relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800" data-reveal data-reveal-direction="zoom" style="--reveal-delay: {{ $i * 0.05 }}s;">
-                    <img src="{{ $url }}" alt="Instagram Moment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <i class="fab fa-instagram text-white text-3xl"></i>
+
+            @if($displayPosts->count() > 0)
+                @foreach($displayPosts as $post)
+                <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5 border border-transparent hover:border-yellow-600/30 transition-all duration-500 shadow-sm hover:shadow-xl" data-reveal data-reveal-direction="up" style="--reveal-delay: {{ $loop->index * 0.05 }}s;">
+                    <img src="{{ $post->resolved_image_url }}" alt="Instagram Post" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-6 text-center">
+                        <i class="fab fa-instagram text-3xl text-white mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500"></i>
+                        @if($post->caption)
+                            <p class="text-white text-[10px] line-clamp-3 font-light mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{{ $post->caption }}</p>
+                        @endif
+                        <a href="{{ $post->instagram_url }}" target="_blank" class="px-5 py-2 bg-white text-black text-[9px] font-bold uppercase tracking-widest rounded-full hover:bg-yellow-500 hover:text-white transition-all translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
+                            View Post
+                        </a>
                     </div>
-                </a>
-            @endfor
+                </div>
+                @endforeach
+            @else
+                {{-- Fallback Grid if no posts added yet --}}
+                @for($i = 0; $i < 8; $i++)
+                <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5" data-reveal data-reveal-direction="up" style="--reveal-delay: {{ $i * 0.05 }}s;">
+                    <img src="{{ $portfolioImages[$i]->image_path ?? $fallbackImages[$i] }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/60 transition-all flex items-center justify-center">
+                        <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-bold uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">Follow IG</a>
+                    </div>
+                </div>
+                @endfor
+            @endif
         </div>
         
         <div class="mt-12 text-center" data-reveal data-reveal-direction="up">

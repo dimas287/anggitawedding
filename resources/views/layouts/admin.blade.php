@@ -101,6 +101,7 @@
                     ['route' => 'admin.clients.index', 'icon' => 'fa-users', 'label' => 'Klien'],
                     ['route' => 'admin.site-content.edit', 'icon' => 'fa-pen-to-square', 'label' => 'Konten Landing & Footer'],
                     ['route' => 'admin.portfolio.index', 'icon' => 'fa-images', 'label' => 'Portofolio'],
+                    ['route' => 'admin.instagram-posts.index', 'icon' => 'fa-brands fa-instagram', 'label' => 'Instagram Feed'],
                     ['route' => 'admin.invitation.templates', 'icon' => 'fa-envelope-open-text', 'label' => 'Template Undangan'],
                     ['route' => 'admin.posts.index', 'icon' => 'fa-newspaper', 'label' => 'Blog / Artikel'],
                     ['route' => 'admin.faqs.index', 'icon' => 'fa-question-circle', 'label' => 'FAQ'],

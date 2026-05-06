@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Anggita Wedding Organizer')</title>
+    <title>@yield('title', 'Anggita Wedding Organizer – Wedding Organizer Surabaya Terbaik & Terpercaya')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <meta name="description" content="@yield('meta_description', 'Wedding Organizer Surabaya terbaik. Layanan dekorasi, rias pengantin, dokumentasi, dan undangan digital Surabaya premium. Wujudkan pernikahan impian Anda bersama Anggita WO.')">
+    <meta name="description" content="@yield('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi pernikahan impian di Surabaya & Sidoarjo. Paket Wedding, Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')">
+    <meta name="keywords" content="Wedding Organizer Surabaya, WO Surabaya Terbaik, Paket Pernikahan Surabaya, Undangan Digital Surabaya, Dekorasi Wedding Surabaya, Rias Pengantin Surabaya, Anggita Wedding">
+    <meta name="author" content="Anggita Wedding Organizer">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Local SEO --}}
+    <meta name="geo.region" content="ID-JI" />
+    <meta name="geo.placename" content="Surabaya" />
+    <meta name="geo.position" content="-7.250445;112.768845" />
+    <meta name="ICBM" content="-7.250445, 112.768845" />
+
     <script>
         // Set initial dark mode state to prevent flash
         // Default to dark mode if no preference is saved
@@ -49,15 +58,15 @@
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ $brandInfo['brand_name'] ?? 'Anggita Wedding Organizer' }}">
-    <meta property="og:title" content="@yield('title', 'Anggita Wedding Organizer')">
-    <meta property="og:description" content="@yield('meta_description', 'Wedding organizer Surabaya dengan layanan dekorasi, rias, dokumentasi, dan undangan digital.')">
+    <meta property="og:title" content="@yield('title', 'Anggita Wedding Organizer – Wedding Organizer Surabaya')">
+    <meta property="og:description" content="@yield('meta_description', 'Wedding Organizer Surabaya terbaik. Layanan dekorasi, rias, dokumentasi, dan undangan digital Surabaya premium.')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="@yield('og_image', $defaultOgImage)">
 
     {{-- Twitter --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('title', 'Anggita Wedding Organizer')">
-    <meta name="twitter:description" content="@yield('meta_description', 'Wedding organizer Surabaya dengan layanan dekorasi, rias, dokumentasi, dan undangan digital.')">
+    <meta name="twitter:title" content="@yield('title', 'Anggita Wedding Organizer – Wedding Organizer Surabaya')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Wedding Organizer Surabaya terbaik. Layanan dekorasi, rias, dokumentasi, dan undangan digital Surabaya premium.')">
     <meta name="twitter:image" content="@yield('og_image', $defaultOgImage)">
 
     {{-- PWA --}}

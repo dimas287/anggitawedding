@@ -1,6 +1,7 @@
 @extends('layouts.guest')
 
 @section('meta_description', $post->meta_description ?? $post->excerpt ?? Str::limit(strip_tags($post->content), 160))
+@section('og_image', $post->thumbnail ? asset('storage/' . $post->thumbnail) : null)
 
 @push('head')
 <script type="application/ld+json">
