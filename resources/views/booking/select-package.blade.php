@@ -16,7 +16,7 @@
 @endphp
 
 @section('content')
-<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-gray-50 dark:bg-[#0f0f11]"
+<div class="{{ $isApp ? 'py-4 px-2' : 'min-h-screen pt-28' }} pb-16 bg-gray-50 dark:bg-[#0A0A0A]"
      x-data="packageSelectPage({
         initialTab: @js($initialTab),
         initialDate: @js($date),
@@ -45,25 +45,22 @@
             <p class="text-gray-500 text-xs mt-1">Paket menyesuaikan gaya perayaan Anda.</p>
         </div>
 
-        <div class="bg-white dark:bg-[#151515] rounded-[24px] border border-gray-200 dark:border-white/5 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
+        <div class="bg-white dark:bg-white/5 rounded-[24px] border border-gray-200 dark:border-white/10 shadow-xl p-5 md:p-8 mb-8 max-w-md mx-auto">
             <div class="flex flex-col gap-6">
                 <div class="space-y-4">
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Ganti Tanggal</label>
                     <div class="flex flex-col gap-3">
-                        <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
-                               data-flatpickr
-                               :data-min-date="minDate"
-                               class="w-full bg-white dark:bg-[#202020] border border-gray-200 dark:border-none text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:ring-white/20 transition-all placeholder-gray-500" />
+                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl px-4 py-3.5 text-sm focus:ring-white/20 transition-all placeholder-gray-500" />
                         
                         <button type="button" @click="checkDate" :disabled="!selectedDate || loading"
-                                class="w-full bg-gray-50 dark:bg-[#1a1a1a] px-4 py-3.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-white/5 text-gray-600 dark:text-gray-300 transition disabled:opacity-50">
+                                class="w-full bg-gray-50 dark:bg-white/5 px-4 py-3.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 transition disabled:opacity-50">
                             <span x-show="!loading">Cek Tanggal</span>
                             <span x-show="loading"><i class="fas fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </div>
                 
-                <div class="bg-gray-50 dark:bg-[#1a1a1a] rounded-[20px] p-5 mt-2">
+                <div class="bg-gray-50 dark:bg-white/5 rounded-[20px] p-5 mt-2 border border-transparent dark:border-white/5">
                     <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mb-3">Status Ketersediaan</p>
                     <div class="flex flex-col gap-3">
                         <div class="inline-flex items-center self-start px-4 py-2 rounded-full text-xs font-semibold" :class="statusBadgeClass()" x-text="statusLabel"></div>
@@ -77,7 +74,7 @@
             @foreach($categoryLabels as $key => $label)
                 @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
                     <button @click="tab='{{ $key }}'" type="button"
-                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-[#151515] text-gray-300 border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:bg-[#1a1a1a]'"
+                        :class="tab === '{{ $key }}' ? 'gold-gradient text-white shadow-lg' : 'bg-white dark:bg-white/5 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10'"
                         class="px-5 py-3 rounded-2xl text-sm font-semibold transition-all border w-full text-center">
                         {{ $label }}
                     </button>
@@ -93,7 +90,7 @@
                     $categoryPopularId = $popularPackageIdsByCategory[$category] ?? null;
                     $isPopular = $categoryPopularId === $package->id;
                 @endphp
-                <div class="bg-white/90 dark:bg-[#111111]/90 backdrop-blur rounded-3xl shadow-lg hover:shadow-2xl dark:shadow-black/20 transition-all overflow-hidden flex flex-col relative border border-white/60 dark:border-white/10">
+                <div class="bg-white dark:bg-white/5 backdrop-blur-xl rounded-[32px] shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col relative border border-gray-100 dark:border-white/10 group">
                     @if($isPopular)
                     <div class="gold-gradient text-white text-center py-2 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
                         <i class="fas fa-star"></i> Paket Terfavorit
@@ -127,7 +124,7 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400 text-center">{{ $package->description }}</p>
 
                         @if($package->has_digital_invitation)
-                        <div class="flex items-center justify-center gap-2 text-yellow-700 bg-yellow-50 border border-yellow-100 rounded-xl py-2 text-xs font-semibold shadow-sm">
+                        <div class="flex items-center justify-center gap-2 text-yellow-700 dark:text-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-yellow-800/30 rounded-xl py-2 text-xs font-semibold shadow-sm">
                             <i class="fas fa-envelope-open-text"></i>
                             Termasuk Undangan Digital
                         </div>
