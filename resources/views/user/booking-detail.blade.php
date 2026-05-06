@@ -379,7 +379,7 @@
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-600">Bukti Transfer</label>
-                            <input type="file" name="proof_attachment" accept="image/*,application/pdf" class="mt-1 w-full text-xs text-gray-600" required />
+                            <input type="file" name="proof_attachment" accept="image/*,application/pdf" class="mt-1 w-full text-xs text-gray-600 dark:text-gray-400 file:cursor-pointer file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all" required />
                             <p class="text-[11px] text-gray-400 mt-1">Format JPG/PNG/WEBP/PDF • maks 5MB</p>
                         </div>
                         <button type="submit" class="w-full sm:w-auto border-2 border-yellow-400 text-yellow-700 font-semibold px-5 py-3 rounded-xl text-sm hover:bg-yellow-50 transition-all">
@@ -421,7 +421,7 @@
                             <option value="contract">Kontrak</option>
                             <option value="other">Lainnya</option>
                         </select>
-                        <input type="file" name="file" required class="text-xs">
+                        <input type="file" name="file" required class="text-xs text-gray-600 dark:text-gray-400 file:cursor-pointer file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all">
                     </div>
                     <button type="submit" class="mt-3 text-xs font-semibold px-4 py-2 gold-gradient text-white rounded-lg hover:shadow-md transition-all">Upload</button>
                 </form>

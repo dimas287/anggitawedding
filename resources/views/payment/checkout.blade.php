@@ -122,7 +122,7 @@
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-600 dark:text-gray-400">Bukti Transfer</label>
-                        <input type="file" name="proof_attachment" accept="image/*,application/pdf" class="mt-1 w-full text-xs text-gray-600 dark:text-gray-400" required />
+                        <input type="file" name="proof_attachment" accept="image/*,application/pdf" class="mt-1 w-full text-xs text-gray-600 dark:text-gray-400 file:cursor-pointer file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all" required />
                         <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1">Format JPG/PNG/WEBP/PDF • maks 5MB</p>
                         @error('proof_attachment')
                             <div class="text-xs text-red-600 mt-1">{{ $message }}</div>

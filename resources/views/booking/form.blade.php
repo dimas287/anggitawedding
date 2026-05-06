@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <form action="{{ route('booking.store') }}" method="POST" class="bg-white dark:bg-[#111111] rounded-2xl shadow-sm dark:shadow-black/20 p-8 space-y-6 border border-transparent dark:border-white/10">
+        <form action="{{ route('booking.store') }}" method="POST" class="bg-white dark:bg-[#151515] rounded-2xl shadow-sm dark:shadow-black/20 p-8 space-y-6 border border-transparent dark:border-white/10">
             @csrf
             {{-- Honeypot Anti-Spam --}}
             <input type="text" name="hp_field" style="display:none !important" tabindex="-1" autocomplete="off">
@@ -65,13 +65,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
                     <input type="text" name="client_name" value="{{ old('client_name', auth()->user()->name) }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Nama lengkap Anda">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Label / Peran (opsional)</label>
                     <input type="text" name="client_label" value="{{ old('client_label', $package->category_label) }}"
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Contoh: Wisudawati, Bridesmaid, Pagar Ayu">
                 </div>
             </div>
@@ -80,13 +80,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Pengantin Pria <span class="text-red-500">*</span></label>
                     <input type="text" name="groom_name" value="{{ old('groom_name') }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Nama lengkap pengantin pria">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Pengantin Wanita <span class="text-red-500">*</span></label>
                     <input type="text" name="bride_name" value="{{ old('bride_name') }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Nama lengkap pengantin wanita">
                 </div>
             </div>
@@ -94,14 +94,14 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Singkat Pengantin Pria <span class="text-red-500">*</span></label>
                     <input type="text" name="groom_short_name" value="{{ old('groom_short_name') }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Contoh: Bagas">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Nama panggilan untuk rundown, undangan, dan koordinasi internal.</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Singkat Pengantin Wanita <span class="text-red-500">*</span></label>
                     <input type="text" name="bride_short_name" value="{{ old('bride_short_name') }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="Contoh: Rani">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Digunakan WO untuk koordinasi dan materi publikasi.</p>
                 </div>
@@ -112,7 +112,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Acara <span class="text-red-500">*</span></label>
                     <input type="text" value="{{ \Carbon\Carbon::parse($date)->isoFormat('DD/MM/YYYY') }}" readonly
-                           class="w-full border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                           class="w-full border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-gray-300 cursor-not-allowed"
                            aria-readonly="true">
                     @php
                         $statusColors = ['available' => 'green', 'tentative' => 'yellow', 'full' => 'red'];
@@ -131,7 +131,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">No. WhatsApp <span class="text-red-500">*</span></label>
                     <input type="tel" name="phone" value="{{ old('phone', auth()->user()->phone) }}" required
-                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                           class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                            placeholder="081xxxxxxxxx">
                 </div>
             </div>
@@ -139,32 +139,32 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama/Lokasi Venue <span class="text-red-500">*</span></label>
                 <input type="text" name="venue" value="{{ old('venue') }}" required
-                       class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
+                       class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all"
                        placeholder="Nama gedung/tempat acara">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Alamat Lengkap Venue</label>
                 <textarea name="venue_address" rows="2"
-                          class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all resize-none"
+                          class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all resize-none"
                           placeholder="Alamat lengkap lokasi acara">{{ old('venue_address') }}</textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Preferensi Konsultasi</label>
                 <select name="consultation_preference"
-                        class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all">
-                    <option value="" class="dark:bg-[#111111]">Pilih...</option>
-                    <option value="online" class="dark:bg-[#111111]" {{ old('consultation_preference') === 'online' ? 'selected' : '' }}>Online (Video Call)</option>
-                    <option value="offline" class="dark:bg-[#111111]" {{ old('consultation_preference') === 'offline' ? 'selected' : '' }}>Offline (Kunjungi Kantor)</option>
-                    <option value="whatsapp" class="dark:bg-[#111111]" {{ old('consultation_preference') === 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
+                        class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all">
+                    <option value="" class="dark:bg-[#151515]">Pilih...</option>
+                    <option value="online" class="dark:bg-[#151515]" {{ old('consultation_preference') === 'online' ? 'selected' : '' }}>Online (Video Call)</option>
+                    <option value="offline" class="dark:bg-[#151515]" {{ old('consultation_preference') === 'offline' ? 'selected' : '' }}>Offline (Kunjungi Kantor)</option>
+                    <option value="whatsapp" class="dark:bg-[#151515]" {{ old('consultation_preference') === 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
                 </select>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Catatan Tambahan</label>
                 <textarea name="notes" rows="3"
-                          class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all resize-none"
+                          class="w-full border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-600 transition-all resize-none"
                           placeholder="Ceritakan keinginan, tema, atau permintaan khusus Anda...">{{ old('notes') }}</textarea>
             </div>
 

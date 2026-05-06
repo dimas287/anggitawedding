@@ -112,7 +112,7 @@
             <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Kisah Cinta (Opsional)</label><textarea name="love_story" rows="4" placeholder="Ceritakan bagaimana kalian bertemu..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none">{{ old('love_story', $invitation?->love_story) }}</textarea></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Hashtag</label><input type="text" name="hashtag" value="{{ old('hashtag', $invitation?->hashtag) }}" placeholder="#NamaKalian2024" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1.5">Musik Latar (MP3)</label><input type="file" name="music_file" accept=".mp3,.ogg,.wav" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:bg-yellow-50 file:text-yellow-700"></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Musik Latar (MP3)</label><input type="file" name="music_file" accept=".mp3,.ogg,.wav" class="w-full text-sm text-gray-500 dark:text-gray-400 file:cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all"></div>
             </div>
 
             <!-- Digital Gift Section -->
@@ -134,7 +134,7 @@
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Upload QRIS (Opsional)</label>
-                        <input type="file" name="qris_image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:bg-yellow-50 file:text-yellow-700">
+                        <input type="file" name="qris_image" accept="image/*" class="w-full text-sm text-gray-500 dark:text-gray-400 file:cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all">
                         @if($invitation?->qris_image)
                             <div class="mt-2 text-xs text-yellow-600 flex gap-4 items-center">
                                 <a href="{{ route('invitation.qris', $invitation->slug) }}" target="_blank" class="underline">Lihat QRIS Saat Ini</a>
@@ -202,7 +202,7 @@ function renderMediaSlots(templateId) {
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
                 <label class="block text-sm font-medium text-gray-700 mb-1">${slot.label}</label>
                 ${helpText}
-                <input type="file" name="${inputName}" accept="${accept}" ${multipleAttr} class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:bg-yellow-50 file:text-yellow-700 focus:outline-none">
+                <input type="file" name="${inputName}" accept="${accept}" ${multipleAttr} class="w-full text-sm text-gray-500 dark:text-gray-400 file:cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all focus:outline-none">
                 ${existingHtml}
             </div>
         `;

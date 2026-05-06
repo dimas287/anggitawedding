@@ -160,7 +160,7 @@
                     <i class="fas fa-cloud-arrow-up" style="font-size:24px;color:var(--text-3);margin-bottom:8px;display:block;"></i>
                     <p style="font-size:12px;color:var(--text-3);margin-bottom:8px;">Pilih foto (maks. 2MB)</p>
                     <input type="file" name="avatar" accept="image/*"
-                           style="font-size:12px;color:var(--text-2);"
+                           class="w-full text-sm text-gray-500 dark:text-gray-400 file:cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 dark:file:bg-[#202020] dark:file:text-yellow-500 dark:hover:file:bg-[#2a2a2a] transition-all"
                            onchange="previewAvatar(this)">
                     <img id="avatar-preview" src="" alt="" style="display:none;width:64px;height:64px;border-radius:16px;object-fit:cover;margin:10px auto 0;border:2px solid rgba(201,168,76,.3);">
                 </div>

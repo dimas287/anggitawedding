@@ -59,9 +59,9 @@
             --surface: rgba(255,255,255,0.05);
             --surface-2: rgba(255,255,255,0.03);
             --border: rgba(255,255,255,0.08);
-            --text-1: #F0EAD6;
-            --text-2: #9D8FA8;
-            --text-3: #5C5270;
+            --text-1: #F8F9FA; /* Brighter for headers/primary text */
+            --text-2: #D1D5DB; /* Lighter gray for secondary text/buttons */
+            --text-3: #9CA3AF; /* Muted gray for labels/hints */
             --shadow: 0 2px 16px rgba(0,0,0,0.4);
             --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
         }
@@ -150,6 +150,17 @@
             text-decoration: none; transition: all .18s; margin-bottom: 2px;
             border: 1px solid transparent; position: relative;
         }
+        /* ── FLATPICKR DARK MODE FIX ── */
+        .dark .flatpickr-calendar {
+            background: #1a1a1a; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 10px 25px rgba(0,0,0,.5);
+        }
+        .dark .flatpickr-calendar::before, .dark .flatpickr-calendar::after { display: none; }
+        .dark .flatpickr-month, .dark .flatpickr-weekdays, .dark .flatpickr-weekday { background: transparent; color: #e5e7eb; fill: #e5e7eb; }
+        .dark .flatpickr-day { color: #d1d5db; }
+        .dark .flatpickr-day:hover, .dark .flatpickr-day:focus { background: #333; border-color: #333; }
+        .dark .flatpickr-day.selected { background: var(--gold); border-color: var(--gold); color: #fff; }
+        .dark .flatpickr-day.flatpickr-disabled { color: #4b5563; }
+        .dark .flatpickr-current-month .flatpickr-monthDropdown-months { background: #1a1a1a; color: #e5e7eb; }
         .nav-link:hover { background: var(--surface-2); color: var(--text-1); }
         .nav-link.active {
             background: linear-gradient(135deg, rgba(201,168,76,.15), rgba(124,92,191,.12));
@@ -568,17 +579,21 @@
     {{-- ─── MAIN AREA ─── --}}
     <div class="main-area">
         <header class="topbar">
-            <div>
-                <div class="topbar-sub">@yield('page-subtitle', 'Klien Area')</div>
-                <div class="topbar-title">@yield('page-title', 'Dashboard')</div>
-            </div>
+            <a href="{{ route('landing') }}" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+                @if($brandLogo)
+                    <img src="{{ $brandLogo }}" alt="{{ $brandName }}" style="height:28px; object-fit:contain;">
+                @else
+                    <i class="fas fa-rings-wedding" style="color:var(--gold); font-size:18px;"></i>
+                    <span style="font-family:'Playfair Display', serif; font-weight:700; font-size:16px; color:var(--text-1);">{{ $brandName }}</span>
+                @endif
+            </a>
             <div style="display:flex;align-items:center;gap:8px;">
                 {{-- Theme toggle (mobile) --}}
                 <button @click="toggleTheme()" class="icon-btn lg:hidden">
                     <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
                 </button>
-                <a href="{{ route('consultation.form') }}" class="icon-btn" title="Konsultasi">
-                    <i class="fas fa-headset"></i>
+                <a href="{{ route('landing') }}" class="icon-btn" title="Kembali ke Website">
+                    <i class="fas fa-globe"></i>
                 </a>
                 {{-- Avatar topbar --}}
                 @if($avatarUrl)
