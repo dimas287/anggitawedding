@@ -58,7 +58,8 @@
                         </div>
                         <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
                                data-flatpickr :data-min-date="minDate"
-                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl pl-14 pr-4 py-3.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition-all relative z-0" />
+                               style="padding-left: 60px !important;"
+                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl pr-4 py-3.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition-all relative z-0" />
                     </div>
                     
                     <button @click="checkDate()" :disabled="!selectedDate || loading"
