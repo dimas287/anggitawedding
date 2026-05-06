@@ -52,11 +52,13 @@
             <div class="bg-gray-50 dark:bg-[#111111] border border-gray-200 dark:border-white/10 p-8 rounded-2xl shadow-xl dark:shadow-none">
                 <p class="text-gray-500 dark:text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold mb-6 text-center sm:text-left">Ganti Tanggal Acara</p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <div class="flex-1 relative">
-                        <i class="fas fa-calendar-alt absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+                    <div class="flex-1 relative group">
+                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none z-10">
+                            <i class="fas fa-calendar-alt text-base"></i>
+                        </div>
                         <input type="text" x-ref="dateInput" x-model="selectedDate" placeholder="Pilih tanggal"
                                data-flatpickr :data-min-date="minDate"
-                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl pl-11 pr-4 py-3.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition-all" />
+                               class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl pl-14 pr-4 py-3.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition-all relative z-0" />
                     </div>
                     
                     <button @click="checkDate()" :disabled="!selectedDate || loading"
