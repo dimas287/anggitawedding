@@ -116,11 +116,17 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Force font-display:swap on FontAwesome to prevent render-blocking --}}
+    {{-- Force font-display:swap on all FontAwesome faces to prevent render-blocking --}}
+    {{-- Lighthouse fix: "Ensure text remains visible during web-font load" --}}
     <style>
-        @font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
-        @font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
-        @font-face { font-family: 'Font Awesome 6 Pro'; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Free';   font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Free';   font-weight: 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Brands'; font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Pro';    font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Pro';    font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Font Awesome 6 Pro';    font-weight: 900; font-style: normal; font-display: swap; }
+        /* FA v4 compatibility shim */
+        @font-face { font-family: 'FontAwesome'; font-weight: 400; font-style: normal; font-display: swap; }
     </style>
     <style>
 

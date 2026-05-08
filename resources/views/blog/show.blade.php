@@ -107,7 +107,7 @@
                         <div class="w-full h-full flex items-center justify-center"><i class="fas fa-image text-gray-200 dark:text-gray-700 text-2xl"></i></div>
                         @endif
                     </div>
-                    <h4 class="text-base font-playfair font-bold text-gray-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors line-clamp-2">{{ $related->title }}</h4>
+                    <h3 class="text-base font-playfair font-bold text-gray-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors line-clamp-2">{{ $related->title }}</h3>
                 </a>
                 @endforeach
             </div>
