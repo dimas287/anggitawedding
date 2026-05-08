@@ -313,6 +313,7 @@
         <div class="flex justify-start gap-3 mt-8" data-reveal data-reveal-direction="up" style="--reveal-delay:.42s;">
             <template x-for="(slide, index) in slides" :key="'dot-' + slide.id">
                 <button type="button" class="w-2 h-2 rounded-full border border-white/40 transition-all"
+                        :aria-label="'Pergi ke slide ' + (index + 1)"
                         :class="current === index ? 'bg-white w-6' : 'bg-transparent'" @click="goTo(index)"></button>
             </template>
         </div>
@@ -747,6 +748,7 @@
                                     </a>
                                     <div class="flex justify-center pt-2">
                                         <button type="button"
+                                                aria-label="Lihat detail media {{ $package->name }}"
                                                 class="w-9 h-9 rounded-full border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all flex items-center justify-center"
                                                 @click="openDetailModal({{ Js::from([
                                                     'id' => $package->id,
@@ -886,7 +888,7 @@
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <p class="text-white/60 text-[11px] uppercase tracking-[0.25em]">{{ ucfirst($tpl->theme ?? 'Elegan') }}</p>
-                                        <h4 class="text-white text-lg font-semibold mt-1">{{ $tpl->name }}</h4>
+                                        <h3 class="text-white text-lg font-semibold mt-1">{{ $tpl->name }}</h3>
                                     </div>
                                     <span class="px-3 py-1 rounded-full text-[10px] font-semibold {{ $tpl->is_premium ? 'bg-purple-500/20 text-purple-200' : 'bg-green-500/15 text-green-200' }}">
                                         {{ $tpl->is_premium ? 'Premium' : 'Standar' }}
@@ -1060,7 +1062,7 @@
                 <div class="flex items-center gap-1 mb-5">
                     @for($i = 1; $i <= 5; $i++)<i class="fas fa-star text-[10px] {{ $i <= $review->rating ? 'text-gray-800 dark:text-yellow-400' : 'text-gray-200 dark:text-gray-600' }}"></i>@endfor
                 </div>
-                @if($review->title)<h4 class="font-playfair text-lg text-gray-900 dark:text-white mb-3">{{ $review->title }}</h4>@endif
+                @if($review->title)<h3 class="font-playfair text-lg text-gray-900 dark:text-white mb-3">{{ $review->title }}</h3>@endif
                 <p class="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed mb-6">"{{ Str::limit($review->review, 150) }}"</p>
                 <div class="flex items-center gap-3 pt-5 border-t border-gray-100 dark:border-white/10">
                     <div class="w-8 h-8 rounded-full border border-gray-200 dark:border-white/15 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium text-[10px]">

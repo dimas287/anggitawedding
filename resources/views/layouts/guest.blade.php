@@ -491,6 +491,7 @@
             <div class="hidden lg:flex items-center gap-4 h-full">
                 <button type="button" @click="$store.theme.toggle()"
                         class="sky-toggle group/toggle"
+                        aria-label="Toggle Dark Mode"
                         :class="$store.theme.mode === 'light' ? 'sky-toggle-light' : 'sky-toggle-dark'">
                     
                     {{-- Sky Elements --}}
@@ -567,6 +568,7 @@
                 <div class="flex items-center gap-3">
                     <button type="button" @click="$store.theme.toggle()"
                             class="sky-toggle group/toggle scale-90 origin-right"
+                            aria-label="Toggle Dark Mode"
                             :class="$store.theme.mode === 'light' ? 'sky-toggle-light' : 'sky-toggle-dark'">
                         
                         {{-- Sky Elements --}}
@@ -660,7 +662,7 @@
     </main>
 
 {{-- Footer --}}
-<footer class="bg-[#111111] text-gray-400 mt-auto">
+<footer class="bg-[#111111] text-gray-300 mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {{ $footerPaddingClass }}">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="md:col-span-2">
@@ -674,10 +676,10 @@
                     </div>
                     <div>
                         <div class="font-playfair text-white text-lg tracking-wide">{{ $brandName }}</div>
-                        <div class="text-gray-500 text-[10px] uppercase tracking-[0.3em] mt-0.5">Wedding Organizer</div>
+                        <div class="text-gray-400 text-[10px] uppercase tracking-[0.3em] mt-0.5">Wedding Organizer</div>
                     </div>
                 </div>
-                <p class="text-sm leading-relaxed text-gray-400 mb-4">{{ $footerInfo['description'] ?? 'Wujudkan pernikahan impian Anda bersama kami.' }}</p>
+                <p class="text-sm leading-relaxed text-gray-300 mb-4">{{ $footerInfo['description'] ?? 'Wujudkan pernikahan impian Anda bersama kami.' }}</p>
                 <div class="flex gap-3">
                     @foreach([
                         ['key' => 'instagram', 'icon' => 'fa-instagram', 'hover' => 'hover:bg-yellow-600'],
@@ -687,13 +689,13 @@
                     ] as $social)
                         @php $url = $footerInfo['socials'][$social['key']] ?? null; @endphp
                         @if($url)
-                        <a href="{{ $url }}" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-gray-800 {{ $social['hover'] }} flex items-center justify-center transition-colors"><i class="fab {{ $social['icon'] }} text-sm"></i></a>
+                        <a href="{{ $url }}" target="_blank" rel="noopener" aria-label="Kunjungi kami di {{ ucfirst($social['key']) }}" class="w-9 h-9 rounded-full bg-gray-800 {{ $social['hover'] }} flex items-center justify-center transition-colors"><i class="fab {{ $social['icon'] }} text-sm"></i></a>
                         @endif
                     @endforeach
                 </div>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-4">Layanan</h4>
+                <h3 class="text-white font-semibold mb-4">Layanan</h3>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('packages') }}" class="hover:text-gold transition-colors">Paket Silver</a></li>
                     <li><a href="{{ route('packages') }}" class="hover:text-gold transition-colors">Paket Gold</a></li>
@@ -704,7 +706,7 @@
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-4">Kontak</h4>
+                <h3 class="text-white font-semibold mb-4">Kontak</h3>
                 <ul class="space-y-2 text-sm">
                     @php $addressUrl = $footerInfo['address_url'] ?? null; @endphp
                     <li class="flex items-start gap-2">
@@ -722,7 +724,7 @@
                 </ul>
             </div>
         </div>
-        <div class="border-t border-white/5 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+        <div class="border-t border-white/5 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
             <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
                 <p>© {{ date('Y') }} Anggita Wedding Organizer. All rights reserved.</p>
                 <div class="hidden md:block w-px h-3 bg-white/10"></div>
