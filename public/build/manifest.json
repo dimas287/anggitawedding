@@ -1,45 +1,17 @@
 {
-  "_alpine-CNjPySI9.js": {
-    "file": "assets/alpine-CNjPySI9.js",
-    "name": "alpine"
+  "_all.min-!~{005}~.js": {
+    "file": "assets/all-DbRkgOy0.css",
+    "src": "_all.min-!~{005}~.js"
   },
-  "_axios-42ANG6Sg.js": {
-    "file": "assets/axios-42ANG6Sg.js",
-    "name": "axios"
+  "_client-sch3SfBg.js": {
+    "file": "assets/client-sch3SfBg.js",
+    "name": "client"
   },
-  "_client-DFrJHwRW.js": {
-    "file": "assets/client-DFrJHwRW.js",
-    "name": "client",
+  "_proxy-Pt1QLvxO.js": {
+    "file": "assets/proxy-Pt1QLvxO.js",
+    "name": "proxy",
     "imports": [
-      "_vendor-BnLNyl38.js"
-    ]
-  },
-  "_flatpickr-!~{008}~.js": {
-    "file": "assets/flatpickr-BsM4JrO0.css",
-    "src": "_flatpickr-!~{008}~.js"
-  },
-  "_flatpickr-COEJXz0f.js": {
-    "file": "assets/flatpickr-COEJXz0f.js",
-    "name": "flatpickr",
-    "css": [
-      "assets/flatpickr-BsM4JrO0.css"
-    ]
-  },
-  "_vendor-!~{007}~.js": {
-    "file": "assets/vendor-MDk3wTBQ.css",
-    "src": "_vendor-!~{007}~.js"
-  },
-  "_vendor-BnLNyl38.js": {
-    "file": "assets/vendor-BnLNyl38.js",
-    "name": "vendor",
-    "css": [
-      "assets/vendor-MDk3wTBQ.css"
-    ],
-    "assets": [
-      "assets/fa-brands-400-BP5tdqmh.woff2",
-      "assets/fa-regular-400-nyy7hhHF.woff2",
-      "assets/fa-solid-900-DRAAbZTg.woff2",
-      "assets/fa-v4compatibility-DD84SGiu.woff2"
+      "_client-sch3SfBg.js"
     ]
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
@@ -64,29 +36,31 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BtojrMK1.js",
+    "file": "assets/app-C-UC-C54.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_axios-42ANG6Sg.js",
-      "_alpine-CNjPySI9.js",
-      "_vendor-BnLNyl38.js",
-      "_flatpickr-COEJXz0f.js",
-      "_client-DFrJHwRW.js"
+      "_client-sch3SfBg.js"
     ],
     "css": [
-      "assets/app-EDpgmNX6.css"
+      "assets/app-Cs6QNxQf.css",
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
     ]
   },
   "resources/js/invitation-app/main.jsx": {
-    "file": "assets/main-CjIQMJ3F.js",
+    "file": "assets/main-HxRbdY5P.js",
     "name": "main",
     "src": "resources/js/invitation-app/main.jsx",
     "isEntry": true,
     "imports": [
-      "_vendor-BnLNyl38.js",
-      "_client-DFrJHwRW.js"
+      "_client-sch3SfBg.js"
     ],
     "dynamicImports": [
       "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
@@ -95,43 +69,63 @@
     ]
   },
   "resources/js/invitation-app/src/templates/tema1/tema1.jsx": {
-    "file": "assets/tema1-C3R8x1sJ.js",
+    "file": "assets/tema1-nMqFmLgD.js",
     "name": "tema1",
     "src": "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-BnLNyl38.js"
+      "_client-sch3SfBg.js",
+      "_proxy-Pt1QLvxO.js"
+    ],
+    "css": [
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
     ]
   },
   "resources/js/invitation-app/src/templates/tema2/tema2.jsx": {
-    "file": "assets/tema2-Dl1tn9-E.js",
+    "file": "assets/tema2-DB9afhsg.js",
     "name": "tema2",
     "src": "resources/js/invitation-app/src/templates/tema2/tema2.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-BnLNyl38.js"
+      "_client-sch3SfBg.js",
+      "_proxy-Pt1QLvxO.js"
+    ],
+    "css": [
+      "assets/tema2-BIT1mPn_.css"
     ]
   },
   "resources/js/invitation-app/src/templates/tema3/tema3.jsx": {
-    "file": "assets/tema3-CyFmzZpg.js",
+    "file": "assets/tema3-_qLEKsec.js",
     "name": "tema3",
     "src": "resources/js/invitation-app/src/templates/tema3/tema3.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-BnLNyl38.js"
+      "_client-sch3SfBg.js"
     ],
     "css": [
-      "assets/tema3-BMF1YUVX.css"
+      "assets/tema3-DCBnqc6s.css",
+      "assets/all-DbRkgOy0.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-BP5tdqmh.woff2",
+      "assets/fa-regular-400-nyy7hhHF.woff2",
+      "assets/fa-solid-900-DRAAbZTg.woff2",
+      "assets/fa-v4compatibility-DD84SGiu.woff2"
     ]
   },
   "resources/js/portfolio-gallery.jsx": {
-    "file": "assets/portfolio-gallery-B3EzoyYA.js",
+    "file": "assets/portfolio-gallery-BrGnh6MX.js",
     "name": "portfolio-gallery",
     "src": "resources/js/portfolio-gallery.jsx",
     "isEntry": true,
     "imports": [
-      "_vendor-BnLNyl38.js",
-      "_client-DFrJHwRW.js"
+      "_client-sch3SfBg.js"
     ],
     "css": [
       "assets/portfolio-gallery-57J7dGls.css"

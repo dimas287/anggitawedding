@@ -19,30 +19,6 @@ export default defineConfig({
         }),
     ],
     build: {
-        // Raise warning limit to reduce noise (500KB is fine for modern apps)
-        chunkSizeWarningLimit: 800,
-        rollupOptions: {
-            output: {
-                // Code splitting: separate large vendor libraries into their own chunks
-                manualChunks(id) {
-                    // Alpine.js into its own chunk
-                    if (id.includes('alpinejs')) {
-                        return 'alpine';
-                    }
-                    // Flatpickr (date picker) into its own chunk
-                    if (id.includes('flatpickr')) {
-                        return 'flatpickr';
-                    }
-                    // Axios into its own chunk
-                    if (id.includes('axios')) {
-                        return 'axios';
-                    }
-                    // All other node_modules into a shared vendor chunk
-                    if (id.includes('node_modules') && !id.includes('react') && !id.includes('react-dom')) {
-                        return 'vendor';
-                    }
-                },
-            },
-        },
+        chunkSizeWarningLimit: 600,
     },
 });
