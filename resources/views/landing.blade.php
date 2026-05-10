@@ -2,6 +2,20 @@
 @section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer Terbaik')
 @section('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi lengkap pernikahan impian di Surabaya & Sidoarjo. Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')
 
+@php
+    // Preload the first hero slide (LCP element) so browser fetches it immediately
+    $firstHeroSlide = $heroSlides->first();
+    $lcpImageUrl = $firstHeroSlide?->image_url
+        ? asset('storage/' . $firstHeroSlide->image_url)
+        : null;
+@endphp
+
+@section('preload_hints')
+    @if($lcpImageUrl)
+    <link rel="preload" as="image" href="{{ $lcpImageUrl }}" fetchpriority="high">
+    @endif
+@endsection
+
 @push('head')
 <script type="application/ld+json">
 {

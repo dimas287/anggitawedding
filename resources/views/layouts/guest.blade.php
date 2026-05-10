@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Anggita Wedding Organizer – Wedding Organizer Surabaya Terbaik & Terpercaya')</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {{-- Resource hints: only 3 most critical origins --}}
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    {{-- Page-specific preload (e.g. LCP image) --}}
+    @yield('preload_hints')
     <meta name="description" content="@yield('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi pernikahan impian di Surabaya & Sidoarjo. Paket Wedding, Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')">
     <meta name="keywords" content="Wedding Organizer Surabaya, WO Surabaya Terbaik, Paket Pernikahan Surabaya, Undangan Digital Surabaya, Dekorasi Wedding Surabaya, Rias Pengantin Surabaya, Anggita Wedding">
     <meta name="author" content="Anggita Wedding Organizer">
@@ -107,10 +109,7 @@
     }
     </script>
 
-    {{-- Preconnect to font origins BEFORE vite to reduce latency --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {{-- Preload Google Fonts stylesheet to avoid render-blocking --}}
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
 
