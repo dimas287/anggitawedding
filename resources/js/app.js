@@ -3,6 +3,7 @@ import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import Flip from 'gsap/Flip';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -16,8 +17,9 @@ Alpine.plugin(collapse);
 Alpine.start();
 
 window.gsap = gsap;
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Flip);
 window.ScrollTrigger = ScrollTrigger;
+window.Flip = Flip;
 
 window.flatpickr = flatpickr;
 

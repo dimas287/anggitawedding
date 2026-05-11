@@ -2,20 +2,6 @@
 @section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer Terbaik')
 @section('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi lengkap pernikahan impian di Surabaya & Sidoarjo. Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')
 
-@php
-    // Preload the first hero slide (LCP element) so browser fetches it immediately
-    $firstHeroSlide = $heroSlides->first();
-    $lcpImageUrl = $firstHeroSlide?->image_url
-        ? asset('storage/' . $firstHeroSlide->image_url)
-        : null;
-@endphp
-
-@section('preload_hints')
-    @if($lcpImageUrl)
-    <link rel="preload" as="image" href="{{ $lcpImageUrl }}" fetchpriority="high">
-    @endif
-@endsection
-
 @push('head')
 <script type="application/ld+json">
 {
@@ -199,6 +185,108 @@
         20% { transform: translateX(-50%) translateY(0); opacity: 1; }
         80% { transform: translateX(-50%) translateY(16px); opacity: 0; }
         100% { transform: translateX(-50%) translateY(16px); opacity: 0; }
+    }
+
+    /* ===== INSTAGRAM BENTO GALLERY ===== */
+    .ig-gallery-wrap {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #0A0A0A;
+    }
+
+    .ig-gallery {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        flex: none;
+    }
+
+    .ig-gallery__item {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ig-gallery__item img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    /* Bento initial compact state */
+    .ig-gallery--bento {
+        display: grid;
+        gap: 3px;
+        grid-template-columns: repeat(3, 32.5vw);
+        grid-template-rows: repeat(4, 23vh);
+        justify-content: center;
+        align-content: center;
+    }
+
+    /* Bento final zoomed state (driven by GSAP Flip) */
+    .ig-gallery--final.ig-gallery--bento {
+        grid-template-columns: repeat(3, 100vw);
+        grid-template-rows: repeat(4, 49.5vh);
+        gap: 3px;
+    }
+
+    /* Grid areas for the bento layout */
+    .ig-gallery--bento .ig-gallery__item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(3) { grid-area: 2 / 2 / 4 / 3; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(4) { grid-area: 1 / 3 / 3 / 4; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(5) { grid-area: 3 / 1 / 4 / 2; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(6) { grid-area: 3 / 3 / 5 / 4; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
+    .ig-gallery--bento .ig-gallery__item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
+
+    /* Hover overlay */
+    .ig-item-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        color: white;
+        text-decoration: none;
+        padding: 20px;
+        text-align: center;
+    }
+    .ig-gallery__item:hover .ig-item-overlay { opacity: 1; }
+
+    .ig-caption {
+        font-size: 0.65rem;
+        font-weight: 300;
+        line-height: 1.5;
+        max-width: 160px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        letter-spacing: 0.02em;
+    }
+
+    /* Mobile: scale down proportionally */
+    @media (max-width: 768px) {
+        .ig-gallery-wrap { height: 80vw; }
+        .ig-gallery--bento {
+            grid-template-columns: repeat(3, 32.5vw);
+            grid-template-rows: repeat(4, 18vw);
+        }
+        .ig-gallery--final.ig-gallery--bento {
+            grid-template-columns: repeat(3, 100vw);
+            grid-template-rows: repeat(4, 40vh);
+        }
     }
 </style>
 @endpush
@@ -1112,18 +1200,32 @@
     </div>
 </section>
 
-{{-- INSTAGRAM FEED --}}
-<section class="py-24 bg-white dark:bg-[#0A0A0A] overflow-hidden" data-reveal data-reveal-direction="up">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <span class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">Social Muse</span>
-            <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white leading-tight">Momen di Instagram</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-4 text-sm font-light">Ikuti kisah romansa terbaru kami di <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="text-yellow-600 font-semibold hover:underline">@anggitaweddingsby</a></p>
-        </div>
+{{-- INSTAGRAM BENTO GALLERY (GSAP Scrubbed) --}}
+<section id="instagram-bento-section" class="relative bg-[#0A0A0A] dark:bg-[#050505]">
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {{-- Section Header --}}
+    <div class="pt-24 pb-10 text-center px-4 relative z-10">
+        <span class="text-gray-500 text-xs font-bold uppercase tracking-[0.35em] mb-3 block">Social Muse</span>
+        <h2 class="font-playfair text-4xl lg:text-5xl font-light text-white leading-tight">Momen di Instagram</h2>
+        <p class="text-gray-400 mt-4 text-sm font-light">
+            Ikuti kisah romansa terbaru kami di
+            <a href="https://instagram.com/anggita_wedding" target="_blank" rel="noopener"
+               class="text-yellow-500 font-semibold hover:text-yellow-400 transition-colors">
+                @anggita_wedding
+            </a>
+        </p>
+        <div class="w-px h-8 bg-white/10 mx-auto mt-8"></div>
+    </div>
+
+    {{-- Bento Gallery Wrap — pinned by GSAP ScrollTrigger --}}
+    <div class="ig-gallery-wrap" id="ig-gallery-wrap">
+        <div class="ig-gallery ig-gallery--bento" id="ig-gallery">
             @php
-                $fallbackImages = [
+                $igList = $instagramPosts->count() > 0
+                    ? $instagramPosts->take(8)->values()
+                    : collect([]);
+
+                $fallbackUrls = [
                     'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
                     'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800',
                     'https://images.unsplash.com/photo-1465495910483-34c1b47c051a?w=800',
@@ -1131,46 +1233,50 @@
                     'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800',
                     'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800',
                     'https://images.unsplash.com/photo-1522673607200-1648832cee98?w=800',
-                    'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800'
+                    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800',
                 ];
-                $displayPosts = $instagramPosts->count() > 0 ? $instagramPosts : collect([]);
             @endphp
 
-            @if($displayPosts->count() > 0)
-                @foreach($displayPosts as $post)
-                <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5 border border-transparent hover:border-yellow-600/30 transition-all duration-500 shadow-sm hover:shadow-xl" data-reveal data-reveal-direction="up" style="--reveal-delay: {{ $loop->index * 0.05 }}s;">
-                    <img src="{{ $post->resolved_image_url }}" alt="Instagram Post" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-6 text-center">
-                        <i class="fab fa-instagram text-3xl text-white mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500"></i>
-                        @if($post->caption)
-                            <p class="text-white text-[10px] line-clamp-3 font-light mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{{ $post->caption }}</p>
+            @for ($i = 0; $i < 8; $i++)
+                @php
+                    $igPost   = $igList->get($i);
+                    $imgUrl   = $igPost
+                        ? $igPost->resolved_image_url
+                        : ($portfolioImages->get($i)?->image_path
+                            ? asset('storage/' . $portfolioImages->get($i)->image_path)
+                            : ($fallbackUrls[$i] ?? $fallbackUrls[0]));
+                    $igUrl    = $igPost?->instagram_url ?? 'https://instagram.com/anggita_wedding';
+                    $caption  = $igPost?->caption ?? null;
+                    $loadAttr = $i < 3 ? 'eager' : 'lazy';
+                @endphp
+                <div class="ig-gallery__item">
+                    <img
+                        src="{{ $imgUrl }}"
+                        alt="Momen pernikahan Anggita Wedding di Instagram"
+                        loading="{{ $loadAttr }}"
+                        decoding="async"
+                    >
+                    <a href="{{ $igUrl }}" target="_blank" rel="noopener" class="ig-item-overlay" aria-label="Lihat postingan Instagram Anggita Wedding">
+                        <i class="fab fa-instagram text-2xl text-white"></i>
+                        @if($caption)
+                            <span class="ig-caption">{{ Str::limit($caption, 90) }}</span>
                         @endif
-                        <a href="{{ $post->instagram_url }}" target="_blank" class="px-5 py-2 bg-white text-black text-[9px] font-bold uppercase tracking-widest rounded-full hover:bg-yellow-500 hover:text-white transition-all translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
-                            View Post
-                        </a>
-                    </div>
+                    </a>
                 </div>
-                @endforeach
-            @else
-                {{-- Fallback Grid if no posts added yet --}}
-                @for($i = 0; $i < 8; $i++)
-                <div class="group relative aspect-square overflow-hidden rounded-xl bg-gray-100 dark:bg-white/5" data-reveal data-reveal-direction="up" style="--reveal-delay: {{ $i * 0.05 }}s;">
-                    <img src="{{ $portfolioImages[$i]->image_path ?? $fallbackImages[$i] }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/60 transition-all flex items-center justify-center">
-                        <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-bold uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">Follow IG</a>
-                    </div>
-                </div>
-                @endfor
-            @endif
-        </div>
-        
-        <div class="mt-12 text-center" data-reveal data-reveal-direction="up">
-            <a href="https://instagram.com/anggitaweddingsby" target="_blank" class="inline-flex items-center gap-3 px-8 py-3 rounded-full border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-semibold text-xs tracking-widest uppercase hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-                <i class="fab fa-instagram text-lg"></i>
-                Follow @anggitaweddingsby
-            </a>
+            @endfor
         </div>
     </div>
+
+    {{-- Bottom CTA --}}
+    <div class="py-16 text-center relative z-10">
+        <p class="text-gray-500 text-xs uppercase tracking-widest mb-6">Bagikan momen terbaik Anda</p>
+        <a href="https://instagram.com/anggita_wedding" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-300">
+            <i class="fab fa-instagram text-base"></i>
+            Follow @anggita_wedding
+        </a>
+    </div>
+
 </section>
 
 @push('scripts')
@@ -1349,6 +1455,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     createStackingAnimation(tl);
                 }
+            });
+        }
+
+        // ===== INSTAGRAM BENTO GALLERY (GSAP FLIP) =====
+        const igWrap = document.querySelector('.ig-gallery-wrap');
+        const igGallery = document.querySelector('.ig-gallery');
+        const igItems = gsap.utils.toArray('.ig-gallery__item');
+
+        if (igWrap && igGallery && typeof Flip !== 'undefined') {
+            // 1. Capture initial compact state
+            const state = Flip.getState(igItems);
+            
+            // 2. Change DOM to final expanded state
+            igGallery.classList.add('ig-gallery--final');
+            
+            // 3. Create Flip animation from compact to expanded
+            const flipAnim = Flip.from(state, {
+                scale: true,
+                absolute: true,
+                ease: "none", // Linear ease for predictable scrubbing
+                stagger: 0.02, // Slight stagger for organic feel
+            });
+            
+            // 4. Attach to ScrollTrigger for scrubbing
+            ScrollTrigger.create({
+                trigger: igWrap,
+                start: "center center",
+                end: "+=150%", // Scroll distance for the zoom effect
+                pin: true,
+                scrub: 1, // Smooth scrub
+                animation: flipAnim
             });
         }
     }
