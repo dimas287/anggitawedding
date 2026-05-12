@@ -188,6 +188,7 @@
     }
 
     /* ===== INSTAGRAM BENTO GALLERY ===== */
+    /* ===== INSTAGRAM UNIFORM GALLERY ===== */
     .ig-gallery-wrap {
         position: relative;
         width: 100%;
@@ -203,12 +204,27 @@
         position: relative;
         width: 100%;
         height: 100%;
-        flex: none;
+        display: grid;
+        gap: 8px;
+        padding: 20px;
+        box-sizing: border-box;
+        justify-content: center;
+        align-content: center;
+    }
+
+    /* Initial compact state: 4 columns, uniform portrait */
+    .ig-gallery--bento {
+        grid-template-columns: repeat(4, 18vw);
+        grid-auto-rows: auto;
     }
 
     .ig-gallery__item {
         position: relative;
         overflow: hidden;
+        aspect-ratio: 4 / 5;
+        width: 100%;
+        border-radius: 8px;
+        background: #1a1a1a;
     }
 
     .ig-gallery__item img {
@@ -218,42 +234,24 @@
         display: block;
     }
 
-    /* Bento initial compact state */
-    .ig-gallery--bento {
-        display: grid;
-        gap: 3px;
-        grid-template-columns: repeat(3, 32.5vw);
-        grid-template-rows: repeat(4, 23vh);
-        justify-content: center;
-        align-content: center;
-    }
-
-    /* Bento final zoomed state (driven by GSAP Flip) */
+    /* Final zoomed state */
     .ig-gallery--final.ig-gallery--bento {
-        grid-template-columns: repeat(3, 100vw);
-        grid-template-rows: repeat(4, 49.5vh);
-        gap: 3px;
+        grid-template-columns: repeat(4, 80vw);
+        gap: 40px;
     }
 
-    /* Grid areas for the bento layout */
-    .ig-gallery--bento .ig-gallery__item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(3) { grid-area: 2 / 2 / 4 / 3; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(4) { grid-area: 1 / 3 / 3 / 4; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(5) { grid-area: 3 / 1 / 4 / 2; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(6) { grid-area: 3 / 3 / 5 / 4; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
-    .ig-gallery--bento .ig-gallery__item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
+    /* Remove previous bento grid area assignments */
+    .ig-gallery--bento .ig-gallery__item { grid-area: auto !important; }
 
     /* Hover overlay */
     .ig-item-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
         gap: 8px;
         opacity: 0;
         transition: opacity 0.4s ease;
@@ -265,27 +263,26 @@
     .ig-gallery__item:hover .ig-item-overlay { opacity: 1; }
 
     .ig-caption {
-        font-size: 0.65rem;
+        font-size: 0.75rem;
         font-weight: 300;
-        line-height: 1.5;
-        max-width: 160px;
+        line-height: 1.4;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        letter-spacing: 0.02em;
     }
 
-    /* Mobile: scale down proportionally */
+    /* Mobile: 2 columns, uniform portrait */
     @media (max-width: 768px) {
-        .ig-gallery-wrap { height: 80vw; }
+        .ig-gallery-wrap { height: 70vh; }
         .ig-gallery--bento {
-            grid-template-columns: repeat(3, 32.5vw);
-            grid-template-rows: repeat(4, 18vw);
+            grid-template-columns: repeat(2, 42vw);
+            gap: 10px;
+            padding: 10px;
         }
         .ig-gallery--final.ig-gallery--bento {
-            grid-template-columns: repeat(3, 100vw);
-            grid-template-rows: repeat(4, 40vh);
+            grid-template-columns: repeat(2, 90vw);
+            gap: 20px;
         }
     }
 </style>
