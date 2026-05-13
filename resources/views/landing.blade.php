@@ -234,10 +234,26 @@
         display: block;
     }
 
-    /* Final zoomed state */
+    /* Final zoomed state: Focus ONLY on the first item (latest post) */
     .ig-gallery--final.ig-gallery--bento {
-        grid-template-columns: repeat(4, 80vw);
-        gap: 40px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        gap: 0;
+    }
+
+    .ig-gallery--final.ig-gallery--bento .ig-gallery__item:first-child {
+        width: 60vw;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        z-index: 20;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .ig-gallery--final.ig-gallery--bento .ig-gallery__item:not(:first-child) {
+        opacity: 0;
+        scale: 0.8;
+        filter: blur(10px);
+        pointer-events: none;
     }
 
     /* Remove previous bento grid area assignments */
@@ -272,17 +288,16 @@
         overflow: hidden;
     }
 
-    /* Mobile: 2 columns, uniform portrait */
+    /* Mobile: 2 columns, focus zoom for the first item */
     @media (max-width: 768px) {
-        .ig-gallery-wrap { height: 70vh; }
+        .ig-gallery-wrap { height: 75vh; }
         .ig-gallery--bento {
             grid-template-columns: repeat(2, 42vw);
             gap: 10px;
             padding: 10px;
         }
-        .ig-gallery--final.ig-gallery--bento {
-            grid-template-columns: repeat(2, 90vw);
-            gap: 20px;
+        .ig-gallery--final.ig-gallery--bento .ig-gallery__item:first-child {
+            width: 85vw;
         }
     }
 </style>
