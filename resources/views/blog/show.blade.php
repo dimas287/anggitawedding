@@ -94,22 +94,77 @@
         </div>
 
         {{-- Comment Section --}}
-        <div class="mt-20 pt-16 border-t border-gray-100 dark:border-white/10" id="comments">
+        <div class="mt-20 pt-16 border-t border-gray-100 dark:border-white/10" id="comments" x-data="commentSection()">
             <h3 class="text-2xl font-playfair font-bold text-gray-900 dark:text-white mb-8">Komentar ({{ $post->approvedComments->count() }})</h3>
             
             {{-- Comment List --}}
             <div class="space-y-8 mb-16">
-                @forelse($post->approvedComments as $comment)
-                <div class="flex gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-700 dark:text-yellow-500 font-bold text-sm">
-                        {{ substr($comment->name, 0, 1) }}
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-1">
-                            <span class="font-bold text-gray-900 dark:text-white text-sm">{{ $comment->name }}</span>
-                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">{{ $comment->created_at->format('d M Y') }}</span>
+                @forelse($post->approvedComments->where('parent_id', null) as $comment)
+                <div class="group">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-700 dark:text-yellow-500 font-bold text-sm">
+                            {{ substr($comment->name, 0, 1) }}
                         </div>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $comment->content }}</p>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="font-bold text-gray-900 dark:text-white text-sm">{{ $comment->name }}</span>
+                                <span class="text-[10px] text-gray-400 uppercase tracking-widest">{{ $comment->created_at->format('d M Y • H:i') }}</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $comment->content }}</p>
+                            
+                            {{-- Action Buttons --}}
+                            <div class="flex items-center gap-4 mt-3">
+                                <button type="button" @click="likeComment({{ $comment->id }})" class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-red-500 transition-colors">
+                                    <i class="fas fa-heart" :class="likes[{{ $comment->id }}] ? 'text-red-500' : ''"></i>
+                                    <span x-text="likesCount[{{ $comment->id }}] || {{ $comment->likes }}"></span> Likes
+                                </button>
+                                <button type="button" @click="activeReply = {{ $comment->id }}" class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-yellow-600 transition-colors">
+                                    <i class="fas fa-reply"></i> Reply
+                                </button>
+                            </div>
+
+                            {{-- Reply Form (Inline) --}}
+                            <div x-show="activeReply === {{ $comment->id }}" x-cloak class="mt-4 p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h5 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Balas Komentar</h5>
+                                    <button @click="activeReply = null" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xs"></i></button>
+                                </div>
+                                <form action="{{ route('blog.comments.store', $post->id) }}" method="POST" class="space-y-3">
+                                    @csrf
+                                    <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input type="text" name="name" required placeholder="Nama" class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-lg px-3 py-2 text-xs outline-none focus:border-yellow-500 transition-all dark:text-white">
+                                        <input type="email" name="email" required placeholder="Email" class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-lg px-3 py-2 text-xs outline-none focus:border-yellow-500 transition-all dark:text-white">
+                                    </div>
+                                    <textarea name="content" rows="2" required placeholder="Tulis balasan..." class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-lg px-3 py-2 text-xs outline-none focus:border-yellow-500 transition-all dark:text-white"></textarea>
+                                    <button type="submit" class="bg-yellow-600 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full hover:bg-yellow-700 transition-all">Kirim Balasan</button>
+                                </form>
+                            </div>
+
+                            {{-- Nested Replies --}}
+                            @if($comment->replies->count() > 0)
+                            <div class="mt-6 space-y-6 border-l-2 border-gray-100 dark:border-white/5 pl-6">
+                                @foreach($comment->replies as $reply)
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold text-[10px]">
+                                        {{ substr($reply->name, 0, 1) }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <span class="font-bold text-gray-900 dark:text-white text-xs">{{ $reply->name }}</span>
+                                            <span class="text-[9px] text-gray-400 uppercase tracking-widest">{{ $reply->created_at->format('d M Y • H:i') }}</span>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">{{ $reply->content }}</p>
+                                        <button type="button" @click="likeComment({{ $reply->id }})" class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-gray-400 hover:text-red-500 transition-colors mt-2">
+                                            <i class="fas fa-heart" :class="likes[{{ $reply->id }}] ? 'text-red-500' : ''"></i>
+                                            <span x-text="likesCount[{{ $reply->id }}] || {{ $reply->likes }}"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 @empty
@@ -117,7 +172,7 @@
                 @endforelse
             </div>
 
-            {{-- Comment Form --}}
+            {{-- Comment Form (Root) --}}
             <div class="bg-gray-50 dark:bg-white/5 rounded-3xl p-8 md:p-10">
                 <h4 class="text-xl font-playfair font-bold text-gray-900 dark:text-white mb-6">Tinggalkan Jejak Anda</h4>
                 
@@ -152,6 +207,37 @@
                 </form>
             </div>
         </div>
+
+        @push('scripts')
+        <script>
+            function commentSection() {
+                return {
+                    activeReply: null,
+                    likes: {},
+                    likesCount: {},
+                    async likeComment(id) {
+                        if (this.likes[id]) return;
+                        
+                        try {
+                            const response = await fetch(`/blog/comments/${id}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            const data = await response.json();
+                            this.likes[id] = true;
+                            this.likesCount[id] = data.likes;
+                        } catch (e) {
+                            console.error('Failed to like comment', e);
+                        }
+                    }
+                }
+            }
+        </script>
+        @endpush
 
         {{-- Related Posts --}}
         @if($relatedPosts->count() > 0)

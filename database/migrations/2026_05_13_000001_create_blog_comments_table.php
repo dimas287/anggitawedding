@@ -11,10 +11,12 @@ return new class extends Migration
         Schema::create('blog_comments', function (Blueprint $col) {
             $col->id();
             $col->foreignId('post_id')->constrained()->onDelete('cascade');
+            $col->foreignId('parent_id')->nullable()->constrained('blog_comments')->onDelete('cascade');
             $col->string('name');
             $col->string('email');
             $col->text('content');
-            $col->boolean('is_approved')->default(false); // Default false for moderation
+            $col->integer('likes')->default(0);
+            $col->boolean('is_approved')->default(false);
             $col->timestamps();
         });
     }

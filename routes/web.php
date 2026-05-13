@@ -108,6 +108,7 @@ Route::post('/catalog/download', [LandingController::class, 'downloadCatalog'])-
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::post('/blog/{post}/comments', [\App\Http\Controllers\BlogCommentController::class, 'store'])->name('blog.comments.store');
+Route::post('/blog/comments/{comment}/like', [\App\Http\Controllers\BlogCommentController::class, 'like'])->name('blog.comments.like');
 Route::get('/undangan-digital', [LandingController::class, 'digitalInvitations'])->middleware('invitation.maintenance')->name('digital-invitations');
 Route::view('/undangan-maintenance', 'invitation-maintenance')->name('invitation.maintenance');
 Route::view('/mulai-booking', 'select-service')->name('booking.start');
