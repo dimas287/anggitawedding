@@ -107,6 +107,7 @@ Route::get('/kebijakan-cookie', [LandingController::class, 'cookiePolicy'])->nam
 Route::post('/catalog/download', [LandingController::class, 'downloadCatalog'])->name('catalog.download');
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{post}/comments', [\App\Http\Controllers\BlogCommentController::class, 'store'])->name('blog.comments.store');
 Route::get('/undangan-digital', [LandingController::class, 'digitalInvitations'])->middleware('invitation.maintenance')->name('digital-invitations');
 Route::view('/undangan-maintenance', 'invitation-maintenance')->name('invitation.maintenance');
 Route::view('/mulai-booking', 'select-service')->name('booking.start');
@@ -263,6 +264,9 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     // Blog / Articles
     Route::post('posts/upload', [\App\Http\Controllers\Admin\PostController::class, 'uploadImage'])->name('posts.upload');
     Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
+    Route::get('blog-comments', [\App\Http\Controllers\Admin\BlogCommentController::class, 'index'])->name('blog-comments.index');
+    Route::put('blog-comments/{comment}/approve', [\App\Http\Controllers\Admin\BlogCommentController::class, 'approve'])->name('blog-comments.approve');
+    Route::delete('blog-comments/{comment}', [\App\Http\Controllers\Admin\BlogCommentController::class, 'destroy'])->name('blog-comments.destroy');
 
     // Account Settings
     Route::get('/pengaturan-akun', [AccountController::class, 'settings'])->name('account.settings');

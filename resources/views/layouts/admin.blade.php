@@ -104,6 +104,7 @@
                     ['route' => 'admin.instagram-posts.index', 'icon' => 'fa-brands fa-instagram', 'label' => 'Instagram Feed'],
                     ['route' => 'admin.invitation.templates', 'icon' => 'fa-envelope-open-text', 'label' => 'Template Undangan'],
                     ['route' => 'admin.posts.index', 'icon' => 'fa-newspaper', 'label' => 'Blog / Artikel'],
+                    ['route' => 'admin.blog-comments.index', 'icon' => 'fa-comment-dots', 'label' => 'Komentar Blog'],
                     ['route' => 'admin.faqs.index', 'icon' => 'fa-question-circle', 'label' => 'FAQ'],
                 ],
                 'Keuangan' => [

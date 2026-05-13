@@ -93,6 +93,66 @@
             {!! $post->content !!}
         </div>
 
+        {{-- Comment Section --}}
+        <div class="mt-20 pt-16 border-t border-gray-100 dark:border-white/10" id="comments">
+            <h3 class="text-2xl font-playfair font-bold text-gray-900 dark:text-white mb-8">Komentar ({{ $post->approvedComments->count() }})</h3>
+            
+            {{-- Comment List --}}
+            <div class="space-y-8 mb-16">
+                @forelse($post->approvedComments as $comment)
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-700 dark:text-yellow-500 font-bold text-sm">
+                        {{ substr($comment->name, 0, 1) }}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="font-bold text-gray-900 dark:text-white text-sm">{{ $comment->name }}</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">{{ $comment->created_at->format('d M Y') }}</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $comment->content }}</p>
+                    </div>
+                </div>
+                @empty
+                <p class="text-gray-400 text-sm italic">Belum ada komentar. Jadilah yang pertama memberikan kesan!</p>
+                @endforelse
+            </div>
+
+            {{-- Comment Form --}}
+            <div class="bg-gray-50 dark:bg-white/5 rounded-3xl p-8 md:p-10">
+                <h4 class="text-xl font-playfair font-bold text-gray-900 dark:text-white mb-6">Tinggalkan Jejak Anda</h4>
+                
+                @if(session('success'))
+                <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm rounded-xl">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                <form action="{{ route('blog.comments.store', $post->id) }}" method="POST" class="space-y-6">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Nama Lengkap</label>
+                            <input type="text" name="name" required placeholder="Contoh: Budi Santoso"
+                                class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-yellow-500/20 focus:border-yellow-500 outline-none transition-all dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Email</label>
+                            <input type="email" name="email" required placeholder="budi@example.com"
+                                class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-yellow-500/20 focus:border-yellow-500 outline-none transition-all dark:text-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Pesan Komentar</label>
+                        <textarea name="content" rows="4" required placeholder="Tuliskan kesan atau pertanyaan Anda di sini..."
+                            class="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-yellow-500/20 focus:border-yellow-500 outline-none transition-all dark:text-white"></textarea>
+                    </div>
+                    <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 px-10 rounded-full text-xs uppercase tracking-widest transition-all shadow-lg shadow-yellow-600/20">
+                        Kirim Komentar
+                    </button>
+                </form>
+            </div>
+        </div>
+
         {{-- Related Posts --}}
         @if($relatedPosts->count() > 0)
         <div class="pt-16 border-t border-gray-100 dark:border-white/10">

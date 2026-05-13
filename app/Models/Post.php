@@ -29,4 +29,14 @@ class Post extends Model
         return $query->where('is_published', true)
                      ->where('published_at', '<=', now());
     }
+
+    public function comments()
+    {
+        return $this->hasMany(BlogComment::class);
+    }
+
+    public function approvedComments()
+    {
+        return $this->comments()->where('is_approved', true);
+    }
 }
