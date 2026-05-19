@@ -37,66 +37,6 @@ use Illuminate\Http\Request;
 // PUBLIC ROUTES
 // ============================================================
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::get('/fix-db', function () {
-    if (!\Illuminate\Support\Facades\Schema::hasColumn('posts', 'views')) {
-        \Illuminate\Support\Facades\Schema::table('posts', function (\Illuminate\Database\Schema\Blueprint $table) {
-            $table->unsignedBigInteger('views')->default(0)->after('is_published');
-        });
-        return 'Kolom views berhasil ditambahkan ke database!';
-    }
-    return 'Kolom views sudah ada di database.';
-});
-
-Route::get('/fix-assets', function () {
-    $results = [];
-    $docRoot = $_SERVER['DOCUMENT_ROOT'];
-    $laravelPublic = public_path();
-
-    $results[] = "Document Root (Server): " . $docRoot;
-    $results[] = "Laravel Public Path: " . $laravelPublic;
-
-    if (realpath($docRoot) !== realpath($laravelPublic)) {
-        $results[] = "PERBEDAAN PATH TERDETEKSI! Server menggunakan folder berbeda dari Laravel.";
-        
-        // Fix Build
-        if (file_exists("$laravelPublic/build")) {
-            \Illuminate\Support\Facades\File::copyDirectory("$laravelPublic/build", "$docRoot/build");
-            $results[] = "✅ Copy 'build' folder ke Document Root BERHASIL.";
-        }
-
-        // Fix Storage
-        if (!file_exists("$docRoot/storage")) {
-            try {
-                symlink(storage_path('app/public'), "$docRoot/storage");
-                $results[] = "✅ Symlink 'storage' di Document Root BERHASIL dibuat.";
-            } catch (\Exception $e) {
-                $results[] = "❌ Gagal membuat symlink: " . $e->getMessage();
-            }
-        } else {
-            $results[] = "✅ Symlink 'storage' sudah ada di Document Root.";
-        }
-    } else {
-        $results[] = "Path sudah sama, tidak perlu sinkronisasi ke public_html.";
-        
-        try {
-            \Illuminate\Support\Facades\Artisan::call('storage:link');
-            $results[] = "Storage Link: " . \Illuminate\Support\Facades\Artisan::output();
-        } catch (\Exception $e) {
-            $results[] = "Storage Link Error: " . $e->getMessage();
-        }
-    }
-
-    $cssPath = "$docRoot/build/assets/app-CMB86oAG.css";
-    $exists = file_exists($cssPath);
-    $results[] = "CSS File di Server ($cssPath): " . ($exists ? 'Yes' : 'No');
-
-    if ($exists) {
-        chmod($cssPath, 0644);
-        $results[] = "Permissions fixed.";
-    }
-
-    return implode("<br><br>", $results);
-});
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/paket', [LandingController::class, 'packages'])->name('packages');
 Route::get('/portofolio', [LandingController::class, 'portfolio'])->name('portfolio');
@@ -406,3 +346,4 @@ Route::middleware(['auth', 'verified', 'admin', 'log.admin'])->prefix('admin')->
     Route::get('/booking/{booking}/invoice-pdf', [ReportController::class, 'invoicePdf'])->name('reports.invoice');
 
 });
+
