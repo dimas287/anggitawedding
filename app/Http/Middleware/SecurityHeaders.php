@@ -28,7 +28,7 @@ class SecurityHeaders
             : '';
 
         $csp = "default-src 'self'; ";
-        $csp .= "script-src 'self'" . $scriptUnsafeInline . $viteHosts . " https://app.sandbox.midtrans.com https://app.midtrans.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; ";
+        $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval'" . $viteHosts . " https://app.sandbox.midtrans.com https://app.midtrans.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; ";
         $csp .= "style-src 'self' 'unsafe-inline'" . $viteHosts . " https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; ";
         $csp .= "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com; ";
         $csp .= "img-src 'self' data: blob: https:; ";
