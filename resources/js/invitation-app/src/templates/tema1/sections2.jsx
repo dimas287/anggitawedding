@@ -223,50 +223,74 @@ export function ClosingSection({ data }) {
 export function GuestbookSection({ data }) {
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
-    const [attendance, setAttendance] = useState('EXCITED TO ATTEND');
+    const [attendance, setAttendance] = useState('hadir');
     const [guestCount, setGuestCount] = useState(1);
     const [entries, setEntries] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
-    // Fetch guestbook
     useEffect(() => {
-        const fetchSlug = data.slug || 'tema1-demo';
-        fetch(`/api/invitations/${fetchSlug}/guestbook`)
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                    setEntries(res.data.data || []);
-                }
-            })
-            .catch(err => console.error("Failed to fetch guestbook", err));
-    }, [data.slug]);
+        if (!data.slug || data.is_demo) return;
+
+        fetch(`/api/invitations/${encodeURIComponent(data.slug)}/guestbook`, {
+            headers: { Accept: 'application/json' },
+        })
+            .then((res) => res.ok ? res.json() : Promise.reject(new Error()))
+            .then((result) => setEntries(Array.isArray(result) ? result : []))
+            .catch(() => setError('Ucapan belum dapat dimuat.'));
+    }, [data.is_demo, data.slug]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!name.trim() || !message.trim()) return;
         
-        const submitSlug = data.slug || 'tema1-demo';
+        if (!data.slug || data.is_demo) {
+            setError('Form tidak aktif pada pratinjau template.');
+            return;
+        }
 
         setLoading(true);
         setError(null);
+        setSuccess(null);
         try {
-            const res = await fetch(`/api/invitations/${submitSlug}/guestbook`, {
+            if (data.rsvp_enabled) {
+                const rsvpResponse = await fetch(`/api/invitations/${encodeURIComponent(data.slug)}/rsvp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                    body: JSON.stringify({
+                        name: name.trim(),
+                        guests_count: guestCount,
+                        attendance,
+                        message: message.trim(),
+                        hp_field: '',
+                    }),
+                });
+
+                if (!rsvpResponse.ok) {
+                    const payload = await rsvpResponse.json().catch(() => ({}));
+                    throw new Error(payload.message || 'Konfirmasi kehadiran gagal dikirim.');
+                }
+            }
+
+            const res = await fetch(`/api/invitations/${encodeURIComponent(data.slug)}/guestbook`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({ name, message, attendance, guest_count: guestCount })
+                body: JSON.stringify({ name: name.trim(), message: message.trim(), hp_field: '' }),
             });
             const result = await res.json();
-            if (result.success) {
-                setEntries([result.data, ...entries]);
-                setName('');
-                setMessage('');
-                alert('Terima kasih! Pesan Anda telah terkirim.');
-            } else {
-                setError('Maaf, saat ini tidak bisa mengirim pesan. (Pastikan slug "tema1-demo" ada di database)');
+            if (!res.ok || !result.entry) {
+                throw new Error(result.message || 'Ucapan gagal dikirim.');
             }
-        } catch (e) {
-            setError('Terjadi kesalahan koneksi.');
+
+            setEntries((current) => [result.entry, ...current]);
+            setName('');
+            setMessage('');
+            setSuccess(data.rsvp_enabled
+                ? 'Konfirmasi kehadiran dan ucapan berhasil dikirim.'
+                : 'Ucapan berhasil dikirim.');
+        } catch (submitError) {
+            setError(submitError.message || 'Terjadi kesalahan koneksi.');
         } finally {
             setLoading(false);
         }
@@ -284,6 +308,7 @@ export function GuestbookSection({ data }) {
                 <FadeUp delay={0.15}>
                     <form onSubmit={handleSubmit} style={{ border: `1px solid ${palette.border}`, padding: '24px 20px', background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(4px)' }}>
                         {error && <p style={{ color: '#ef4444', fontSize: 13, marginTop: 0 }}>{error}</p>}
+                        {success && <p role="status" style={{ color: '#86efac', fontSize: 13, marginTop: 0 }}>{success}</p>}
 
                         <div style={{ marginBottom: 20 }}>
                             <label style={{ display: 'block', fontFamily: fonts.sans, fontSize: 11, letterSpacing: '2px', textTransform: 'uppercase', color: palette.accent, marginBottom: 8 }}>Name</label>
@@ -301,15 +326,15 @@ export function GuestbookSection({ data }) {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                                 <button
                                     type="button"
-                                    onClick={() => setAttendance('EXCITED TO ATTEND')}
-                                    style={{ padding: '12px 8px', border: `1px solid ${palette.border}`, background: attendance === 'EXCITED TO ATTEND' ? palette.accent : 'transparent', color: attendance === 'EXCITED TO ATTEND' ? '#000' : palette.text, fontFamily: fonts.sans, fontSize: 10, letterSpacing: '1px', cursor: 'pointer', transition: '0.3s' }}
+                                    onClick={() => setAttendance('hadir')}
+                                    style={{ padding: '12px 8px', border: `1px solid ${palette.border}`, background: attendance === 'hadir' ? palette.accent : 'transparent', color: attendance === 'hadir' ? '#000' : palette.text, fontFamily: fonts.sans, fontSize: 10, letterSpacing: '1px', cursor: 'pointer', transition: '0.3s' }}
                                 >
                                     EXCITED TO ATTEND
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setAttendance('UNABLE ATTEND')}
-                                    style={{ padding: '12px 8px', border: `1px solid ${palette.border}`, background: attendance === 'UNABLE ATTEND' ? palette.accent : 'transparent', color: attendance === 'UNABLE ATTEND' ? '#000' : palette.text, fontFamily: fonts.sans, fontSize: 10, letterSpacing: '1px', cursor: 'pointer', transition: '0.3s' }}
+                                    onClick={() => setAttendance('tidak_hadir')}
+                                    style={{ padding: '12px 8px', border: `1px solid ${palette.border}`, background: attendance === 'tidak_hadir' ? palette.accent : 'transparent', color: attendance === 'tidak_hadir' ? '#000' : palette.text, fontFamily: fonts.sans, fontSize: 10, letterSpacing: '1px', cursor: 'pointer', transition: '0.3s' }}
                                 >
                                     UNABLE ATTEND
                                 </button>
@@ -385,7 +410,7 @@ export function GiftSection({ data }) {
     };
 
     const hasAccounts = data.bank_accounts && data.bank_accounts.length > 0;
-    const hasQris = !!data.qris_image;
+    const hasQris = !!data.qris_image_url;
 
     if (!hasAccounts && !hasQris) return null;
 
@@ -425,7 +450,7 @@ export function GiftSection({ data }) {
                         </motion.div>
                     ))}
 
-                    {data.qris_image && (
+                    {data.qris_image_url && (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -435,7 +460,7 @@ export function GiftSection({ data }) {
                         >
                             <p style={{ margin: '0 0 10px', fontFamily: fonts.sans, fontSize: 13, color: palette.text }}>QRIS</p>
                             <img
-                                src={`/storage/${data.qris_image}`}
+                                src={data.qris_image_url}
                                 alt="QRIS"
                                 style={{ width: '100%', maxWidth: 260, margin: '0 auto', display: 'block' }}
                             />

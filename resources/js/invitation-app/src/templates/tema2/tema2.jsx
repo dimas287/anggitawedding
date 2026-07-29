@@ -587,8 +587,8 @@ export default function Tema2Template({ invitation }) {
                 />
                 <GallerySection photos={gallery} />
                 <LoveStory stories={loveStory} />
-                <RSVPSection invitationSlug={invitation?.slug} rsvpEnabled={!!content.rsvp_enabled} />
-                <Guestbook invitationSlug={invitation?.slug} initialEntries={guestbook} />
+                <RSVPSection invitationSlug={invitation?.slug} rsvpEnabled={!!content.rsvp_enabled} isDemo={invitation?.status === 'demo'} />
+                <Guestbook invitationSlug={invitation?.slug} initialEntries={guestbook} isDemo={invitation?.status === 'demo'} />
                 <AmplopDigital bankAccounts={bankAccounts} qrisImageUrl={content.qris_image_url} />
                 <Closing content={content} />
             </div>

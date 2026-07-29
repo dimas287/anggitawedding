@@ -66,7 +66,6 @@ Route::post('/konsultasi', [ConsultationController::class, 'store'])->middleware
 Route::middleware('invitation.maintenance')->group(function () {
     Route::get('/undangan/{slug}', function ($slug) {
         $invitation = \App\Models\Invitation::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        $invitation->increment('view_count');
         return view('invitation.react', compact('invitation'));
     })->name('invitation.show');
     Route::post('/undangan/{slug}/rsvp', [\App\Http\Controllers\User\InvitationController::class, 'rsvp'])->middleware(['throttle:5,1', 'honeypot'])->name('invitation.rsvp');

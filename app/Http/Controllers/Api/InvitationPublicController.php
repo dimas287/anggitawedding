@@ -139,14 +139,18 @@ class InvitationPublicController extends Controller
             'message' => 'nullable|string|max:500',
         ]);
 
-        $rsvp = Rsvp::create([
+        $name = strip_tags($validated['name']);
+        $ipAddress = $request->ip();
+
+        $rsvp = Rsvp::updateOrCreate([
             'invitation_id' => $invitation->id,
-            'name' => strip_tags($validated['name']),
+            'name' => $name,
+            'ip_address' => $ipAddress,
+        ], [
             'phone' => strip_tags($validated['phone'] ?? null),
             'guests_count' => $validated['guests_count'],
             'attendance' => $validated['attendance'],
             'message' => strip_tags($validated['message'] ?? null),
-            'ip_address' => $request->ip(),
         ]);
 
         return response()->json([

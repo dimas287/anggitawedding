@@ -17,6 +17,7 @@ class GuestbookController extends Controller
 
         $entries = GuestbookEntry::where('invitation_id', $invitation->id)
             ->latest()
+            ->limit(50)
             ->get(['id', 'name', 'message', 'created_at']);
 
         return response()->json($entries);

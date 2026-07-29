@@ -300,7 +300,7 @@ export function GallerySection({ data, openModal }) {
 }
 
 export function GiftSection({ data }) {
-    const hasGift = (!!data.bank_accounts && data.bank_accounts.length > 0) || !!data.qris_image;
+    const hasGift = (!!data.bank_accounts && data.bank_accounts.length > 0) || !!data.qris_image_url;
     if (!hasGift) return null;
 
     const copyText = (text) => {
@@ -337,7 +337,7 @@ export function GiftSection({ data }) {
                     </div>
                 ))}
 
-                {data.qris_image && (
+                {data.qris_image_url && (
                     <div className="bg-theme-auto rounded-4 shadow p-3 mx-4 mt-4 text-start" data-aos="fade-up" data-aos-duration="1500">
                         <i className="fa-solid fa-qrcode fa-lg me-2"></i>
                         <p className="d-inline">Qris</p>
@@ -350,7 +350,7 @@ export function GiftSection({ data }) {
                         <div className="collapse" id="collapseQris">
                             <hr className="my-2 py-1" />
                             <div className="d-flex justify-content-center align-items-center bg-white rounded p-2">
-                                <img src={resolveMediaUrl(data.qris_image)} alt="qris" className="img-fluid rounded-3 mx-auto" style={{ maxWidth: '200px' }} />
+                                <img src={data.qris_image_url} alt="QRIS hadiah pernikahan" className="img-fluid rounded-3 mx-auto" style={{ maxWidth: '200px' }} />
                             </div>
                         </div>
                     </div>

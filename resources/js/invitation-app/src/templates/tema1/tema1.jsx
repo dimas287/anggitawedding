@@ -41,6 +41,8 @@ export default function Tema1({ invitation }) {
         photo_prewedding_url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80',
         music_file_url: null,
         media_files: {},
+        slug: invitation?.slug,
+        is_demo: invitation?.status === 'demo',
         ...(invitation?.content || {})
     };
 
@@ -61,7 +63,7 @@ export default function Tema1({ invitation }) {
     const hasJourney = Array.isArray(data.love_story)
         ? data.love_story.length > 0
         : typeof data.love_story === 'string' && data.love_story.trim().length > 0;
-    const hasGift = (!!data.bank_accounts && data.bank_accounts.length > 0) || !!data.qris_image;
+    const hasGift = (!!data.bank_accounts && data.bank_accounts.length > 0) || !!data.qris_image_url;
 
     const galleryRaw = data?.media_files?.gallery || data?.media_files?.galeri || data.gallery_photo_urls || data.demo_gallery || [];
     const galleryImages = (Array.isArray(galleryRaw) ? galleryRaw : [galleryRaw])

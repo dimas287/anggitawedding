@@ -6,7 +6,7 @@ import { SectionTitle, ActionButton, GlassInput, FadeUp } from './components.jsx
 const GUESTBOOK_PER_PAGE = 5;
 
 // ─── GUESTBOOK / WEDDING WISH ─────────────────────────────────
-export function Guestbook({ invitationSlug, initialEntries }) {
+export function Guestbook({ invitationSlug, initialEntries, isDemo = false }) {
     const [entries, setEntries] = useState(initialEntries || []);
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
@@ -18,9 +18,21 @@ export function Guestbook({ invitationSlug, initialEntries }) {
     const totalPages = Math.ceil(entries.length / GUESTBOOK_PER_PAGE);
     const visibleEntries = entries.slice(page * GUESTBOOK_PER_PAGE, (page + 1) * GUESTBOOK_PER_PAGE);
 
+    useEffect(() => {
+        if (!invitationSlug || isDemo) return;
+
+        fetch(`/api/invitations/${encodeURIComponent(invitationSlug)}/guestbook`, {
+            headers: { Accept: 'application/json' },
+        })
+            .then((response) => response.ok ? response.json() : Promise.reject(new Error()))
+            .then((result) => setEntries(Array.isArray(result) ? result : []))
+            .catch(() => setError('Ucapan belum dapat dimuat.'));
+    }, [invitationSlug, isDemo]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!name.trim() || !message.trim()) return setError('Nama dan ucapan tidak boleh kosong.');
+        if (!invitationSlug || isDemo) return setError('Form tidak aktif pada pratinjau template.');
         setSubmitting(true);
         setError(null);
         try {
@@ -31,22 +43,21 @@ export function Guestbook({ invitationSlug, initialEntries }) {
                     Accept: 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                 },
-                body: JSON.stringify({ name, message }),
+                body: JSON.stringify({ name: name.trim(), message: message.trim(), hp_field: '' }),
             });
-            if (!res.ok) throw new Error('Gagal mengirim ucapan.');
+            if (!res.ok) {
+                const result = await res.json().catch(() => ({}));
+                throw new Error(result.message || 'Gagal mengirim ucapan.');
+            }
             const data = await res.json();
-            setEntries(prev => [data?.entry || { name, message, created_at: new Date().toISOString() }, ...prev]);
+            if (!data.entry) throw new Error('Respons ucapan tidak valid.');
+            setEntries(prev => [data.entry, ...prev]);
             setName(''); setMessage('');
             setSubmitted(true);
             setTimeout(() => setSubmitted(false), 4000);
             setPage(0);
         } catch (err) {
-            // Fallback: show locally even if API fails
-            setEntries(prev => [{ name, message, created_at: new Date().toISOString() }, ...prev]);
-            setName(''); setMessage('');
-            setSubmitted(true);
-            setTimeout(() => setSubmitted(false), 4000);
-            setPage(0);
+            setError(err.message || 'Gagal mengirim ucapan.');
         } finally {
             setSubmitting(false);
         }
@@ -175,7 +186,7 @@ export function Guestbook({ invitationSlug, initialEntries }) {
 }
 
 // ─── RSVP FORM ────────────────────────────────────────────────
-export function RSVPSection({ invitationSlug, rsvpEnabled }) {
+export function RSVPSection({ invitationSlug, rsvpEnabled, isDemo = false }) {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [guests, setGuests] = useState(1);
@@ -196,6 +207,7 @@ export function RSVPSection({ invitationSlug, rsvpEnabled }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!name.trim()) return setError('Nama tidak boleh kosong.');
+        if (!invitationSlug || isDemo) return setError('Form tidak aktif pada pratinjau template.');
         setSubmitting(true); setError(null);
         try {
             const res = await fetch(`/api/invitations/${encodeURIComponent(invitationSlug)}/rsvp`, {
@@ -204,7 +216,7 @@ export function RSVPSection({ invitationSlug, rsvpEnabled }) {
                     'Content-Type': 'application/json', Accept: 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                 },
-                body: JSON.stringify({ name, phone: phone || null, guests_count: Number(guests), attendance, message: message || null }),
+                body: JSON.stringify({ name, phone: phone || null, guests_count: Number(guests), attendance, message: message || null, hp_field: '' }),
             });
             if (!res.ok) {
                 const d = await res.json().catch(() => null);

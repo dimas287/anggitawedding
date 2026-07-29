@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { WaveSeparator } from './components.jsx';
 import { 
     HomeSection, BrideGroomSection, FirmanSection, LoveStorySection, 
-    WeddingDateSection, GallerySection, GiftSection, CommentSection, FooterSection 
+    WeddingDateSection, GallerySection, GiftSection, FooterSection
 } from './sections.jsx';
+import CommentSection from '../../components/InvitationMessages.jsx';
 import { resolveMediaUrl } from './utils.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -43,6 +44,8 @@ export default function Tema3({ invitation }) {
         closing_message: 'Terima kasih atas doa dan restunya.',
         music_file_url: null,
         media_files: {},
+        slug: invitation?.slug,
+        is_demo: invitation?.status === 'demo',
         ...invitation?.content
     };
 
@@ -172,7 +175,7 @@ export default function Tema3({ invitation }) {
                             
                             <GiftSection data={data} />
                             
-                            <CommentSection />
+                            <CommentSection data={data} />
                             <WaveSeparator pathData={wave4} />
                             
                             <FooterSection data={data} />

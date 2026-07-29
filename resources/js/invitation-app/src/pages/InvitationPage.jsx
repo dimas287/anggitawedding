@@ -33,11 +33,18 @@ export default function InvitationPage() {
         setLoading(true);
         setError(null);
 
-        fetch(`/api/invitations/${encodeURIComponent(slug)}`)
+        fetch(`/api/invitations/${encodeURIComponent(slug)}`, {
+            headers: { Accept: 'application/json' },
+        })
             .then(async (res) => {
                 if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(text || `Request failed: ${res.status}`);
+                    if (res.status === 404) {
+                        throw new Error('Undangan tidak ditemukan atau belum dipublikasikan.');
+                    }
+                    if (res.status === 503) {
+                        throw new Error('Layanan undangan sedang dalam pemeliharaan.');
+                    }
+                    throw new Error('Undangan belum dapat dimuat. Silakan coba beberapa saat lagi.');
                 }
                 return res.json();
             })
@@ -70,8 +77,11 @@ export default function InvitationPage() {
 
     if (error) {
         return (
-            <div style={{ padding: 24, fontFamily: 'system-ui, sans-serif', color: '#b91c1c' }}>
-                {error}
+            <div role="alert" style={{ minHeight: '100vh', padding: 24, display: 'grid', placeItems: 'center', textAlign: 'center', fontFamily: 'system-ui, sans-serif', color: '#7f1d1d', background: '#fff7ed' }}>
+                <div>
+                    <h1 style={{ margin: '0 0 8px', fontSize: 24 }}>Undangan belum dapat dibuka</h1>
+                    <p style={{ margin: 0 }}>{error}</p>
+                </div>
             </div>
         );
     }
