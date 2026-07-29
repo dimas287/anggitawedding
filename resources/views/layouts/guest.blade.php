@@ -109,8 +109,7 @@
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
 
-    @vite(['resources/css/app.css', 'resources/js/guest.js'])
-    @stack('vite')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Force font-display:swap on all FontAwesome faces to prevent render-blocking --}}
     {{-- Lighthouse fix: "Ensure text remains visible during web-font load" --}}

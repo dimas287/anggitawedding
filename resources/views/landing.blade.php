@@ -2,14 +2,10 @@
 @section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer Terbaik')
 @section('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi lengkap pernikahan impian di Surabaya & Sidoarjo. Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')
 
-@push('vite')
-    @vite('resources/js/landing.js')
-@endpush
-
 @push('head')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
+  "@@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Wedding Organizer",
   "provider": {
