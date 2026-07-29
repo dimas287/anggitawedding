@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState, Suspense } from 'react';
-import { useParams } from 'react-router-dom';
 import InvitationSkeleton from '../components/InvitationSkeleton.jsx';
 
 const templateRegistry = {
@@ -14,12 +13,22 @@ function resolveTemplateLoader(templateSlug) {
 }
 
 export default function InvitationPage() {
-    const { slug } = useParams();
+    const slug = useMemo(() => {
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        const invitationIndex = segments.indexOf('undangan');
+        return invitationIndex >= 0 ? decodeURIComponent(segments[invitationIndex + 1] ?? '') : '';
+    }, []);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [invitation, setInvitation] = useState(null);
 
     useEffect(() => {
+        if (!slug) {
+            setError('Tautan undangan tidak valid.');
+            setLoading(false);
+            return undefined;
+        }
+
         let mounted = true;
         setLoading(true);
         setError(null);

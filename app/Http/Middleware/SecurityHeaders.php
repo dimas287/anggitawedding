@@ -20,9 +20,10 @@ class SecurityHeaders
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         $response->headers->set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
 
-        // Keep CSP strict in production and only relax where development tooling needs it.
+        // Alpine's standard evaluator and the existing inline Blade scripts still
+        // require these allowances. Keep the remaining directives restrictive
+        // until the inline code is migrated to nonce-based/CSP-compatible builds.
         $isDev = app()->environment('local');
-        $scriptUnsafeInline = $isDev ? " 'unsafe-inline'" : '';
         $viteHosts = $isDev
             ? " http://127.0.0.1:5173 http://localhost:5173 ws://127.0.0.1:5173 ws://localhost:5173"
             : '';
@@ -34,7 +35,8 @@ class SecurityHeaders
         $csp .= "img-src 'self' data: blob: https:; ";
         $csp .= "media-src 'self' data: blob: https:; ";
         $csp .= "connect-src 'self'" . $viteHosts . " https://app.sandbox.midtrans.com https://app.midtrans.com wss://ws-mt1.pusher.com wss://sockjs-mt1.pusher.com https://sockjs-mt1.pusher.com; ";
-        $csp .= "frame-src 'self' https://app.sandbox.midtrans.com https://app.midtrans.com;";
+        $csp .= "frame-src 'self' https://app.sandbox.midtrans.com https://app.midtrans.com; ";
+        $csp .= "object-src 'none'; base-uri 'self'; form-action 'self' https://app.sandbox.midtrans.com https://app.midtrans.com; frame-ancestors 'self';";
         
         $response->headers->set('Content-Security-Policy', $csp);
 

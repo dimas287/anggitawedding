@@ -8,13 +8,13 @@ use App\Models\Invitation;
 use App\Models\InvitationTemplate;
 use App\Models\Package;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class IdempotencyTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function test_booking_submission_is_deduplicated(): void
     {

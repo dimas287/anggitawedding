@@ -11,7 +11,15 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/invitation-app/main.jsx', 'resources/js/portfolio-gallery.jsx'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/js/guest.js',
+                'resources/js/landing.js',
+                'resources/js/portfolio.js',
+                'resources/js/invitation-app/main.jsx',
+                'resources/js/portfolio-gallery.jsx',
+            ],
             refresh: true,
         }),
         react({

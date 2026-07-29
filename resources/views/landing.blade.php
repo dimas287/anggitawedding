@@ -2,6 +2,10 @@
 @section('title', 'Wedding Organizer Surabaya – Anggita Wedding Organizer Terbaik')
 @section('meta_description', 'Anggita Wedding Organizer Surabaya: Solusi lengkap pernikahan impian di Surabaya & Sidoarjo. Dekorasi, Rias Pengantin, Dokumentasi & Undangan Digital Premium.')
 
+@push('vite')
+    @vite('resources/js/landing.js')
+@endpush
+
 @push('head')
 <script type="application/ld+json">
 {
@@ -351,28 +355,9 @@
                 {{ $heroCopy['badge'] ?? 'Elegance in Every Detail' }}
             </div>
             <h1 class="font-playfair text-5xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] tracking-tight drop-shadow-md mb-6 relative">
-                <span class="sr-only">Anggita Wedding Organizer – Wedding Organizer Surabaya Terbaik & Terpercaya</span>
-                <span class="hero-headline-fallback block" x-data="{ hide: false }" x-init="hide = true" x-show="!hide">
-                    Wedding Organizer <br><span class="italic text-white/90">Surabaya</span>
-                </span>
-            <span class="hero-typing block" x-data="heroHeadlineTypewriter({
-                lines: [
-                    { text: 'Wujudkan Pernikahan', classes: '' },
-                    { text: 'Impian', classes: 'italic text-white/90 font-light' }
-                ],
-                speed: 75,
-                lineDelay: 260,
-                restartDelay: 4600,
-                loop: false
-            })" x-init="start()" x-cloak>
-                <template x-for="(line, idx) in lines" :key="`hero-line-${idx}`">
-                    <span class="hero-typing-line block text-left" :class="line.classes">
-                        <span x-text="displayLines[idx]"></span>
-                        <span class="typewriter-caret" x-show="caretShouldShow(idx)"></span>
-                    </span>
-                </template>
-            </span>
-        </h1>
+                <span class="block">Wedding Organizer Surabaya</span>
+                <span class="block italic text-white/90 font-light">untuk Pernikahan Impian</span>
+            </h1>
         
         <template x-if="activeSlide()?.title">
             <p class="text-white/90 text-xl font-light mb-2 tracking-wide" x-text="activeSlide().title"></p>
@@ -602,25 +587,25 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-reveal data-reveal-direction="right" style="--reveal-delay:.1s;">
             <div class="space-y-2" data-reveal data-reveal-direction="left" style="--reveal-delay:.12s;">
                 <div class="text-4xl lg:text-5xl font-playfair text-white tracking-wide">
-                    <span data-countup data-target="{{ (int) ($landingStats['events'] ?? 0) }}" data-suffix="+">0</span>
+                    <span data-countup data-target="{{ (int) ($landingStats['events'] ?? 0) }}" data-suffix="+">{{ (int) ($landingStats['events'] ?? 0) }}+</span>
                 </div>
                 <div class="text-white/40 text-[10px] uppercase tracking-[0.2em] font-medium mt-2">Event Sukses</div>
             </div>
             <div class="space-y-2" data-reveal data-reveal-direction="up" style="--reveal-delay:.16s;">
                 <div class="text-4xl lg:text-5xl font-playfair text-white tracking-wide">
-                    <span data-countup data-target="{{ (int) ($landingStats['clients'] ?? 0) }}" data-suffix="+">0</span>
+                    <span data-countup data-target="{{ (int) ($landingStats['clients'] ?? 0) }}" data-suffix="+">{{ (int) ($landingStats['clients'] ?? 0) }}+</span>
                 </div>
                 <div class="text-white/40 text-[10px] uppercase tracking-[0.2em] font-medium mt-2">Pasangan Bahagia</div>
             </div>
             <div class="space-y-2" data-reveal data-reveal-direction="right" style="--reveal-delay:.2s;">
                 <div class="text-4xl lg:text-5xl font-playfair text-white tracking-wide">
-                    <span data-countup data-target="{{ (int) ($landingStats['templates'] ?? 0) }}">0</span>
+                    <span data-countup data-target="{{ (int) ($landingStats['templates'] ?? 0) }}">{{ (int) ($landingStats['templates'] ?? 0) }}</span>
                 </div>
                 <div class="text-white/40 text-[10px] uppercase tracking-[0.2em] font-medium mt-2">Desain Mewah</div>
             </div>
             <div class="space-y-2" data-reveal data-reveal-direction="left" style="--reveal-delay:.24s;">
                 <div class="text-4xl lg:text-5xl font-playfair text-white tracking-wide">
-                    <span data-countup data-target="{{ (int) ($landingStats['years'] ?? 1) }}" data-suffix="+">0</span>
+                    <span data-countup data-target="{{ (int) ($landingStats['years'] ?? 1) }}" data-suffix="+">{{ (int) ($landingStats['years'] ?? 1) }}+</span>
                 </div>
                 <div class="text-white/40 text-[10px] uppercase tracking-[0.2em] font-medium mt-2">Tahun Keahlian</div>
             </div>
@@ -914,7 +899,7 @@
                     Keintiman yang<br>Dibagikan
                     @if($maintenanceMode)
                         <span class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 text-red-300 text-[10px] font-bold uppercase tracking-widest rounded-full border border-red-500/30">
-                            <i class="fas fa-tools text-[8px] animate-pulse"></i> Maintenance
+                            Segera Hadir
                         </span>
                     @endif
                 </h2>
@@ -1016,10 +1001,6 @@
                                         <p class="text-xl font-bold text-white">{{ $tpl->formatted_price }}</p>
                                     @endif
                                 </div>
-                                <div class="space-y-1.5 text-xs text-white/70 flex-1">
-                                    <p><i class="fas fa-palette text-yellow-300/80 mr-2"></i>{{ $tpl->primary_color ?? '#D4AF37' }}</p>
-                                    <p><i class="fas fa-font text-yellow-300/80 mr-2"></i>{{ $tpl->font_family ?? 'Playfair Display' }}</p>
-                                </div>
                                 <div class="mt-2 grid grid-cols-2 gap-3">
                                     @php $demoUrl = $tpl->demo_url; @endphp
                                     <a @click.stop href="{{ $demoUrl ?? '#' }}" target="{{ $demoUrl ? '_blank' : '_self' }}"
@@ -1030,7 +1011,7 @@
                                     @if($maintenanceMode)
                                     <button disabled
                                        class="text-xs font-semibold px-3 py-2 rounded-full bg-white/10 text-white/40 cursor-not-allowed flex items-center justify-center gap-2">
-                                        <i class="fas fa-tools"></i> Maintenance
+                                        Segera Hadir
                                     </button>
                                     @else
                                     <a @click.stop href="{{ route('invitation-order.start') }}?template_slug={{ $tpl->slug }}"

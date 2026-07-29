@@ -75,45 +75,42 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#111111">
 
-    {{-- JSON-LD LocalBusiness --}}
+    @php
+        $businessSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'LocalBusiness',
+            'name' => $brandInfo['brand_name'] ?? 'Anggita Wedding Organizer',
+            'image' => $brandInfo['logo_main_url'] ?? asset('images/brand/anggita-logo-main.svg'),
+            '@id' => url('/').'#business',
+            'url' => url('/'),
+            'telephone' => preg_replace('/[^\d+]/', '', $footerInfo['phone_display'] ?? '+62 812-3112-2057'),
+            'email' => $footerInfo['email'] ?? 'anggitaweddingsby@gmail.com',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => $footerInfo['address'] ?? 'Jl. Bulak Setro Indah II Blok C No. 5',
+                'addressLocality' => 'Surabaya',
+                'addressRegion' => 'Jawa Timur',
+                'addressCountry' => 'ID',
+            ],
+            'sameAs' => array_values(array_filter($footerInfo['socials'] ?? [])),
+            'openingHoursSpecification' => [[
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                'opens' => '08:00',
+                'closes' => '20:00',
+            ]],
+        ];
+    @endphp
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Anggita Wedding Organizer - Wedding Organizer Surabaya",
-      "image": "{{ asset('images/logo.png') }}",
-      "@id": "{{ url('/') }}",
-      "url": "{{ url('/') }}",
-      "telephone": "+628123456789",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Surabaya",
-        "addressLocality": "Surabaya",
-        "addressRegion": "Jawa Timur",
-        "addressCountry": "ID"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "opens": "08:00",
-        "closes": "20:00"
-      }
-    }
+    @json($businessSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/guest.js'])
+    @stack('vite')
 
     {{-- Force font-display:swap on all FontAwesome faces to prevent render-blocking --}}
     {{-- Lighthouse fix: "Ensure text remains visible during web-font load" --}}
