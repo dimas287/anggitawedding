@@ -1,6 +1,6 @@
 {
-  "_DesktopInvitationLayout-Nbx9dSa8.js": {
-    "file": "assets/DesktopInvitationLayout-Nbx9dSa8.js",
+  "_DesktopInvitationLayout-B8cNUl8p.js": {
+    "file": "assets/DesktopInvitationLayout-B8cNUl8p.js",
     "name": "DesktopInvitationLayout",
     "imports": [
       "_client-Bv2OtJqo.js"
@@ -87,7 +87,7 @@
     ]
   },
   "resources/js/invitation-app/main.jsx": {
-    "file": "assets/main-6vOiCWJ5.js",
+    "file": "assets/main-nw6L_dMN.js",
     "name": "main",
     "src": "resources/js/invitation-app/main.jsx",
     "isEntry": true,
@@ -101,13 +101,13 @@
     ]
   },
   "resources/js/invitation-app/src/templates/tema1/tema1.jsx": {
-    "file": "assets/tema1-EIuSLOgj.js",
+    "file": "assets/tema1-OAUeW3Br.js",
     "name": "tema1",
     "src": "resources/js/invitation-app/src/templates/tema1/tema1.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_client-Bv2OtJqo.js",
-      "_DesktopInvitationLayout-Nbx9dSa8.js"
+      "_DesktopInvitationLayout-B8cNUl8p.js"
     ],
     "css": [
       "assets/all-DbRkgOy0.css"
@@ -120,13 +120,13 @@
     ]
   },
   "resources/js/invitation-app/src/templates/tema2/tema2.jsx": {
-    "file": "assets/tema2-BW_36XGE.js",
+    "file": "assets/tema2-Cf_PBKPh.js",
     "name": "tema2",
     "src": "resources/js/invitation-app/src/templates/tema2/tema2.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_client-Bv2OtJqo.js",
-      "_DesktopInvitationLayout-Nbx9dSa8.js"
+      "_DesktopInvitationLayout-B8cNUl8p.js"
     ],
     "css": [
       "assets/tema2-BIT1mPn_.css"
