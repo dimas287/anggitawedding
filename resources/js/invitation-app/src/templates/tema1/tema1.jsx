@@ -4,6 +4,7 @@ import { GroomSection, BrideSection, JourneySection, SaveDateSection, EventSecti
 import { GallerySection, GuestbookSection, GiftSection, ClosingSection } from './sections2.jsx';
 import { palette, fonts, formatDate } from './utils.js';
 import { ActionButton } from './components.jsx';
+import DesktopInvitationLayout from '../../components/DesktopInvitationLayout.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Tema1({ invitation }) {
@@ -322,33 +323,25 @@ export default function Tema1({ invitation }) {
 
             {/* Main Content (Scrollable) */}
             {opened && (
-                <>
-                    <div
-                        style={{
-                            position: 'fixed',
-                            inset: 0,
-                            zIndex: 0,
-                            pointerEvents: 'none',
-                            backgroundImage: `url(${mainBgImg})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center center',
-                            backgroundRepeat: 'no-repeat'
-                        }}
-                    />
-                    <div
-                        style={{
-                            position: 'fixed',
-                            inset: 0,
-                            zIndex: 0,
-                            pointerEvents: 'none',
-                            background: 'rgba(0,0,0,0.66)'
-                        }}
-                    />
+                <DesktopInvitationLayout
+                    backgroundImage={activeBgImg}
+                    groomName={data.groom_short_name || data.groom_name?.split(' ')[0]}
+                    brideName={data.bride_short_name || data.bride_name?.split(' ')[0]}
+                    dateLabel={formatDate(data.reception_datetime)}
+                    venue={data.reception_venue}
+                    accent={palette.accent}
+                    panelBackground={palette.darkFill}
+                    contentBackground={palette.darkFill}
+                    contentColor={palette.text}
+                    fontFamily={fonts.sans}
+                    nameFontFamily={fonts.serif}
+                    panelOverlay="linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.88))"
+                >
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1 }}
-                        style={{ position: 'relative', zIndex: 1, background: 'transparent', overflowX: 'hidden' }}
+                        style={{ position: 'relative', zIndex: 1, minHeight: '100vh', background: palette.darkFill, overflowX: 'hidden' }}
                     >
                     {/* Intro / Quote */}
                     <section data-page-key="quote" style={{ padding: 'clamp(80px, 12vw, 120px) 20px', textAlign: 'center', maxWidth: 800, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -419,7 +412,7 @@ export default function Tema1({ invitation }) {
                         <ClosingSection data={data} />
                     </div>
                     </motion.div>
-                </>
+                </DesktopInvitationLayout>
             )}
 
             {/* Floating Music Toggle */}

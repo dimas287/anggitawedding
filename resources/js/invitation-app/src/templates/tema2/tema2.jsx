@@ -9,6 +9,7 @@ import { palette, glassCard, formatDate, formatTime } from './utils.js';
 import { SectionTitle, FloatingOrbs, ActionButton, FadeUp } from './components.jsx';
 import { CountdownTimer, LoveStory, AmplopDigital } from './sections1.jsx';
 import { Guestbook, RSVPSection } from './sections2.jsx';
+import DesktopInvitationLayout from '../../components/DesktopInvitationLayout.jsx';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -448,6 +449,12 @@ export default function Tema2Template({ invitation }) {
     const content = invitation?.content ?? {};
     const [coverOpen, setCoverOpen] = useState(true);
 
+    const desktopImage = useMemo(() => {
+        const cover = content.media_files?.cover;
+        const resolvedCover = Array.isArray(cover) ? cover[0] : cover;
+        return resolvedCover || content.photo_prewedding_url || content.gallery_photo_urls?.[0] || null;
+    }, [content.gallery_photo_urls, content.media_files, content.photo_prewedding_url]);
+
     const gallery = useMemo(() => {
         let urls = content.media_files?.gallery || content.media_files?.galeri || content.gallery_photo_urls || [];
         if (!Array.isArray(urls) && urls) urls = [urls];
@@ -504,11 +511,29 @@ export default function Tema2Template({ invitation }) {
             <MusicPlayer musicUrl={content.music_file_url} coverClosed={!coverOpen} />
 
             {/* Main content (visible after cover closes) */}
-            <div style={{
-                maxWidth: 660, margin: '0 auto',
-                padding: '40px 20px 100px',
-                position: 'relative', zIndex: 2,
-            }}>
+            {!coverOpen && (
+            <DesktopInvitationLayout
+                backgroundImage={desktopImage}
+                groomName={content.groom_short_name || content.groom_name?.split(' ')[0]}
+                brideName={content.bride_short_name || content.bride_name?.split(' ')[0]}
+                dateLabel={formatDate(content.reception_datetime)}
+                venue={content.reception_venue}
+                accent={palette.neonAlt}
+                panelBackground="#050016"
+                contentBackground={palette.gradient}
+                contentColor={palette.text}
+                fontFamily="'Space Grotesk', 'Poppins', system-ui, sans-serif"
+                nameFontFamily="'Space Grotesk', 'Poppins', system-ui, sans-serif"
+                panelOverlay="linear-gradient(145deg, rgba(6,0,22,.18), rgba(6,0,22,.9) 78%)"
+            >
+                <div style={{
+                    width: '100%',
+                    minHeight: '100vh',
+                    padding: '40px 20px 100px',
+                    boxSizing: 'border-box',
+                    position: 'relative', zIndex: 2,
+                    background: palette.gradient,
+                }}>
                 {/* HERO */}
                 <FadeUp>
                     <div style={{
@@ -591,7 +616,9 @@ export default function Tema2Template({ invitation }) {
                 <Guestbook invitationSlug={invitation?.slug} initialEntries={guestbook} isDemo={invitation?.status === 'demo'} />
                 <AmplopDigital bankAccounts={bankAccounts} qrisImageUrl={content.qris_image_url} />
                 <Closing content={content} />
-            </div>
+                </div>
+            </DesktopInvitationLayout>
+            )}
         </div>
     );
 }
