@@ -1,5 +1,9 @@
 @extends('layouts.guest')
 
+@push('vite')
+    @vite('resources/js/portfolio.js')
+@endpush
+
 @section('title', 'Portofolio – Anggita WO')
 @section('meta_description', 'Lihat galeri portofolio pernikahan yang telah ditangani oleh Anggita Wedding Organizer. Temukan inspirasi konsep, dekorasi, dan momen indah pasangan kami.')
 
