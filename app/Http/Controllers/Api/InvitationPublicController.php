@@ -25,6 +25,7 @@ class InvitationPublicController extends Controller
         if (!$invitation) {
             $template = InvitationTemplate::query()
                 ->where('demo_slug', $slug)
+                ->where('is_active', true)
                 ->first();
 
             if ($template) {

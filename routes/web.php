@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvitationOrderController;
+use App\Http\Controllers\InvitationPageController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\InvitationController;
 use App\Http\Controllers\User\ChatController as UserChatController;
@@ -64,10 +65,7 @@ Route::post('/konsultasi', [ConsultationController::class, 'store'])->middleware
 
 // Digital Invitation (public)
 Route::middleware('invitation.maintenance')->group(function () {
-    Route::get('/undangan/{slug}', function ($slug) {
-        $invitation = \App\Models\Invitation::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        return view('invitation.react', compact('invitation'));
-    })->name('invitation.show');
+    Route::get('/undangan/{slug}', [InvitationPageController::class, 'show'])->name('invitation.show');
     Route::post('/undangan/{slug}/rsvp', [\App\Http\Controllers\User\InvitationController::class, 'rsvp'])->middleware(['throttle:5,1', 'honeypot'])->name('invitation.rsvp');
     Route::get('/undangan/{slug}/qris', [InvitationController::class, 'qrisImage'])->name('invitation.qris');
     Route::get('/undangan/{slug}/media/{type}', [\App\Http\Controllers\InvitationMediaController::class, 'serve'])->name('invitation.media');
