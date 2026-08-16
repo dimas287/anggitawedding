@@ -99,18 +99,39 @@ Route::get('/admin/password/confirm/{token}', [AccountController::class, 'confir
 // ============================================================
 // EMAIL VERIFICATION
 // ============================================================
-Route::get('/email/verify', function () {
+Route::get('/email/verify', function (\Illuminate\Http\Request $request) {
+    if ($request->user() && $request->user()->hasVerifiedEmail()) {
+        $redirect = $request->user()->isAdmin() ? route('admin.dashboard') : route('user.dashboard');
+        return redirect($redirect);
+    }
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    $redirect = $request->user()->isAdmin()
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+    $user = \App\Models\User::findOrFail($id);
+
+    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        abort(403, 'Link verifikasi tidak valid.');
+    }
+
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+        event(new \Illuminate\Auth\Events\Verified($user));
+    }
+
+    \Illuminate\Support\Facades\Auth::login($user);
+    
+    // Check if it's admin guard need to be logged in
+    if ($user->isAdmin()) {
+        \Illuminate\Support\Facades\Auth::guard('admin')->login($user);
+    }
+
+    $redirect = $user->isAdmin()
         ? route('admin.dashboard')
         : route('user.dashboard');
 
     return redirect($redirect)->with('success', 'Email Anda berhasil diverifikasi.');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+})->middleware(['signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     if ($request->user()->hasVerifiedEmail()) {

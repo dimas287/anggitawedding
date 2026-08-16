@@ -39,6 +39,13 @@
                     untuk mengaktifkan akun Anda. Belum menerima email? Anda dapat meminta ulang tautan di bawah ini.
                 </p>
 
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-400 text-sm rounded-xl px-4 py-3 flex items-start gap-3">
+                    <i class="fas fa-exclamation-triangle mt-0.5"></i>
+                    <div>
+                        <strong>Catatan:</strong> Jika email tidak ada di Kotak Masuk (Inbox), mohon periksa folder <strong>Spam</strong> atau <strong>Junk</strong> Anda.
+                    </div>
+                </div>
+
                 <form method="POST" action="{{ route('verification.send') }}" class="space-y-4">
                     @csrf
                     <button type="submit" class="w-full gold-gradient text-white font-semibold py-3.5 rounded-xl hover:shadow-lg transition-all text-sm">
