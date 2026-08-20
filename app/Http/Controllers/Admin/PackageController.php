@@ -69,7 +69,9 @@ class PackageController extends Controller
         $data = $this->validatePackage($request, $package->id);
         Log::info('Update package request received', ['id' => $package->id]);
 
-        if (!$request->has('is_active')) {
+        if ($request->has('is_active_present')) {
+            $data['is_active'] = $request->boolean('is_active');
+        } elseif (!$request->has('is_active')) {
             unset($data['is_active']);
         }
 
