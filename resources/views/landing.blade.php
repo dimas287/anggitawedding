@@ -648,6 +648,26 @@
             <h2 class="font-playfair text-4xl lg:text-5xl font-light text-gray-900 dark:text-white leading-tight">Layanan Eksklusif</h2>
         </div>
 
+        @if($packages->isEmpty())
+            <div class="bg-white/50 dark:bg-[#111]/50 backdrop-blur rounded-3xl p-10 mb-12 border border-gray-100 dark:border-white/10 shadow-xl text-center">
+                <div class="w-20 h-20 mx-auto bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-box-open text-4xl text-gray-400"></i>
+                </div>
+                <h3 class="font-playfair text-2xl font-bold text-gray-900 dark:text-white mb-3">Paket Sedang Diperbarui</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-lg mx-auto">Saat ini kami sedang menyesuaikan dan menyiapkan paket-paket terbaik untuk Anda. Silakan hubungi kami langsung via WhatsApp untuk informasi paket, custom quotation, atau booking layanan.</p>
+                @php
+                    $whatsappLink = $footerInfo['phone_link'] 
+                                ?? $footerInfo['socials']['whatsapp'] 
+                                ?? 'https://wa.me/6281231122057';
+                    if ($whatsappLink === '#') {
+                        $whatsappLink = 'https://wa.me/6281231122057';
+                    }
+                @endphp
+                <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] hover:bg-[#1DA851] text-white font-bold rounded-full shadow-lg transition-all hover:scale-105">
+                    <i class="fab fa-whatsapp text-xl"></i> Hubungi via WhatsApp
+                </a>
+            </div>
+        @else
         <div class="flex flex-wrap gap-6 justify-center mb-16" data-reveal data-reveal-direction="right" style="--reveal-delay:.08s;">
             @foreach($categoryLabels as $key => $label)
                 @if(isset($packagesByCategory[$key]) && $packagesByCategory[$key]->isNotEmpty())
@@ -864,6 +884,7 @@
                 </div>
             </div>
         @endforeach
+        @endif
     </div>
 </section>
 
